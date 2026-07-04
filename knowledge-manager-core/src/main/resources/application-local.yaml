@@ -1,0 +1,6 @@
+spring:
+  datasource:
+    url: ${CONVERSATION_MANAGER_DATASOURCE_URL:jdbc:postgresql://127.0.0.1:5432/knowledge_manager}
+    username: ${CONVERSATION_MANAGER_DATASOURCE_USERNAME:horizony}
+    password: ${CONVERSATION_MANAGER_DATASOURCE_PASSWORD:hzy0304.}
+    driver-class-name: org.postgresql.Driver

@@ -1,0 +1,15 @@
+package ifl.agentbreaker.knowledgemanager.exceptions;
+
+import lombok.Getter;
+
+@Getter
+public class ServiceResponseException extends RuntimeException
+{
+    private final int code;
+
+    public ServiceResponseException(int code, String message)
+    {
+        super(message);
+        this.code = code;
+    }
+}

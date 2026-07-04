@@ -1,0 +1,22 @@
+package ifl.agentbreaker.knowledgemanager.domain.constants;
+
+import com.baomidou.mybatisplus.annotation.EnumValue;
+import lombok.Getter;
+
+@Getter
+public enum ParseStatus
+{
+    UNPARSED(0, "未解析"),
+    SUCCESS(1, "成功"),
+    FAILED(2, "失败");
+
+    @EnumValue
+    private final int code;
+    private final String description;
+
+    ParseStatus(int code, String description)
+    {
+        this.code = code;
+        this.description = description;
+    }
+}

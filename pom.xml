@@ -30,6 +30,7 @@
         <dubbo.version>3.3.6</dubbo.version>
         <dataworks.version>0.0.1-SNAPSHOT</dataworks.version>
         <okhttp.version>4.8.1</okhttp.version>
+        <mybatis-plus.version>3.5.15</mybatis-plus.version>
     </properties>
 
     <dependencyManagement>
@@ -77,12 +78,6 @@
             <dependency>
                 <groupId>stark.dataworks</groupId>
                 <artifactId>web-commons</artifactId>
-                <version>${dataworks.version}</version>
-            </dependency>
-
-            <dependency>
-                <groupId>stark.dataworks</groupId>
-                <artifactId>dubbo-air</artifactId>
                 <version>${dataworks.version}</version>
             </dependency>
         </dependencies>
