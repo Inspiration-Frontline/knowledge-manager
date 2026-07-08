@@ -1,6 +1,7 @@
 package ifl.agentbreaker.knowledgemanager.domain.constants;
 
 import com.baomidou.mybatisplus.annotation.EnumValue;
+import com.fasterxml.jackson.annotation.JsonValue;
 import lombok.Getter;
 
 @Getter
@@ -11,6 +12,7 @@ public enum ParseStatus
     FAILED(2, "失败");
 
     @EnumValue
+    @JsonValue
     private final int code;
     private final String description;
 

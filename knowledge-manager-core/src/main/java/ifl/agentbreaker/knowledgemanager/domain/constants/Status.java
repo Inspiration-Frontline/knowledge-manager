@@ -1,6 +1,7 @@
 package ifl.agentbreaker.knowledgemanager.domain.constants;
 
 import com.baomidou.mybatisplus.annotation.EnumValue;
+import com.fasterxml.jackson.annotation.JsonValue;
 import lombok.Getter;
 
 @Getter
@@ -10,6 +11,7 @@ public enum Status
     ENABLED(1, "启用");
 
     @EnumValue
+    @JsonValue
     private final int code;
     private final String description;
 

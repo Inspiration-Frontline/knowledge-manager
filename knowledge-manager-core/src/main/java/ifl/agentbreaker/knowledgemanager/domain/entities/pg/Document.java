@@ -6,6 +6,8 @@ import ifl.agentbreaker.knowledgemanager.domain.constants.SourceType;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
+import java.util.Date;
+
 @Data
 @EqualsAndHashCode(callSuper = true)
 public class Document extends EntityBase
@@ -13,7 +15,7 @@ public class Document extends EntityBase
     /**
      * 知识库ID - 关联知识库
      */
-    private long KnowledgeBaseId;
+    private long knowledgeBaseId;
 
     /**
      * 文档名称 - 文档名称用于识别文档
@@ -53,5 +55,10 @@ public class Document extends EntityBase
     /**
      * Chunk数量 - 解析后生成了多少chunk
      */
-    private int chunkCount;
+    private Integer chunkCount;
+
+    /**
+     * 最后一次成功完成解析的时间 - 方便排查解析问题
+     */
+    private Date lastParseTime;
 }

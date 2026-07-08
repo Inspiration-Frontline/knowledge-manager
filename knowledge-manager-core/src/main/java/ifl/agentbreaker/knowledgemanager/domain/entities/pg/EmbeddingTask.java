@@ -11,6 +11,11 @@ import java.util.Date;
 public class EmbeddingTask extends EntityBase
 {
     /**
+     * 知识库ID - 关联知识库
+     */
+    private long knowledgeBaseId;
+
+    /**
      * 文档ID - 来源文档（与video_id不同时非空）
      */
     private Long documentId;

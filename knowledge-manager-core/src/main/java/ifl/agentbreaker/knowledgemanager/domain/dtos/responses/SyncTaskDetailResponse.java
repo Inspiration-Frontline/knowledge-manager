@@ -1,54 +1,67 @@
-package ifl.agentbreaker.knowledgemanager.domain.entities.pg;
+package ifl.agentbreaker.knowledgemanager.domain.dtos.responses;
 
 import ifl.agentbreaker.knowledgemanager.domain.constants.ExecutionStatus;
 import ifl.agentbreaker.knowledgemanager.domain.constants.Status;
 import ifl.agentbreaker.knowledgemanager.domain.constants.SyncProvider;
 import lombok.Data;
-import lombok.EqualsAndHashCode;
 
 import java.util.Date;
 
 @Data
-@EqualsAndHashCode(callSuper = true)
-public class SyncTask extends EntityBase
+public class SyncTaskDetailResponse
 {
     /**
-     * 知识库ID - 关联知识库
+     * 任务ID
+     */
+    private long syncTaskId;
+
+    /**
+     * 知识库ID
      */
     private long knowledgeBaseId;
 
     /**
-     * 同步任务名称 - 便于管理
+     * 任务名称
      */
     private String taskName;
 
     /**
-     * 同步源 - 暂时只有feishu
+     * 同步源
      */
     private SyncProvider provider;
 
     /**
-     * cron表达式 - 定时执行的规则
+     * Cron表达式
      */
     private String cronExpression;
 
     /**
-     * 同步任务状态 - 0停用 1启用
+     * 状态（启用/停用）
      */
     private Status status;
 
     /**
-     * 最后同步的时间 - 用于监控同步任务运行
+     * 最后同步时间
      */
     private Date lastSyncTime;
 
     /**
-     * 最后同步的状态 - 0失败 1成功
+     * 最后同步状态
      */
     private ExecutionStatus lastSyncStatus;
 
     /**
-     * 最后同步的信息 - 记录同步任务执行的结果信息或异常信息
+     * 最后同步信息
      */
     private String lastSyncMessage;
+
+    /**
+     * 创建时间
+     */
+    private Date creationTime;
+
+    /**
+     * 修改时间
+     */
+    private Date modificationTime;
 }

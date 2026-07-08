@@ -4,6 +4,9 @@ import ifl.agentbreaker.knowledgemanager.domain.constants.ParseStatus;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
+import java.util.Date;
+import java.util.List;
+
 @Data
 @EqualsAndHashCode(callSuper = true)
 public class Video extends EntityBase
@@ -26,7 +29,7 @@ public class Video extends EntityBase
     /**
      * 视频标签 - 逗号分隔，可生成Embedding
      */
-    private String tags;
+    private List<String> tags;
 
     /**
      * 视频链接 - 比如B站/Youtube链接
@@ -41,5 +44,10 @@ public class Video extends EntityBase
     /**
      * Chunk数量 - 解析后生成了多少chunk
      */
-    private int chunkCount;
+    private Integer chunkCount;
+
+    /**
+     * 最后一次成功完成解析的时间 - 方便排查解析问题
+     */
+    private Date lastParseTime;
 }

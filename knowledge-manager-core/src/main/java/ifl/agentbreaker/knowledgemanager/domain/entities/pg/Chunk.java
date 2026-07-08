@@ -40,11 +40,6 @@ public class Chunk extends EntityBase
     private int tokenCount;
 
     /**
-     * 元数据 - 存储上下文信息
-     */
-    private List<String> metadata;
-
-    /**
      * 向量数据 - pgvector
      */
     private float[] embedding;

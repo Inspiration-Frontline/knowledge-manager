@@ -2,20 +2,17 @@ package ifl.agentbreaker.knowledgemanager.domain.constants;
 
 import com.baomidou.mybatisplus.annotation.EnumValue;
 import com.fasterxml.jackson.annotation.JsonValue;
-import lombok.Getter;
 
-@Getter
-public enum ExecutionStatus
+public enum SyncProvider
 {
-    FAILED(0, "失败"),
-    SUCCESS(1, "成功");
+    FEISHU(0, "飞书");
 
     @EnumValue
     @JsonValue
     private final int code;
     private final String description;
 
-    ExecutionStatus(int code, String description)
+    SyncProvider(int code, String description)
     {
         this.code = code;
         this.description = description;
