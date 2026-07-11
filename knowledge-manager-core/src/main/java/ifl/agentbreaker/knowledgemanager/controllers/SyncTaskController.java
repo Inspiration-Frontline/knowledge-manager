@@ -1,6 +1,6 @@
 package ifl.agentbreaker.knowledgemanager.controllers;
 
-import ifl.agentbreaker.knowledgemanager.domain.constants.Status;
+import ifl.agentbreaker.knowledgemanager.domain.constants.EnableStatus;
 import ifl.agentbreaker.knowledgemanager.domain.dtos.requests.CreateSyncTaskRequest;
 import ifl.agentbreaker.knowledgemanager.domain.dtos.requests.PageSyncTasksRequest;
 import ifl.agentbreaker.knowledgemanager.domain.dtos.requests.UpdateSyncTaskRequest;
@@ -58,14 +58,14 @@ public class SyncTaskController
 
     /**
      * 修改同步任务状态（启用/禁用）
-     * @param status
+     * @param enableStatus
      * @param syncTaskId
      * @return
      */
     @PutMapping("/status/{syncTaskId}")
-    public ServiceResponse<Boolean> updateSyncTaskStatus(@RequestParam Status status, @PathVariable long syncTaskId)
+    public ServiceResponse<Boolean> updateSyncTaskStatus(@RequestParam EnableStatus enableStatus, @PathVariable long syncTaskId)
     {
-        return service.updateSyncTaskStatus(status, syncTaskId);
+        return service.updateSyncTaskStatus(enableStatus, syncTaskId);
     }
 
     /**

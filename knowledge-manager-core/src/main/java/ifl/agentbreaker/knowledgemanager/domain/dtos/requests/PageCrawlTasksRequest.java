@@ -1,6 +1,6 @@
 package ifl.agentbreaker.knowledgemanager.domain.dtos.requests;
 
-import ifl.agentbreaker.knowledgemanager.domain.constants.Status;
+import ifl.agentbreaker.knowledgemanager.domain.constants.EnableStatus;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
@@ -22,6 +22,5 @@ public class PageCrawlTasksRequest extends PageRequest
     /**
      * 状态
      */
-    private Status status;
-
+    private boolean enabled;
 }

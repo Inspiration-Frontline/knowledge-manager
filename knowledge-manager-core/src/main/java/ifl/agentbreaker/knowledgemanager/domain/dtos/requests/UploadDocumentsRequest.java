@@ -4,8 +4,10 @@ import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.util.List;
+
 @Data
-public class UploadDocumentRequest
+public class UploadDocumentsRequest
 {
     /**
      * 所属知识库
@@ -16,5 +18,5 @@ public class UploadDocumentRequest
      * 文件
      */
     @NotNull
-    private MultipartFile file;
+    private List<MultipartFile> files;
 }

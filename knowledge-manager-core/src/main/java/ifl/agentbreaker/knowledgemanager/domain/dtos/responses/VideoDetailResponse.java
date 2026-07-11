@@ -1,6 +1,6 @@
 package ifl.agentbreaker.knowledgemanager.domain.dtos.responses;
 
-import ifl.agentbreaker.knowledgemanager.domain.constants.ParseStatus;
+import ifl.agentbreaker.knowledgemanager.domain.constants.ParsingStatus;
 import lombok.Data;
 
 import java.util.Date;
@@ -43,7 +43,7 @@ public class VideoDetailResponse
     /**
      * 解析状态
      */
-    private ParseStatus parseStatus;
+    private ParsingStatus parsingStatus;
 
     /**
      * Chunk数量

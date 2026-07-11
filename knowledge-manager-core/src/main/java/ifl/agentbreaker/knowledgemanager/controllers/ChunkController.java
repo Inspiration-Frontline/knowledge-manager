@@ -3,7 +3,7 @@ package ifl.agentbreaker.knowledgemanager.controllers;
 import ifl.agentbreaker.knowledgemanager.domain.dtos.requests.PageChunksRequest;
 import ifl.agentbreaker.knowledgemanager.domain.dtos.requests.SearchChunksRequest;
 import ifl.agentbreaker.knowledgemanager.domain.dtos.responses.ChunkDetailResponse;
-import ifl.agentbreaker.knowledgemanager.domain.dtos.responses.ChunkResponse;
+import ifl.agentbreaker.knowledgemanager.domain.dtos.responses.ChunkAbstract;
 import ifl.agentbreaker.knowledgemanager.domain.dtos.responses.ChunkSearchResponse;
 import ifl.agentbreaker.knowledgemanager.domain.dtos.responses.PageResponse;
 import ifl.agentbreaker.knowledgemanager.services.ChunkService;
@@ -20,6 +20,7 @@ import java.util.List;
 @RequestMapping("/chunk")
 public class ChunkController
 {
+    // TODO: DO NOT name it "service", name it "chunkService", same for other services.
     @Autowired
     private ChunkService service;
 
@@ -40,9 +41,9 @@ public class ChunkController
      * @return
      */
     @GetMapping("/page")
-    public ServiceResponse<PageResponse<ChunkResponse>> pageChunks(@Valid PageChunksRequest request)
+    public ServiceResponse<PageResponse<ChunkAbstract>> getChunkAbstracts(@Valid PageChunksRequest request)
     {
-        return service.pageChunks(request);
+        return service.getChunkAbstracts(request);
     }
 
     /**
@@ -50,9 +51,9 @@ public class ChunkController
      * @param request
      * @return
      */
-    @PostMapping("/search")
-    public ServiceResponse<List<ChunkSearchResponse>> searchChunks(@RequestBody @Valid SearchChunksRequest request)
+    @PostMapping("/query")
+    public ServiceResponse<List<ChunkSearchResponse>> queryChunks(@RequestBody @Valid SearchChunksRequest request)
     {
-        return service.searchChunks(request);
+        return service.queryChunks(request);
     }
 }

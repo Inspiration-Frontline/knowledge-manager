@@ -1,6 +1,6 @@
 package ifl.agentbreaker.knowledgemanager.domain.dtos.responses;
 
-import ifl.agentbreaker.knowledgemanager.domain.constants.Status;
+import ifl.agentbreaker.knowledgemanager.domain.constants.EnableStatus;
 import lombok.Data;
 
 import java.math.BigDecimal;
@@ -42,7 +42,7 @@ public class KnowledgeBaseDetailResponse
     /**
      * 状态
      */
-    private Status status;
+    private EnableStatus enableStatus;
 
     /**
      * Chunk大小

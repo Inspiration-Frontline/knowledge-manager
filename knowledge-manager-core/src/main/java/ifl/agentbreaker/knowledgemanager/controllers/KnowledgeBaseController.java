@@ -1,6 +1,6 @@
 package ifl.agentbreaker.knowledgemanager.controllers;
 
-import ifl.agentbreaker.knowledgemanager.domain.constants.Status;
+import ifl.agentbreaker.knowledgemanager.domain.constants.EnableStatus;
 import ifl.agentbreaker.knowledgemanager.domain.dtos.requests.CreateKnowledgeBaseRequest;
 import ifl.agentbreaker.knowledgemanager.domain.dtos.requests.UpdateKnowledgeBaseRequest;
 import ifl.agentbreaker.knowledgemanager.domain.dtos.requests.PageKnowledgeBasesRequest;
@@ -57,14 +57,14 @@ public class KnowledgeBaseController
 
     /**
      * 修改知识库状态（启用/禁用）
-     * @param status
+     * @param enableStatus
      * @param knowledgeBaseId
      * @return
      */
     @PutMapping("/status/{knowledgeBaseId}")
-    public ServiceResponse<Boolean> updateKnowledgeBaseStatus(@RequestParam Status status, @PathVariable long knowledgeBaseId)
+    public ServiceResponse<Boolean> updateKnowledgeBaseStatus(@RequestParam EnableStatus enableStatus, @PathVariable long knowledgeBaseId)
     {
-        return service.updateKnowledgeBaseStatus(status, knowledgeBaseId);
+        return service.updateKnowledgeBaseStatus(enableStatus, knowledgeBaseId);
     }
 
     /**

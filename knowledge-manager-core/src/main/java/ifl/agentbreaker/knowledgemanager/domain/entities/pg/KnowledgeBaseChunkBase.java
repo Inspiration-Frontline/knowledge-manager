@@ -3,31 +3,32 @@ package ifl.agentbreaker.knowledgemanager.domain.entities.pg;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
-import java.util.List;
-
+// Base class for chunks of knowledge bases.
 @Data
 @EqualsAndHashCode(callSuper = true)
-public class Chunk extends EntityBase
+public class KnowledgeBaseChunkBase extends EntityBase
 {
     /**
      * 知识库ID - 关联知识库
      */
     private long knowledgeBaseId;
 
-    /**
-     * 文档ID - 来源文档（与videoId不同时非空）
-     */
-    private Long documentId;
+    // Type
 
-    /**
-     * 视频ID - 来源视频（与documentId不同时非空）
-     */
-    private Long videoId;
+//    /**
+//     * 文档ID - 来源文档（与videoId不同时非空）
+//     */
+//    private Long documentId;
+//
+//    /**
+//     * 视频ID - 来源视频（与documentId不同时非空）
+//     */
+//    private Long videoId;
 
     /**
      * chunk序号 - 从0开始
      */
-    private int chunkNo;
+    private int chunkNumber;
 
     /**
      * chunk内容 - 实际文本片段

@@ -3,7 +3,6 @@ package ifl.agentbreaker.knowledgemanager.domain.dtos.responses;
 import lombok.Data;
 
 import java.util.Date;
-import java.util.List;
 
 @Data
 public class ChunkDetailResponse
@@ -18,6 +17,9 @@ public class ChunkDetailResponse
      */
     private long knowledgeBaseId;
 
+    // ChunkType
+    // id
+
     /**
      * 文档ID
      */
@@ -31,7 +33,8 @@ public class ChunkDetailResponse
     /**
      * chunk序号
      */
-    private int chunkNo;
+    // TODO: DO NOT use "no" for short of "number"
+    private int chunkNumber;
 
     /**
      * chunk内容
@@ -48,4 +51,5 @@ public class ChunkDetailResponse
      */
     private Date creationTime;
 
+    // float[] embedding;
 }

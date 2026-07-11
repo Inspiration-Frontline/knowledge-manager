@@ -32,9 +32,9 @@ public class CreateKnowledgeBaseRequest
     private String embeddingModel;
 
     /**
-     * 向量维度
+     * 向量维度数量
      */
-    private int embeddingDimensions;
+    private int embeddingDimensionCount;
 
     /**
      * Chunk大小
@@ -46,14 +46,16 @@ public class CreateKnowledgeBaseRequest
      */
     private int chunkOverlap;
 
+    // TODO: The following 2 variables should be configurations in nacos.
+
     /**
      * TopK召回数量
      */
-    private int topK;
+//    private int topK;
 
     /**
      * 相似度阈值
      */
-    @NotNull
-    private BigDecimal similarityThreshold;
+//    @NotNull
+//    private BigDecimal similarityThreshold;
 }

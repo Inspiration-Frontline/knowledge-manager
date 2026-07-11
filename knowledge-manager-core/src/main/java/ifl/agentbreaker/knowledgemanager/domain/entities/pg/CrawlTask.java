@@ -1,7 +1,7 @@
 package ifl.agentbreaker.knowledgemanager.domain.entities.pg;
 
 import ifl.agentbreaker.knowledgemanager.domain.constants.ExecutionStatus;
-import ifl.agentbreaker.knowledgemanager.domain.constants.Status;
+import ifl.agentbreaker.knowledgemanager.domain.constants.EnableStatus;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
@@ -40,7 +40,9 @@ public class CrawlTask extends EntityBase
     /**
      * 爬取任务状态 - 0停用 1启用
      */
-    private Status status;
+    private EnableStatus enableStatus;
+
+    // TODO: Put below fields into another entity => CrawlTaskExecution.
 
     /**
      * 最后爬取的时间 - 用于爬取监控任务运行

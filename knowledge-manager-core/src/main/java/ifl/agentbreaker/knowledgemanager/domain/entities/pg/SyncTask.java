@@ -1,7 +1,7 @@
 package ifl.agentbreaker.knowledgemanager.domain.entities.pg;
 
 import ifl.agentbreaker.knowledgemanager.domain.constants.ExecutionStatus;
-import ifl.agentbreaker.knowledgemanager.domain.constants.Status;
+import ifl.agentbreaker.knowledgemanager.domain.constants.EnableStatus;
 import ifl.agentbreaker.knowledgemanager.domain.constants.SyncProvider;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -35,7 +35,7 @@ public class SyncTask extends EntityBase
     /**
      * 同步任务状态 - 0停用 1启用
      */
-    private Status status;
+    private EnableStatus enableStatus;
 
     /**
      * 最后同步的时间 - 用于监控同步任务运行

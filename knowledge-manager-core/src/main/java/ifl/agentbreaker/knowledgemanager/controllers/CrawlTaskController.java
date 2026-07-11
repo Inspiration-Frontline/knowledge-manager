@@ -1,6 +1,6 @@
 package ifl.agentbreaker.knowledgemanager.controllers;
 
-import ifl.agentbreaker.knowledgemanager.domain.constants.Status;
+import ifl.agentbreaker.knowledgemanager.domain.constants.EnableStatus;
 import ifl.agentbreaker.knowledgemanager.domain.dtos.requests.CreateCrawlTaskRequest;
 import ifl.agentbreaker.knowledgemanager.domain.dtos.requests.PageCrawlTasksRequest;
 import ifl.agentbreaker.knowledgemanager.domain.dtos.requests.UpdateCrawlTaskRequest;
@@ -57,14 +57,15 @@ public class CrawlTaskController
 
     /**
      * 修改爬虫任务状态（启用/禁用）
-     * @param status
+     * @param enableStatus
      * @param crawlTaskId
      * @return
      */
-    @PutMapping("/status/{crawlTaskId}")
-    public ServiceResponse<Boolean> updateCrawlTaskStatus(@RequestParam Status status, @PathVariable long crawlTaskId)
+    // TODO: Combine enableStatus & crawlTaskId to 1 single class.
+    @PutMapping("/enable-status")
+    public ServiceResponse<Boolean> updateCrawlTaskEnableStatus(@RequestParam EnableStatus enableStatus, @PathVariable long crawlTaskId)
     {
-        return service.updateCrawlTaskStatus(status, crawlTaskId);
+        return service.updateCrawlTaskStatus(enableStatus, crawlTaskId);
     }
 
     /**
@@ -78,6 +79,9 @@ public class CrawlTaskController
         return service.getCrawlTaskDetail(crawlTaskId);
     }
 
+    // /detail/executions
+    // paginated
+
     /**
      * 分页查询爬虫任务列表
      * @param request
@@ -89,6 +93,7 @@ public class CrawlTaskController
         return service.pageCrawlTasks(request);
     }
 
+    // TODO: Add a button on the frontend.
     /**
      * 立即执行一次爬虫任务
      * @param crawlTaskId

@@ -1,7 +1,7 @@
 package ifl.agentbreaker.knowledgemanager.domain.dtos.responses;
 
 import ifl.agentbreaker.knowledgemanager.domain.constants.DocumentType;
-import ifl.agentbreaker.knowledgemanager.domain.constants.ParseStatus;
+import ifl.agentbreaker.knowledgemanager.domain.constants.ParsingStatus;
 import ifl.agentbreaker.knowledgemanager.domain.constants.SourceType;
 import lombok.Data;
 
@@ -44,7 +44,7 @@ public class DocumentResponse
     /**
      * 解析状态
      */
-    private ParseStatus parseStatus;
+    private ParsingStatus parsingStatus;
 
     /**
      * 上传时间

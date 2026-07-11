@@ -1,10 +1,10 @@
 package ifl.agentbreaker.knowledgemanager.mappers;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
-import ifl.agentbreaker.knowledgemanager.domain.entities.pg.Chunk;
+import ifl.agentbreaker.knowledgemanager.domain.entities.pg.KnowledgeBaseChunkBase;
 import org.apache.ibatis.annotations.Mapper;
 
 @Mapper
-public interface ChunkMapper extends BaseMapper<Chunk>
+public interface ChunkMapper extends BaseMapper<KnowledgeBaseChunkBase>
 {
 }

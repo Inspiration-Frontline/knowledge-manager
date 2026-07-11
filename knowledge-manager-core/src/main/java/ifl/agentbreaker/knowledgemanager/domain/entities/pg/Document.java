@@ -1,13 +1,14 @@
 package ifl.agentbreaker.knowledgemanager.domain.entities.pg;
 
 import ifl.agentbreaker.knowledgemanager.domain.constants.DocumentType;
-import ifl.agentbreaker.knowledgemanager.domain.constants.ParseStatus;
+import ifl.agentbreaker.knowledgemanager.domain.constants.ParsingStatus;
 import ifl.agentbreaker.knowledgemanager.domain.constants.SourceType;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
 import java.util.Date;
 
+// TODO: Unnecessary entity. Should be deleted.
 @Data
 @EqualsAndHashCode(callSuper = true)
 public class Document extends EntityBase
@@ -50,7 +51,7 @@ public class Document extends EntityBase
     /**
      * 解析状态 - 0未解析 1成功 2失败
      */
-    private ParseStatus parseStatus;
+    private ParsingStatus parsingStatus;
 
     /**
      * Chunk数量 - 解析后生成了多少chunk

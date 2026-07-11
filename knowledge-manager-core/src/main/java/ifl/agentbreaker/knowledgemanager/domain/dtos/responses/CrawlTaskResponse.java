@@ -1,7 +1,7 @@
 package ifl.agentbreaker.knowledgemanager.domain.dtos.responses;
 
 import ifl.agentbreaker.knowledgemanager.domain.constants.ExecutionStatus;
-import ifl.agentbreaker.knowledgemanager.domain.constants.Status;
+import ifl.agentbreaker.knowledgemanager.domain.constants.EnableStatus;
 import lombok.Data;
 
 import java.util.Date;
@@ -28,7 +28,7 @@ public class CrawlTaskResponse
     /**
      * 任务状态（启用/停用）
      */
-    private Status status;
+    private EnableStatus enableStatus;
 
     /**
      * 最后爬取时间

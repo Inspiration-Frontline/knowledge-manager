@@ -1,7 +1,7 @@
 package ifl.agentbreaker.knowledgemanager.controllers;
 
 import ifl.agentbreaker.knowledgemanager.domain.dtos.requests.PageDocumentsRequest;
-import ifl.agentbreaker.knowledgemanager.domain.dtos.requests.UploadDocumentRequest;
+import ifl.agentbreaker.knowledgemanager.domain.dtos.requests.UploadDocumentsRequest;
 import ifl.agentbreaker.knowledgemanager.domain.dtos.responses.DocumentDetailResponse;
 import ifl.agentbreaker.knowledgemanager.domain.dtos.responses.DocumentResponse;
 import ifl.agentbreaker.knowledgemanager.domain.dtos.responses.PageResponse;
@@ -26,7 +26,7 @@ public class DocumentController
      * @return
      */
     @PostMapping("/upload")
-    public ServiceResponse<Long> uploadDocument(@ModelAttribute @Valid UploadDocumentRequest request)
+    public ServiceResponse<Long> uploadDocuments(@ModelAttribute @Valid UploadDocumentsRequest request)
     {
         return service.uploadDocument(request);
     }
@@ -37,9 +37,22 @@ public class DocumentController
      * @return
      */
     @DeleteMapping("/{documentId}")
+    // knowledgeBaseId
+    // documentId
     public ServiceResponse<Boolean> deleteDocument(@PathVariable long documentId)
     {
         return service.deleteDocument(documentId);
+    }
+
+    /**
+     * 分页查询文档列表
+     * @param request
+     * @return
+     */
+    @GetMapping("/page")
+    public ServiceResponse<PageResponse<DocumentResponse>> pageDocuments(@Valid PageDocumentsRequest request)
+    {
+        return service.pageDocuments(request);
     }
 
     /**
@@ -62,16 +75,5 @@ public class DocumentController
     public ServiceResponse<String> getDocumentDownloadUrl(@PathVariable long documentId)
     {
         return service.getDocumentDownloadUrl(documentId);
-    }
-
-    /**
-     * 分页查询文档列表
-     * @param request
-     * @return
-     */
-    @GetMapping("/page")
-    public ServiceResponse<PageResponse<DocumentResponse>> pageDocuments(@Valid PageDocumentsRequest request)
-    {
-        return service.pageDocuments(request);
     }
 }

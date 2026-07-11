@@ -5,7 +5,7 @@ import ifl.agentbreaker.knowledgemanager.domain.dtos.requests.PageVideosRequest;
 import ifl.agentbreaker.knowledgemanager.domain.dtos.responses.PageResponse;
 import ifl.agentbreaker.knowledgemanager.domain.dtos.responses.VideoDetailResponse;
 import ifl.agentbreaker.knowledgemanager.domain.dtos.responses.VideoResponse;
-import ifl.agentbreaker.knowledgemanager.services.VideoService;
+import ifl.agentbreaker.knowledgemanager.services.VideoChunkService;
 import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,11 +14,11 @@ import stark.dataworks.boot.web.ServiceResponse;
 
 @Slf4j
 @RestController
-@RequestMapping("/video")
-public class VideoController
+@RequestMapping("/video-chunk")
+public class VideoChunkController
 {
     @Autowired
-    private VideoService service;
+    private VideoChunkService service;
 
     /**
      * 导入视频
@@ -37,6 +37,8 @@ public class VideoController
      * @return
      */
     @DeleteMapping("/{videoId}")
+    // knowledgeBaseId
+    // videoId
     public ServiceResponse<Boolean> deleteVideo(@PathVariable long videoId)
     {
         return service.deleteVideo(videoId);

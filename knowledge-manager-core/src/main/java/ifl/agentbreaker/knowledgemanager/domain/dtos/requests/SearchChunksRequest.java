@@ -6,7 +6,6 @@ import lombok.Data;
 @Data
 public class SearchChunksRequest
 {
-
     /**
      * 知识库ID
      */
@@ -17,5 +16,4 @@ public class SearchChunksRequest
      */
     @NotBlank
     private String query;
-
 }

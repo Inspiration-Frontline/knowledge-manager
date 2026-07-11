@@ -1,10 +1,10 @@
 package ifl.agentbreaker.knowledgemanager.mappers;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
-import ifl.agentbreaker.knowledgemanager.domain.entities.pg.KnowledgeBase;
+import ifl.agentbreaker.knowledgemanager.domain.entities.pg.KnowledgeBaseMetadata;
 import org.apache.ibatis.annotations.Mapper;
 
 @Mapper
-public interface KnowledgeBaseMapper extends BaseMapper<KnowledgeBase>
+public interface KnowledgeBaseMapper extends BaseMapper<KnowledgeBaseMetadata>
 {
 }

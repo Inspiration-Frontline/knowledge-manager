@@ -1,6 +1,6 @@
 package ifl.agentbreaker.knowledgemanager.domain.dtos.requests;
 
-import ifl.agentbreaker.knowledgemanager.domain.constants.ParseStatus;
+import ifl.agentbreaker.knowledgemanager.domain.constants.ParsingStatus;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
@@ -22,6 +22,6 @@ public class PageVideosRequest extends PageRequest
     /**
      * 解析状态
      */
-    private ParseStatus parseStatus;
+    private ParsingStatus parsingStatus;
 
 }

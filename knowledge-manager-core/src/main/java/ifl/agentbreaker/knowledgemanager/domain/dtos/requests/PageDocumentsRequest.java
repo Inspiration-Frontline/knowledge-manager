@@ -1,7 +1,7 @@
 package ifl.agentbreaker.knowledgemanager.domain.dtos.requests;
 
 import ifl.agentbreaker.knowledgemanager.domain.constants.DocumentType;
-import ifl.agentbreaker.knowledgemanager.domain.constants.ParseStatus;
+import ifl.agentbreaker.knowledgemanager.domain.constants.ParsingStatus;
 import ifl.agentbreaker.knowledgemanager.domain.constants.SourceType;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -13,7 +13,7 @@ public class PageDocumentsRequest extends PageRequest
     /**
      * 知识库ID
      */
-    private Long knowledgeBaseId;
+    private long knowledgeBaseId;
 
     /**
      * 文档名称（模糊查询）
@@ -33,5 +33,5 @@ public class PageDocumentsRequest extends PageRequest
     /**
      * 解析状态
      */
-    private ParseStatus parseStatus;
+    private ParsingStatus parsingStatus;
 }

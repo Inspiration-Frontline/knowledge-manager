@@ -5,7 +5,7 @@ import com.fasterxml.jackson.annotation.JsonValue;
 import lombok.Getter;
 
 @Getter
-public enum ParseStatus
+public enum ParsingStatus
 {
     UNPARSED(0, "未解析"),
     SUCCESS(1, "成功"),
@@ -16,7 +16,7 @@ public enum ParseStatus
     private final int code;
     private final String description;
 
-    ParseStatus(int code, String description)
+    ParsingStatus(int code, String description)
     {
         this.code = code;
         this.description = description;

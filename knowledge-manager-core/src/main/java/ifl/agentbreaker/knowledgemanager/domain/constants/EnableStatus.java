@@ -4,8 +4,9 @@ import com.baomidou.mybatisplus.annotation.EnumValue;
 import com.fasterxml.jackson.annotation.JsonValue;
 import lombok.Getter;
 
+// TODO: Delete this enum, use "boolean enabled" instead.
 @Getter
-public enum Status
+public enum EnableStatus
 {
     DISABLED(0, "停用"),
     ENABLED(1, "启用");
@@ -15,7 +16,7 @@ public enum Status
     private final int code;
     private final String description;
 
-    Status(int code, String description)
+    EnableStatus(int code, String description)
     {
         this.code = code;
         this.description = description;

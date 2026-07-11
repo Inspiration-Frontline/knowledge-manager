@@ -1,14 +1,14 @@
 package ifl.agentbreaker.knowledgemanager.domain.entities.pg;
 
-import ifl.agentbreaker.knowledgemanager.domain.constants.Status;
+import ifl.agentbreaker.knowledgemanager.domain.constants.EnableStatus;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
-import java.math.BigDecimal;
-
+// TODO: This is the metadata of a knowledge base.
+// You need to create knowledge bases dynamically based on this metadata.
 @Data
 @EqualsAndHashCode(callSuper = true)
-public class KnowledgeBase extends EntityBase
+public class KnowledgeBaseMetadata extends EntityBase
 {
     /**
      * 业务ID - 关联业务
@@ -33,17 +33,17 @@ public class KnowledgeBase extends EntityBase
     /**
      * 向量维度 - 比如1024、1536等
      */
-    private int embeddingDimensions;
+    private int embeddingDimensionCount;
 
     /**
      * 状态 - 0禁用 1启用
      */
-    private Status status;
+    private EnableStatus enableStatus;
 
     /**
-     * Chunk大小 - 例如800token切一次
+     * Chunk大小 - 字符数
      */
-    private int chunkSize;
+    private int minChunkSize;
 
     /**
      * Chunk重叠长度 - 例如100token重叠
@@ -53,10 +53,10 @@ public class KnowledgeBase extends EntityBase
     /**
      * 召回数量 - 例如取最相似的5个chunk
      */
-    private int topK;
+//    private int topK;
 
     /**
      * 相似度阈值 - 例如要求高于0.75相似度
      */
-    private BigDecimal similarityThreshold;
+//    private BigDecimal similarityThreshold;
 }

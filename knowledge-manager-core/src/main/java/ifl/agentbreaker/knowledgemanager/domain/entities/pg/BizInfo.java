@@ -1,6 +1,6 @@
 package ifl.agentbreaker.knowledgemanager.domain.entities.pg;
 
-import ifl.agentbreaker.knowledgemanager.domain.constants.Status;
+import ifl.agentbreaker.knowledgemanager.domain.constants.EnableStatus;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
@@ -26,5 +26,5 @@ public class BizInfo extends EntityBase
     /**
      * 业务状态 - 0停用 1启用
      */
-    private Status status;
+    private EnableStatus enableStatus;
 }

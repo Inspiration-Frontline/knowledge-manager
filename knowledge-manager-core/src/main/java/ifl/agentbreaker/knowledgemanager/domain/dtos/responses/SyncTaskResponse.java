@@ -1,7 +1,7 @@
 package ifl.agentbreaker.knowledgemanager.domain.dtos.responses;
 
 import ifl.agentbreaker.knowledgemanager.domain.constants.ExecutionStatus;
-import ifl.agentbreaker.knowledgemanager.domain.constants.Status;
+import ifl.agentbreaker.knowledgemanager.domain.constants.EnableStatus;
 import ifl.agentbreaker.knowledgemanager.domain.constants.SyncProvider;
 import lombok.Data;
 
@@ -33,7 +33,7 @@ public class SyncTaskResponse
     /**
      * 状态（启用/停用）
      */
-    private Status status;
+    private EnableStatus enableStatus;
 
     /**
      * 最后同步时间
