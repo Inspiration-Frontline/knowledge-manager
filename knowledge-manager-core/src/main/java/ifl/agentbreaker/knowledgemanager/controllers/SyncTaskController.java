@@ -1,12 +1,7 @@
 package ifl.agentbreaker.knowledgemanager.controllers;
 
-import ifl.agentbreaker.knowledgemanager.domain.constants.EnableStatus;
-import ifl.agentbreaker.knowledgemanager.domain.dtos.requests.CreateSyncTaskRequest;
-import ifl.agentbreaker.knowledgemanager.domain.dtos.requests.PageSyncTasksRequest;
-import ifl.agentbreaker.knowledgemanager.domain.dtos.requests.UpdateSyncTaskRequest;
-import ifl.agentbreaker.knowledgemanager.domain.dtos.responses.PageResponse;
-import ifl.agentbreaker.knowledgemanager.domain.dtos.responses.SyncTaskDetailResponse;
-import ifl.agentbreaker.knowledgemanager.domain.dtos.responses.SyncTaskResponse;
+import ifl.agentbreaker.knowledgemanager.domain.dtos.requests.*;
+import ifl.agentbreaker.knowledgemanager.domain.dtos.responses.*;
 import ifl.agentbreaker.knowledgemanager.services.SyncTaskService;
 import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
@@ -21,7 +16,7 @@ import stark.dataworks.boot.web.ServiceResponse;
 public class SyncTaskController
 {
     @Autowired
-    private SyncTaskService service;
+    private SyncTaskService syncTaskService;
 
     /**
      * 创建同步任务
@@ -58,12 +53,11 @@ public class SyncTaskController
 
     /**
      * 修改同步任务状态（启用/禁用）
-     * @param enableStatus
-     * @param syncTaskId
+     * @param request
      * @return
      */
-    @PutMapping("/status/{syncTaskId}")
-    public ServiceResponse<Boolean> updateSyncTaskStatus(@RequestParam EnableStatus enableStatus, @PathVariable long syncTaskId)
+    @PutMapping("/enable-status")
+    public ServiceResponse<Boolean> updateSyncTaskEnableStatus(@RequestBody UpdateSyncTaskEnableStatusRequest request)
     {
         return service.updateSyncTaskStatus(enableStatus, syncTaskId);
     }
@@ -80,6 +74,17 @@ public class SyncTaskController
     }
 
     /**
+     * 分页查询单个同步任务的执行记录
+     * @param request
+     * @return
+     */
+    @GetMapping("/detail/executions/")
+    public ServiceResponse<PageResponse<SyncTaskExecutionResponse>> pageSyncTaskExecutions(@RequestBody PageSyncTaskExecutionsRequest request)
+    {
+        return crawlTaskService.pageCrawlTaskExecutions(request);
+    }
+
+    /**
      * 分页查询同步任务列表
      * @param request
      * @return
@@ -90,6 +95,7 @@ public class SyncTaskController
         return service.pageSyncTasks(request);
     }
 
+    // TODO: Add a button on the frontend.
     /**
      * 立即执行一次同步任务
      * @param syncTaskId

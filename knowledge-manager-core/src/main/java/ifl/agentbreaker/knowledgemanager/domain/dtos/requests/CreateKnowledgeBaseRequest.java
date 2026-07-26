@@ -47,7 +47,6 @@ public class CreateKnowledgeBaseRequest
     private int chunkOverlap;
 
     // TODO: The following 2 variables should be configurations in nacos.
-
     /**
      * TopK召回数量
      */

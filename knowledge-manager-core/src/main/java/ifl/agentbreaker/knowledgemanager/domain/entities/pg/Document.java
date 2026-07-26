@@ -29,7 +29,7 @@ public class Document extends EntityBase
     private DocumentType type;
 
     /**
-     * 来源类型 - 0upload 1crawl 2feishu
+     * 来源类型 - 0upload 1crawl 2sync
      */
     private SourceType sourceType;
 

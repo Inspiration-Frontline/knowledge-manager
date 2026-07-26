@@ -1,5 +1,6 @@
 package ifl.agentbreaker.knowledgemanager.domain.dtos.responses;
 
+import ifl.agentbreaker.knowledgemanager.domain.dtos.ChunkIdentity;
 import lombok.Data;
 
 import java.util.Date;
@@ -9,7 +10,7 @@ public class ChunkAbstract
 {
 
     /**
-     * Chunk ID
+     * chunk ID
      */
     private long chunkId;
 
@@ -19,19 +20,14 @@ public class ChunkAbstract
     private long knowledgeBaseId;
 
     /**
-     * 来源文档ID
+     * chunk来源实体
      */
-    private Long documentId;
+    private ChunkIdentity chunkIdentity;
 
     /**
-     * 来源视频ID
+     * chunk序号
      */
-    private Long videoId;
-
-    /**
-     * Chunk序号
-     */
-    private int chunkNo;
+    private int chunkNumber;
 
     /**
      * 内容摘要
@@ -39,7 +35,7 @@ public class ChunkAbstract
     private String chunkPreview;
 
     /**
-     * Token数量
+     * token数量
      */
     private int tokenCount;
 

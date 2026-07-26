@@ -1,9 +1,9 @@
 package ifl.agentbreaker.knowledgemanager.domain.dtos.responses;
 
+import ifl.agentbreaker.knowledgemanager.domain.dtos.ChunkIdentity;
 import lombok.Data;
 
 import java.math.BigDecimal;
-import java.util.List;
 
 @Data
 public class ChunkSearchResponse
@@ -25,24 +25,19 @@ public class ChunkSearchResponse
     private BigDecimal score;
 
     /**
-     * Chunk内容
+     * chunk内容
      */
     private String chunkContent;
 
     /**
-     * 来源文档
+     * chunk来源实体
      */
-    private Long documentId;
-
-    /**
-     * 来源视频
-     */
-    private Long videoId;
+    private ChunkIdentity chunkIdentity;
 
     /**
      * chunk序号
      */
-    private int chunkNo;
+    private int chunkNumber;
 
     /**
      * 来源名称（文档名称或视频标题）

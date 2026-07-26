@@ -1,5 +1,6 @@
 package ifl.agentbreaker.knowledgemanager.domain.entities.pg;
 
+import ifl.agentbreaker.knowledgemanager.domain.constants.ChunkType;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
@@ -14,6 +15,10 @@ public class KnowledgeBaseChunkBase extends EntityBase
     private long knowledgeBaseId;
 
     // Type
+    /**
+     * chunk来源类型
+     */
+    private ChunkType chunkType;
 
 //    /**
 //     * 文档ID - 来源文档（与videoId不同时非空）
@@ -24,6 +29,7 @@ public class KnowledgeBaseChunkBase extends EntityBase
 //     * 视频ID - 来源视频（与documentId不同时非空）
 //     */
 //    private Long videoId;
+    // TODO: 视频不切成chunk 直接把视频的元数据写进Chunk表里
 
     /**
      * chunk序号 - 从0开始

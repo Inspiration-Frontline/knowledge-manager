@@ -18,7 +18,7 @@ import stark.dataworks.boot.web.ServiceResponse;
 public class VideoChunkController
 {
     @Autowired
-    private VideoChunkService service;
+    private VideoChunkService videoChunkService;
 
     /**
      * 导入视频

@@ -1,6 +1,5 @@
 package ifl.agentbreaker.knowledgemanager.domain.dtos.responses;
 
-import ifl.agentbreaker.knowledgemanager.domain.constants.EnableStatus;
 import lombok.Data;
 
 import java.math.BigDecimal;

@@ -1,6 +1,5 @@
 package ifl.agentbreaker.knowledgemanager.domain.dtos.requests;
 
-import ifl.agentbreaker.knowledgemanager.domain.constants.EnableStatus;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
@@ -20,7 +19,7 @@ public class PageCrawlTasksRequest extends PageRequest
     private String keyword;
 
     /**
-     * 状态
+     * 爬虫任务状态 - 是否启用
      */
     private boolean enabled;
 }

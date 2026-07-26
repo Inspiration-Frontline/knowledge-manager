@@ -7,8 +7,10 @@ import lombok.Getter;
 @Getter
 public enum ExecutionStatus
 {
-    FAILED(0, "失败"),
-    SUCCESS(1, "成功");
+    PENDING(0, "待执行"),
+    IN_PROGRESS(1, "执行中"),
+    SUCCEEDED(2, "成功"),
+    FAILED(3, "失败");
 
     @EnumValue
     @JsonValue

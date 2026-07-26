@@ -25,7 +25,11 @@ public class CreateSyncTaskRequest
     @NotNull
     private SyncProvider provider;
 
-    // workspace id
+    /**
+     * 同步源知识库ID
+     */
+    @NotBlank
+    private String workspaceId;
 
     /**
      * Cron表达式

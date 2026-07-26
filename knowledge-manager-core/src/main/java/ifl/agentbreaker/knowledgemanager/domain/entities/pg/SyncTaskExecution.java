@@ -8,12 +8,12 @@ import java.util.Date;
 
 @Data
 @EqualsAndHashCode(callSuper = true)
-public class CrawlTaskExecution extends EntityBase
+public class SyncTaskExecution extends EntityBase
 {
     /**
-     * 爬取任务ID
+     * 同步任务ID
      */
-    private long crawlTaskId;
+    private long syncTaskId;
 
     /**
      * 开始时间
@@ -33,10 +33,12 @@ public class CrawlTaskExecution extends EntityBase
     /**
      * 执行状态
      */
-    private ExecutionStatus crawlStatus;
+    private ExecutionStatus syncStatus;
 
     /**
      * 执行信息
      */
-    private String crawlMessage;
+    private String syncMessage;
+
+
 }

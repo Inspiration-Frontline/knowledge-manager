@@ -1,7 +1,6 @@
 package ifl.agentbreaker.knowledgemanager.domain.entities.pg;
 
 import ifl.agentbreaker.knowledgemanager.domain.constants.ExecutionStatus;
-import ifl.agentbreaker.knowledgemanager.domain.constants.EnableStatus;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
@@ -38,24 +37,7 @@ public class CrawlTask extends EntityBase
     private int maxDepth;
 
     /**
-     * 爬取任务状态 - 0停用 1启用
+     * 爬取任务状态 - 是否启用
      */
-    private EnableStatus enableStatus;
-
-    // TODO: Put below fields into another entity => CrawlTaskExecution.
-
-    /**
-     * 最后爬取的时间 - 用于爬取监控任务运行
-     */
-    private Date lastCrawlTime;
-
-    /**
-     * 最后爬取的状态 - 0失败 1成功
-     */
-    private ExecutionStatus lastCrawlStatus;
-
-    /**
-     * 最后爬取的信息 - 记录爬取任务执行的结果信息或异常信息
-     */
-    private String lastCrawlMessage;
+    private boolean enabled;
 }

@@ -1,9 +1,7 @@
 package ifl.agentbreaker.knowledgemanager.controllers;
 
-import ifl.agentbreaker.knowledgemanager.domain.constants.EnableStatus;
-import ifl.agentbreaker.knowledgemanager.domain.dtos.requests.CreateCrawlTaskRequest;
-import ifl.agentbreaker.knowledgemanager.domain.dtos.requests.PageCrawlTasksRequest;
-import ifl.agentbreaker.knowledgemanager.domain.dtos.requests.UpdateCrawlTaskRequest;
+import ifl.agentbreaker.knowledgemanager.domain.dtos.requests.*;
+import ifl.agentbreaker.knowledgemanager.domain.dtos.responses.CrawlTaskExecutionResponse;
 import ifl.agentbreaker.knowledgemanager.domain.dtos.responses.CrawlTaskDetailResponse;
 import ifl.agentbreaker.knowledgemanager.domain.dtos.responses.CrawlTaskResponse;
 import ifl.agentbreaker.knowledgemanager.domain.dtos.responses.PageResponse;
@@ -20,7 +18,7 @@ import stark.dataworks.boot.web.ServiceResponse;
 public class CrawlTaskController
 {
     @Autowired
-    private CrawlTaskService service;
+    private CrawlTaskService crawlTaskService;
 
     /**
      * 创建爬虫任务
@@ -30,7 +28,7 @@ public class CrawlTaskController
     @PostMapping("/create")
     public ServiceResponse<Long> createCrawlTask(@RequestBody @Valid CreateCrawlTaskRequest request)
     {
-        return service.createCrawlTask(request);
+        return crawlTaskService.createCrawlTask(request);
     }
 
     /**
@@ -41,7 +39,7 @@ public class CrawlTaskController
     @PutMapping("/update")
     public ServiceResponse<Boolean> updateCrawlTask(@RequestBody @Valid UpdateCrawlTaskRequest request)
     {
-        return service.updateCrawlTask(request);
+        return crawlTaskService.updateCrawlTask(request);
     }
 
     /**
@@ -52,20 +50,18 @@ public class CrawlTaskController
     @DeleteMapping("/delete/{crawlTaskId}")
     public ServiceResponse<Boolean> deleteCrawlTask(@PathVariable long crawlTaskId)
     {
-        return service.deleteCrawlTask(crawlTaskId);
+        return crawlTaskService.deleteCrawlTask(crawlTaskId);
     }
 
     /**
      * 修改爬虫任务状态（启用/禁用）
-     * @param enableStatus
-     * @param crawlTaskId
+     * @param request
      * @return
      */
-    // TODO: Combine enableStatus & crawlTaskId to 1 single class.
     @PutMapping("/enable-status")
-    public ServiceResponse<Boolean> updateCrawlTaskEnableStatus(@RequestParam EnableStatus enableStatus, @PathVariable long crawlTaskId)
+    public ServiceResponse<Boolean> updateCrawlTaskEnableStatus(@RequestBody UpdateCrawlTaskEnableStatusRequest request)
     {
-        return service.updateCrawlTaskStatus(enableStatus, crawlTaskId);
+        return crawlTaskService.updateCrawlTaskStatus(request);
     }
 
     /**
@@ -76,11 +72,19 @@ public class CrawlTaskController
     @GetMapping("/detail/{crawlTaskId}")
     public ServiceResponse<CrawlTaskDetailResponse> getCrawlTaskDetail(@PathVariable long crawlTaskId)
     {
-        return service.getCrawlTaskDetail(crawlTaskId);
+        return crawlTaskService.getCrawlTaskDetail(crawlTaskId);
     }
 
-    // /detail/executions
-    // paginated
+    /**
+     * 分页查询单个爬虫任务的执行记录
+     * @param request
+     * @return
+     */
+    @GetMapping("/detail/executions/")
+    public ServiceResponse<PageResponse<CrawlTaskExecutionResponse>> pageCrawlTaskExecutions(@RequestBody PageCrawlTaskExecutionsRequest request)
+    {
+        return crawlTaskService.pageCrawlTaskExecutions(request);
+    }
 
     /**
      * 分页查询爬虫任务列表
@@ -90,7 +94,7 @@ public class CrawlTaskController
     @GetMapping("/page")
     public ServiceResponse<PageResponse<CrawlTaskResponse>> pageCrawlTasks(@Valid PageCrawlTasksRequest request)
     {
-        return service.pageCrawlTasks(request);
+        return crawlTaskService.pageCrawlTasks(request);
     }
 
     // TODO: Add a button on the frontend.
@@ -102,6 +106,6 @@ public class CrawlTaskController
     @PostMapping("/execute/{crawlTaskId}")
     public ServiceResponse<Boolean> executeCrawlTask(@PathVariable long crawlTaskId)
     {
-        return service.executeCrawlTask(crawlTaskId);
+        return crawlTaskService.executeCrawlTask(crawlTaskId);
     }
 }

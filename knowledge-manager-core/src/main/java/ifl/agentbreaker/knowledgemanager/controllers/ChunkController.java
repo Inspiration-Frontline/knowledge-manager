@@ -20,9 +20,8 @@ import java.util.List;
 @RequestMapping("/chunk")
 public class ChunkController
 {
-    // TODO: DO NOT name it "service", name it "chunkService", same for other services.
     @Autowired
-    private ChunkService service;
+    private ChunkService chunkService;
 
     /**
      * 查询单个Chunk详情
@@ -32,7 +31,7 @@ public class ChunkController
     @GetMapping("/detail/{chunkId}")
     public ServiceResponse<ChunkDetailResponse> getChunkDetail(@PathVariable long chunkId)
     {
-        return service.getChunkDetail(chunkId);
+        return chunkService.getChunkDetail(chunkId);
     }
 
     /**
@@ -43,7 +42,7 @@ public class ChunkController
     @GetMapping("/page")
     public ServiceResponse<PageResponse<ChunkAbstract>> getChunkAbstracts(@Valid PageChunksRequest request)
     {
-        return service.getChunkAbstracts(request);
+        return chunkService.getChunkAbstracts(request);
     }
 
     /**
@@ -54,6 +53,6 @@ public class ChunkController
     @PostMapping("/query")
     public ServiceResponse<List<ChunkSearchResponse>> queryChunks(@RequestBody @Valid SearchChunksRequest request)
     {
-        return service.queryChunks(request);
+        return chunkService.queryChunks(request);
     }
 }

@@ -1,5 +1,6 @@
 package ifl.agentbreaker.knowledgemanager.domain.dtos.responses;
 
+import ifl.agentbreaker.knowledgemanager.domain.dtos.ChunkIdentity;
 import lombok.Data;
 
 import java.util.Date;
@@ -17,8 +18,10 @@ public class ChunkDetailResponse
      */
     private long knowledgeBaseId;
 
-    // ChunkType
-    // id
+    /**
+     * chunk来源实体
+     */
+    private ChunkIdentity chunkIdentity;
 
     /**
      * 文档ID
@@ -33,7 +36,6 @@ public class ChunkDetailResponse
     /**
      * chunk序号
      */
-    // TODO: DO NOT use "no" for short of "number"
     private int chunkNumber;
 
     /**
@@ -50,6 +52,4 @@ public class ChunkDetailResponse
      * 创建时间
      */
     private Date creationTime;
-
-    // float[] embedding;
 }

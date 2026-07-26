@@ -1,5 +1,6 @@
 package ifl.agentbreaker.knowledgemanager.domain.dtos.requests;
 
+import ifl.agentbreaker.knowledgemanager.domain.dtos.ChunkIdentity;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
@@ -15,10 +16,13 @@ public class PageChunksRequest extends PageRequest
      */
     private List<Long> knowledgeBaseIds;
 
+    /**
+     * chunk来源实体
+     */
     private List<ChunkIdentity> chunkIdentities;
 
     /**
-     * 关键字（Chunk内容）
+     * 关键字（chunk内容）
      */
     private String keyword;
 

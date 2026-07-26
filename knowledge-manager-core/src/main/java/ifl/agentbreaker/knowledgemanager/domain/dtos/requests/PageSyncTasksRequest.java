@@ -1,6 +1,5 @@
 package ifl.agentbreaker.knowledgemanager.domain.dtos.requests;
 
-import ifl.agentbreaker.knowledgemanager.domain.constants.EnableStatus;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
@@ -19,7 +18,7 @@ public class PageSyncTasksRequest extends PageRequest
     private String keyword;
 
     /**
-     * 状态（启用/停用）
+     * 任务状态 - 是否启用
      */
-    private EnableStatus enableStatus;
+    private boolean enabled;
 }

@@ -1,6 +1,5 @@
 package ifl.agentbreaker.knowledgemanager.domain.dtos.requests;
 
-import ifl.agentbreaker.knowledgemanager.domain.constants.EmbeddingTaskStatus;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 

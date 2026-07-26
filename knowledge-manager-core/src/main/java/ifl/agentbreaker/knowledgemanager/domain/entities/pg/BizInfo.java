@@ -1,6 +1,5 @@
 package ifl.agentbreaker.knowledgemanager.domain.entities.pg;
 
-import ifl.agentbreaker.knowledgemanager.domain.constants.EnableStatus;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 

@@ -1,7 +1,6 @@
 package ifl.agentbreaker.knowledgemanager.domain.dtos.responses;
 
 import ifl.agentbreaker.knowledgemanager.domain.constants.ExecutionStatus;
-import ifl.agentbreaker.knowledgemanager.domain.constants.EnableStatus;
 import ifl.agentbreaker.knowledgemanager.domain.constants.SyncProvider;
 import lombok.Data;
 
@@ -31,19 +30,14 @@ public class SyncTaskResponse
     private SyncProvider provider;
 
     /**
-     * 状态（启用/停用）
+     * 同步源知识库ID
      */
-    private EnableStatus enableStatus;
+    private String workspaceId;
 
     /**
-     * 最后同步时间
+     * 任务状态 - 是否启用
      */
-    private Date lastSyncTime;
-
-    /**
-     * 最后同步状态
-     */
-    private ExecutionStatus lastSyncStatus;
+    private boolean enabled;
 
     /**
      * 更新时间

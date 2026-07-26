@@ -1,6 +1,5 @@
 package ifl.agentbreaker.knowledgemanager.controllers;
 
-import ifl.agentbreaker.knowledgemanager.domain.constants.EnableStatus;
 import ifl.agentbreaker.knowledgemanager.domain.dtos.requests.CreateKnowledgeBaseRequest;
 import ifl.agentbreaker.knowledgemanager.domain.dtos.requests.UpdateKnowledgeBaseRequest;
 import ifl.agentbreaker.knowledgemanager.domain.dtos.requests.PageKnowledgeBasesRequest;
@@ -20,7 +19,7 @@ import stark.dataworks.boot.web.ServiceResponse;
 public class KnowledgeBaseController
 {
     @Autowired
-    private KnowledgeBaseService service;
+    private KnowledgeBaseService knowledgeBaseService;
 
     /**
      * 新增知识库

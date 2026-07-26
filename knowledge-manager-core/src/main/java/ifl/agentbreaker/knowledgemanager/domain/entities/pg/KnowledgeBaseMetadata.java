@@ -1,10 +1,9 @@
 package ifl.agentbreaker.knowledgemanager.domain.entities.pg;
 
-import ifl.agentbreaker.knowledgemanager.domain.constants.EnableStatus;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
-// TODO: This is the metadata of a knowledge base.
+// This is the metadata of a knowledge base.
 // You need to create knowledge bases dynamically based on this metadata.
 @Data
 @EqualsAndHashCode(callSuper = true)
@@ -36,12 +35,12 @@ public class KnowledgeBaseMetadata extends EntityBase
     private int embeddingDimensionCount;
 
     /**
-     * 状态 - 0禁用 1启用
+     * 知识库状态 - 是否启用
      */
-    private EnableStatus enableStatus;
+    private boolean enabled;
 
     /**
-     * Chunk大小 - 字符数
+     * Chunk大小 - 按字符数来切的（切完之后再embedding成token） 注意不会硬切，需要保证句子的完整性或者段落的完整性
      */
     private int minChunkSize;
 
@@ -50,6 +49,7 @@ public class KnowledgeBaseMetadata extends EntityBase
      */
     private int chunkOverlap;
 
+    // TODO: 这两个不应该在创建知识库的时候写死，而是写在nacos配置中心
     /**
      * 召回数量 - 例如取最相似的5个chunk
      */

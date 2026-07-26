@@ -18,7 +18,7 @@ import stark.dataworks.boot.web.ServiceResponse;
 public class DocumentController
 {
     @Autowired
-    private DocumentService service;
+    private DocumentService documentService;
 
     /**
      * 上传文档
@@ -28,7 +28,7 @@ public class DocumentController
     @PostMapping("/upload")
     public ServiceResponse<Long> uploadDocuments(@ModelAttribute @Valid UploadDocumentsRequest request)
     {
-        return service.uploadDocument(request);
+        return service.uploadDocuments(request);
     }
 
     /**

@@ -1,19 +1,15 @@
-package ifl.agentbreaker.knowledgemanager.domain.entities.pg;
+package ifl.agentbreaker.knowledgemanager.domain.dtos.responses;
 
 import ifl.agentbreaker.knowledgemanager.domain.constants.ExecutionStatus;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
 
 import java.util.Date;
 
-@Data
-@EqualsAndHashCode(callSuper = true)
-public class CrawlTaskExecution extends EntityBase
+public class SyncTaskExecutionResponse
 {
     /**
-     * 爬取任务ID
+     * 同步任务执行记录ID
      */
-    private long crawlTaskId;
+    private long syncTaskExecutionId;
 
     /**
      * 开始时间
