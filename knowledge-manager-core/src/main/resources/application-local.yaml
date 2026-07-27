@@ -4,3 +4,5 @@ spring:
         username: ${CONVERSATION_MANAGER_DATASOURCE_USERNAME:horizony}
         password: ${CONVERSATION_MANAGER_DATASOURCE_PASSWORD:hzy0304.}
         driver-class-name: org.postgresql.Driver
+        hikari:
+            connection-init-sql: SET TIME ZONE 'UTC'

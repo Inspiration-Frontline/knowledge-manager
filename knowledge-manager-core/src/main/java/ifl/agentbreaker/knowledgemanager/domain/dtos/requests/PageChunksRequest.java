@@ -1,5 +1,6 @@
 package ifl.agentbreaker.knowledgemanager.domain.dtos.requests;
 
+import ifl.agentbreaker.knowledgemanager.domain.constants.ChunkType;
 import ifl.agentbreaker.knowledgemanager.domain.dtos.ChunkIdentity;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -19,7 +20,7 @@ public class PageChunksRequest extends PageRequest
     /**
      * chunk来源实体
      */
-    private List<ChunkIdentity> chunkIdentities;
+    private List<ChunkType> chunkTypes;
 
     /**
      * 关键字（chunk内容）

@@ -10,7 +10,9 @@ public enum DocumentType
     PDF(0, "PDF"),
     HTML(1, "HTML"),
     MARKDOWN(2, "Markdown"),
-    WORD(3, "Word");
+    WORD(3, "Word"),
+    DOCX(3, "Docx"),
+        ;
 
     @EnumValue
     @JsonValue

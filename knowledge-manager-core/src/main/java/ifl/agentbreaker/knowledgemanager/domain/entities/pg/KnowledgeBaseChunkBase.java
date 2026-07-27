@@ -4,6 +4,8 @@ import ifl.agentbreaker.knowledgemanager.domain.constants.ChunkType;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
+import java.util.List;
+
 // Base class for chunks of knowledge bases.
 @Data
 @EqualsAndHashCode(callSuper = true)

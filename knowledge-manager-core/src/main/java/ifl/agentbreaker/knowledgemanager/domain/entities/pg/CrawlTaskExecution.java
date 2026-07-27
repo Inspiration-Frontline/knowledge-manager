@@ -26,11 +26,6 @@ public class CrawlTaskExecution extends EntityBase
     private Date finishTime;
 
     /**
-     * 执行耗时（ms）
-     */
-    private long durationMs;
-
-    /**
      * 执行状态
      */
     private ExecutionStatus crawlStatus;

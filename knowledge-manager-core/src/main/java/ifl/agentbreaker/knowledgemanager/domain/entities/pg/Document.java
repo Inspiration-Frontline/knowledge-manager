@@ -8,7 +8,6 @@ import lombok.EqualsAndHashCode;
 
 import java.util.Date;
 
-// TODO: Unnecessary entity. Should be deleted.
 @Data
 @EqualsAndHashCode(callSuper = true)
 public class Document extends EntityBase
@@ -24,7 +23,7 @@ public class Document extends EntityBase
     private String name;
 
     /**
-     * 文档类型 - 0PDF 1HTML 2Markdown 3Word
+     * 文档类型: 0 - PDF; 1 - HTML Pages; 2 - Markdown; 3 - Word
      */
     private DocumentType type;
 
@@ -36,7 +35,7 @@ public class Document extends EntityBase
     /**
      * OSS地址 - 用于存储文件在OSS的位置
      */
-    private String ossUrl;
+    private String ossUrl; // TODO: Rename to "nameInOss".
 
     /**
      * 文件大小 - 字节
@@ -61,5 +60,5 @@ public class Document extends EntityBase
     /**
      * 最后一次成功完成解析的时间 - 方便排查解析问题
      */
-    private Date lastParseTime;
+    private Date lastParsingTime;
 }

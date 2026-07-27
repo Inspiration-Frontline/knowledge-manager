@@ -42,6 +42,7 @@ public class ChunkAbstract
     /**
      * 创建时间
      */
+    // TODO: Use "java.time.Instant" instead of "java.util.Date".
     private Date creationTime;
 
 }
