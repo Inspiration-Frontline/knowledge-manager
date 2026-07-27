@@ -1,7 +1,6 @@
 package ifl.agentbreaker.knowledgemanager.domain.dtos.requests;
 
 import ifl.agentbreaker.knowledgemanager.domain.constants.ChunkType;
-import ifl.agentbreaker.knowledgemanager.domain.dtos.ChunkIdentity;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 

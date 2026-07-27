@@ -6,6 +6,8 @@ import com.fasterxml.jackson.annotation.JsonValue;
 public enum ChunkType
 {
     DOCUMENT(0, "document"),
+    DOCUMENT_IMAGE(0, "document"),
+    IMAGE(0, "document"),
     VIDEO(1, "video");
 
     @EnumValue

@@ -1,6 +1,6 @@
 package ifl.agentbreaker.knowledgemanager.domain.dtos.responses;
 
-import ifl.agentbreaker.knowledgemanager.domain.dtos.ChunkIdentity;
+import ifl.agentbreaker.knowledgemanager.domain.constants.ChunkType;
 import lombok.Data;
 
 import java.math.BigDecimal;
@@ -32,7 +32,7 @@ public class ChunkSearchResponse
     /**
      * chunk来源实体
      */
-    private ChunkIdentity chunkIdentity;
+    private ChunkType chunkType;
 
     /**
      * chunk序号
