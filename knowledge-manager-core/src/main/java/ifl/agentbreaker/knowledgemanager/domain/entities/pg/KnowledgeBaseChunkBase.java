@@ -39,9 +39,9 @@ public class KnowledgeBaseChunkBase extends EntityBase
     private int chunkNumber;
 
     /**
-     * chunk内容 - 实际文本片段
+     * 分块摘要，即分块内容的文字版简述。
      */
-    private String chunkContent;
+    private String chunkAbstract;
 
     /**
      * token数量 - 该chunk有多少token

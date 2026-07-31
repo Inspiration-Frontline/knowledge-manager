@@ -16,4 +16,9 @@ public class DocumentChunkBase extends KnowledgeBaseChunkBase
     String introduction;
     List<String> tags;
     List<Long> referencedImageChunkIds;
+
+    /**
+     * chunk内容 - 实际文本片段
+     */
+    private String chunkContent;
 }
