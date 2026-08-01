@@ -1,9 +1,9 @@
 package ifl.agentbreaker.knowledgemanager.domain.dtos.responses;
 
+import ifl.agentbreaker.knowledgemanager.domain.constants.ChunkType;
 import lombok.Data;
 
-import java.math.BigDecimal;
-import java.util.Date;
+import java.time.Instant;
 
 @Data
 public class KnowledgeBaseDetailResponse
@@ -21,7 +21,12 @@ public class KnowledgeBaseDetailResponse
     /**
      * 知识库名称
      */
-    private String knowledgeBaseName;
+    private String name;
+
+    /**
+     * 知识库chunk类型 - 文档 or 图片 or 视频
+     */
+    private ChunkType chunkType;
 
     /**
      * 描述
@@ -36,17 +41,17 @@ public class KnowledgeBaseDetailResponse
     /**
      * 向量维度
      */
-    private int embeddingDimensions;
+    private int embeddingDimensionCount;
 
     /**
      * 状态
      */
-    private EnableStatus enableStatus;
+    private boolean enabled;
 
     /**
      * Chunk大小
      */
-    private int chunkSize;
+    private int minChunkSize;
 
     /**
      * Chunk重叠
@@ -54,32 +59,17 @@ public class KnowledgeBaseDetailResponse
     private int chunkOverlap;
 
     /**
-     * TopK
-     */
-    private int topK;
-
-    /**
-     * 相似度阈值
-     */
-    private BigDecimal similarityThreshold;
-
-    /**
      * 创建时间
      */
-    private Date creationTime;
+    private Instant creationTime;
 
     /**
      * 更新时间
      */
-    private Date modificationTime;
+    private Instant modificationTime;
 
     /**
-     * 文档数量
+     * chunk数量
      */
-    private int documentCount;
-
-    /**
-     * 视频数量
-     */
-    private int videoCount;
+    private int chunkCount;
 }

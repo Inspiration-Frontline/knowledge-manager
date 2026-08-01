@@ -1,10 +1,7 @@
 package ifl.agentbreaker.knowledgemanager.domain.dtos.requests;
 
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 
-import java.math.BigDecimal;
 
 @Data
 public class UpdateKnowledgeBaseRequest
@@ -37,25 +34,15 @@ public class UpdateKnowledgeBaseRequest
     /**
      * 向量维度
      */
-    private int embeddingDimensions;
+    private int embeddingDimensionCount;
 
     /**
      * Chunk大小
      */
-    private int chunkSize;
+    private int minChunkSize;
 
     /**
      * Chunk重叠长度
      */
     private int chunkOverlap;
-
-    /**
-     * TopK
-     */
-    private int topK;
-
-    /**
-     * 相似度阈值
-     */
-    private BigDecimal similarityThreshold;
 }

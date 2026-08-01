@@ -3,6 +3,7 @@ package ifl.agentbreaker.knowledgemanager.controllers;
 import ifl.agentbreaker.knowledgemanager.domain.dtos.requests.CreateKnowledgeBaseRequest;
 import ifl.agentbreaker.knowledgemanager.domain.dtos.requests.UpdateKnowledgeBaseRequest;
 import ifl.agentbreaker.knowledgemanager.domain.dtos.requests.PageKnowledgeBasesRequest;
+import ifl.agentbreaker.knowledgemanager.domain.dtos.requests.UpdateKnowledgeBaseEnableStatusRequest;
 import ifl.agentbreaker.knowledgemanager.domain.dtos.responses.KnowledgeBaseDetailResponse;
 import ifl.agentbreaker.knowledgemanager.domain.dtos.responses.KnowledgeBaseResponse;
 import ifl.agentbreaker.knowledgemanager.domain.dtos.responses.PageResponse;
@@ -27,9 +28,9 @@ public class KnowledgeBaseController
      * @return
      */
     @PostMapping("/create")
-    public ServiceResponse<Long> createKnowledgeBase(@RequestBody @Valid CreateKnowledgeBaseRequest request)
+    public ServiceResponse<Boolean> createKnowledgeBase(@RequestBody @Valid CreateKnowledgeBaseRequest request)
     {
-        return service.createKnowledgeBase(request);
+        return knowledgeBaseService.createKnowledgeBase(request);
     }
 
     /**
@@ -40,7 +41,7 @@ public class KnowledgeBaseController
     @PutMapping("/update")
     public ServiceResponse<Boolean> updateKnowledgeBase(@RequestBody @Valid UpdateKnowledgeBaseRequest request)
     {
-        return service.updateKnowledgeBase(request);
+        return knowledgeBaseService.updateKnowledgeBase(request);
     }
 
     /**
@@ -48,22 +49,21 @@ public class KnowledgeBaseController
      * @param knowledgeBaseId
      * @return
      */
-    @DeleteMapping("/delete/{knowledgeBaseId}")
+    @DeleteMapping("/{knowledgeBaseId}")
     public ServiceResponse<Boolean> deleteKnowledgeBase(@PathVariable long knowledgeBaseId)
     {
-        return service.deleteKnowledgeBase(knowledgeBaseId);
+        return knowledgeBaseService.deleteKnowledgeBase(knowledgeBaseId);
     }
 
     /**
      * 修改知识库状态（启用/禁用）
-     * @param enableStatus
-     * @param knowledgeBaseId
+     * @param request
      * @return
      */
-    @PutMapping("/status/{knowledgeBaseId}")
-    public ServiceResponse<Boolean> updateKnowledgeBaseStatus(@RequestParam EnableStatus enableStatus, @PathVariable long knowledgeBaseId)
+    @PutMapping("/enable-status")
+    public ServiceResponse<Boolean> updateKnowledgeBaseEnableStatus(@RequestBody UpdateKnowledgeBaseEnableStatusRequest request)
     {
-        return service.updateKnowledgeBaseStatus(enableStatus, knowledgeBaseId);
+        return knowledgeBaseService.updateKnowledgeBaseEnableStatus(request);
     }
 
     /**
@@ -74,7 +74,7 @@ public class KnowledgeBaseController
     @GetMapping("/detail/{knowledgeBaseId}")
     public ServiceResponse<KnowledgeBaseDetailResponse> getKnowledgeBaseDetail(@PathVariable long knowledgeBaseId)
     {
-        return service.getKnowledgeBaseDetail(knowledgeBaseId);
+        return knowledgeBaseService.getKnowledgeBaseDetail(knowledgeBaseId);
     }
 
     /**
@@ -83,8 +83,8 @@ public class KnowledgeBaseController
      * @return
      */
     @GetMapping("/page")
-    public ServiceResponse<PageResponse<KnowledgeBaseResponse>> pageKnowledgeBases(@Valid PageKnowledgeBasesRequest request)
+    public ServiceResponse<PageResponse<KnowledgeBaseResponse>> pageKnowledgeBases(@ModelAttribute @Valid PageKnowledgeBasesRequest request)
     {
-        return service.pageKnowledgeBases(request);
+        return knowledgeBaseService.pageKnowledgeBases(request);
     }
 }

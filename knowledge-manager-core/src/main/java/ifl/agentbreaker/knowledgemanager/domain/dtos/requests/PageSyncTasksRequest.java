@@ -10,10 +10,10 @@ public class PageSyncTasksRequest extends PageRequest
     /**
      * 知识库ID
      */
-    private Long knowledgeBaseId;
+    private long knowledgeBaseId;
 
     /**
-     * 关键字（任务名称）
+     * 关键字（任务名称 - taskName）
      */
     private String keyword;
 

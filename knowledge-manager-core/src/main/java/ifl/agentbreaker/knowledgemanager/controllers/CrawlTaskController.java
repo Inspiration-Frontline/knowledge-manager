@@ -26,7 +26,7 @@ public class CrawlTaskController
      * @return
      */
     @PostMapping("/create")
-    public ServiceResponse<Long> createCrawlTask(@RequestBody @Valid CreateCrawlTaskRequest request)
+    public ServiceResponse<Boolean> createCrawlTask(@RequestBody @Valid CreateCrawlTaskRequest request)
     {
         return crawlTaskService.createCrawlTask(request);
     }
@@ -47,7 +47,7 @@ public class CrawlTaskController
      * @param crawlTaskId
      * @return
      */
-    @DeleteMapping("/delete/{crawlTaskId}")
+    @DeleteMapping("/{crawlTaskId}")
     public ServiceResponse<Boolean> deleteCrawlTask(@PathVariable long crawlTaskId)
     {
         return crawlTaskService.deleteCrawlTask(crawlTaskId);
@@ -61,7 +61,7 @@ public class CrawlTaskController
     @PutMapping("/enable-status")
     public ServiceResponse<Boolean> updateCrawlTaskEnableStatus(@RequestBody UpdateCrawlTaskEnableStatusRequest request)
     {
-        return crawlTaskService.updateCrawlTaskStatus(request);
+        return crawlTaskService.updateCrawlTaskEnableStatus(request);
     }
 
     /**
@@ -80,8 +80,8 @@ public class CrawlTaskController
      * @param request
      * @return
      */
-    @GetMapping("/detail/executions/")
-    public ServiceResponse<PageResponse<CrawlTaskExecutionResponse>> pageCrawlTaskExecutions(@RequestBody PageCrawlTaskExecutionsRequest request)
+    @GetMapping("/executions")
+    public ServiceResponse<PageResponse<CrawlTaskExecutionResponse>> pageCrawlTaskExecutions(@ModelAttribute @Valid PageCrawlTaskExecutionsRequest request)
     {
         return crawlTaskService.pageCrawlTaskExecutions(request);
     }
@@ -92,7 +92,7 @@ public class CrawlTaskController
      * @return
      */
     @GetMapping("/page")
-    public ServiceResponse<PageResponse<CrawlTaskResponse>> pageCrawlTasks(@Valid PageCrawlTasksRequest request)
+    public ServiceResponse<PageResponse<CrawlTaskResponse>> pageCrawlTasks(@ModelAttribute @Valid PageCrawlTasksRequest request)
     {
         return crawlTaskService.pageCrawlTasks(request);
     }

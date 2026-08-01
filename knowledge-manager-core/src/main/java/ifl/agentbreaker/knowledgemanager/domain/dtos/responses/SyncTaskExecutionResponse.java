@@ -1,9 +1,11 @@
 package ifl.agentbreaker.knowledgemanager.domain.dtos.responses;
 
 import ifl.agentbreaker.knowledgemanager.domain.constants.ExecutionStatus;
+import lombok.Data;
 
-import java.util.Date;
+import java.time.Instant;
 
+@Data
 public class SyncTaskExecutionResponse
 {
     /**
@@ -14,12 +16,12 @@ public class SyncTaskExecutionResponse
     /**
      * 开始时间
      */
-    private Date startTime;
+    private Instant startTime;
 
     /**
      * 结束时间
      */
-    private Date finishTime;
+    private Instant finishTime;
 
     /**
      * 执行耗时（ms）
@@ -29,10 +31,10 @@ public class SyncTaskExecutionResponse
     /**
      * 执行状态
      */
-    private ExecutionStatus crawlStatus;
+    private ExecutionStatus executionStatus;
 
     /**
      * 执行信息
      */
-    private String crawlMessage;
+    private String executionMessage;
 }

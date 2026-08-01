@@ -10,7 +10,7 @@ import java.util.List;
 public class UploadDocumentsRequest
 {
     /**
-     * 所属知识库
+     * 文档知识库ID
      */
     private long knowledgeBaseId;
 

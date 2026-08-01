@@ -1,10 +1,8 @@
 package ifl.agentbreaker.knowledgemanager.domain.entities.pg;
 
-import ifl.agentbreaker.knowledgemanager.domain.constants.ExecutionStatus;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
-import java.util.Date;
 import java.util.List;
 
 @Data

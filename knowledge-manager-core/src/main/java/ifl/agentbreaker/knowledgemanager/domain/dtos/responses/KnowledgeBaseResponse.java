@@ -1,8 +1,9 @@
 package ifl.agentbreaker.knowledgemanager.domain.dtos.responses;
 
+import ifl.agentbreaker.knowledgemanager.domain.constants.ChunkType;
 import lombok.Data;
 
-import java.util.Date;
+import java.time.Instant;
 
 @Data
 public class KnowledgeBaseResponse
@@ -20,7 +21,12 @@ public class KnowledgeBaseResponse
     /**
      * 知识库名称
      */
-    private String knowledgeBaseName;
+    private String name;
+
+    /**
+     * 知识库chunk类型 - 文档 or 图片 or 视频
+     */
+    private ChunkType chunkType;
 
     /**
      * 描述
@@ -35,20 +41,15 @@ public class KnowledgeBaseResponse
     /**
      * 状态
      */
-    private EnableStatus enableStatus;
+    private boolean enabled;
 
     /**
      * 更新时间
      */
-    private Date modificationTime;
+    private Instant modificationTime;
 
     /**
-     * 文档数量
+     * chunk数量
      */
-    private int documentCount;
-
-    /**
-     * 视频数量
-     */
-    private int videoCount;
+    private int chunkCount;
 }

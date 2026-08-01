@@ -37,7 +37,7 @@ public class CreateCrawlTaskRequest
     /**
      * 最大爬取深度
      */
-    @Min(1)
+    @Min(0)
     private int maxDepth;
 
 }

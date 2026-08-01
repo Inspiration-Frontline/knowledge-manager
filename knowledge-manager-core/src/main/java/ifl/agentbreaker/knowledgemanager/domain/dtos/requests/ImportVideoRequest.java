@@ -9,7 +9,7 @@ public class ImportVideoRequest
 {
 
     /**
-     * 所属知识库
+     * 视频知识库ID
      */
     private long knowledgeBaseId;
 
@@ -17,6 +17,6 @@ public class ImportVideoRequest
      * 视频链接
      */
     @NotBlank
-    private String url;
+    private String videoUrl;
 
 }

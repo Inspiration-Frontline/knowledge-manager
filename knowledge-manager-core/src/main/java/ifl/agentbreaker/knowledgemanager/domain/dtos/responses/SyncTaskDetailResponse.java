@@ -1,10 +1,9 @@
 package ifl.agentbreaker.knowledgemanager.domain.dtos.responses;
 
-import ifl.agentbreaker.knowledgemanager.domain.constants.ExecutionStatus;
 import ifl.agentbreaker.knowledgemanager.domain.constants.SyncProvider;
 import lombok.Data;
 
-import java.util.Date;
+import java.time.Instant;
 
 @Data
 public class SyncTaskDetailResponse
@@ -30,6 +29,11 @@ public class SyncTaskDetailResponse
     private SyncProvider provider;
 
     /**
+     * 同步源知识库ID
+     */
+    private String workspaceId;
+
+    /**
      * Cron表达式
      */
     private String cronExpression;
@@ -42,10 +46,10 @@ public class SyncTaskDetailResponse
     /**
      * 创建时间
      */
-    private Date creationTime;
+    private Instant creationTime;
 
     /**
      * 修改时间
      */
-    private Date modificationTime;
+    private Instant modificationTime;
 }

@@ -11,7 +11,7 @@ import lombok.EqualsAndHashCode;
 public class PageDocumentsRequest extends PageRequest
 {
     /**
-     * 知识库ID
+     * 文档知识库ID
      */
     private long knowledgeBaseId;
 

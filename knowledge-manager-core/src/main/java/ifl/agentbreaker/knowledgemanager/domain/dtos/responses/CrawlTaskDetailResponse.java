@@ -1,9 +1,8 @@
 package ifl.agentbreaker.knowledgemanager.domain.dtos.responses;
 
-import ifl.agentbreaker.knowledgemanager.domain.constants.ExecutionStatus;
 import lombok.Data;
 
-import java.util.Date;
+import java.time.Instant;
 import java.util.List;
 
 @Data
@@ -48,11 +47,11 @@ public class CrawlTaskDetailResponse
     /**
      * 创建时间
      */
-    private Date creationTime;
+    private Instant creationTime;
 
     /**
      * 修改时间
      */
-    private Date modificationTime;
+    private Instant modificationTime;
 
 }

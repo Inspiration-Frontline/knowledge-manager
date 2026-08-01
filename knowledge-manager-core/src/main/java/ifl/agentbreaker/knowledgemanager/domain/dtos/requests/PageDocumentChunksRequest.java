@@ -1,27 +1,19 @@
 package ifl.agentbreaker.knowledgemanager.domain.dtos.requests;
 
-import ifl.agentbreaker.knowledgemanager.domain.constants.ParsingStatus;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
 @Data
 @EqualsAndHashCode(callSuper = true)
-public class PageVideosRequest extends PageRequest
+public class PageDocumentChunksRequest extends PageRequest
 {
-
     /**
-     * 所属知识库
+     * 文档知识库ID
      */
     private long knowledgeBaseId;
 
     /**
-     * 标题（模糊查询）
+     * 关键字
      */
     private String keyword;
-
-    /**
-     * 解析状态
-     */
-    private ParsingStatus parsingStatus;
-
 }

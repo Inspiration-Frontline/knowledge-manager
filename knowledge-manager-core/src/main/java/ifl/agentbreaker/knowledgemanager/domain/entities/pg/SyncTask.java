@@ -1,11 +1,9 @@
 package ifl.agentbreaker.knowledgemanager.domain.entities.pg;
 
-import ifl.agentbreaker.knowledgemanager.domain.constants.ExecutionStatus;
 import ifl.agentbreaker.knowledgemanager.domain.constants.SyncProvider;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
-import java.util.Date;
 
 @Data
 @EqualsAndHashCode(callSuper = true)

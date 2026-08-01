@@ -9,14 +9,18 @@ import ifl.agentbreaker.knowledgemanager.domain.dtos.responses.PageResponse;
 import ifl.agentbreaker.knowledgemanager.domain.entities.pg.CrawlTask;
 import ifl.agentbreaker.knowledgemanager.mappers.CrawlTaskMapper;
 import ifl.agentbreaker.knowledgemanager.services.CrawlTaskService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import stark.dataworks.boot.web.ServiceResponse;
 
 @Service
 public class CrawlTaskServiceImpl extends ServiceImpl<CrawlTaskMapper, CrawlTask> implements CrawlTaskService
 {
+    @Autowired
+    private CrawlTaskMapper crawlTaskMapper;
+
     @Override
-    public ServiceResponse<Long> createCrawlTask(CreateCrawlTaskRequest request)
+    public ServiceResponse<Boolean> createCrawlTask(CreateCrawlTaskRequest request)
     {
         return null;
     }
@@ -34,7 +38,7 @@ public class CrawlTaskServiceImpl extends ServiceImpl<CrawlTaskMapper, CrawlTask
     }
 
     @Override
-    public ServiceResponse<Boolean> updateCrawlTaskStatus(UpdateCrawlTaskEnableStatusRequest request)
+    public ServiceResponse<Boolean> updateCrawlTaskEnableStatus(UpdateCrawlTaskEnableStatusRequest request)
     {
         return null;
     }

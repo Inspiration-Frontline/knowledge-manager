@@ -12,17 +12,17 @@ import stark.dataworks.boot.web.ServiceResponse;
 
 public interface CrawlTaskService extends IService<CrawlTask>
 {
-    ServiceResponse<Long> createCrawlTask(@Valid CreateCrawlTaskRequest request);
+    ServiceResponse<Boolean> createCrawlTask(@Valid CreateCrawlTaskRequest request);
 
     ServiceResponse<Boolean> updateCrawlTask(@Valid UpdateCrawlTaskRequest request);
 
     ServiceResponse<Boolean> deleteCrawlTask(long crawlTaskId);
 
-    ServiceResponse<Boolean> updateCrawlTaskStatus(UpdateCrawlTaskEnableStatusRequest request);
+    ServiceResponse<Boolean> updateCrawlTaskEnableStatus(UpdateCrawlTaskEnableStatusRequest request);
 
     ServiceResponse<CrawlTaskDetailResponse> getCrawlTaskDetail(long crawlTaskId);
 
-    ServiceResponse<PageResponse<CrawlTaskExecutionResponse>> pageCrawlTaskExecutions(PageCrawlTaskExecutionsRequest request);
+    ServiceResponse<PageResponse<CrawlTaskExecutionResponse>> pageCrawlTaskExecutions(@Valid PageCrawlTaskExecutionsRequest request);
 
     ServiceResponse<PageResponse<CrawlTaskResponse>> pageCrawlTasks(@Valid PageCrawlTasksRequest request);
 

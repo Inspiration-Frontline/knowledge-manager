@@ -4,16 +4,16 @@ import jakarta.validation.constraints.NotBlank;
 import lombok.Data;
 
 @Data
-public class SearchChunksRequest
+public class ImportImageRequest
 {
     /**
-     * 知识库ID
+     * 图片知识库ID
      */
     private long knowledgeBaseId;
 
     /**
-     * 查询内容
+     * 图片
      */
     @NotBlank
-    private String query;
+    private String imageUrl;
 }

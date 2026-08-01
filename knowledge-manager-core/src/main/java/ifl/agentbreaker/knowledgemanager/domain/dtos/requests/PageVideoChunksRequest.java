@@ -5,21 +5,15 @@ import lombok.EqualsAndHashCode;
 
 @Data
 @EqualsAndHashCode(callSuper = true)
-public class PageCrawlTasksRequest extends PageRequest
+public class PageVideoChunksRequest extends PageRequest
 {
-
     /**
-     * 知识库ID
+     * 视频知识库ID
      */
     private long knowledgeBaseId;
 
     /**
-     * 关键字（任务名称 - taskName）
+     * 关键字 - 模糊查询chunkAbstract
      */
     private String keyword;
-
-    /**
-     * 爬虫任务状态 - 是否启用
-     */
-    private boolean enabled;
 }

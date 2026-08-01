@@ -6,7 +6,8 @@ import ifl.agentbreaker.knowledgemanager.domain.constants.SourceType;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
-import java.util.Date;
+import java.time.Instant;
+import java.util.List;
 
 @Data
 @EqualsAndHashCode(callSuper = true)
@@ -23,19 +24,24 @@ public class Document extends EntityBase
     private String name;
 
     /**
-     * 文档类型: 0 - PDF; 1 - HTML Pages; 2 - Markdown; 3 - Word
+     * 文档类型: PDF; HTML; Markdown; Docx
      */
     private DocumentType type;
 
     /**
-     * 来源类型 - 0upload 1crawl 2sync
+     * 文档标签 - 对文档内容进行分类标记
+     */
+    private List<String> tags;
+
+    /**
+     * 来源类型 - 0 - upload; 1 - crawl; 2 - sync
      */
     private SourceType sourceType;
 
     /**
      * OSS地址 - 用于存储文件在OSS的位置
      */
-    private String ossUrl; // TODO: Rename to "nameInOss".
+    private String nameInOss;
 
     /**
      * 文件大小 - 字节
@@ -60,5 +66,5 @@ public class Document extends EntityBase
     /**
      * 最后一次成功完成解析的时间 - 方便排查解析问题
      */
-    private Date lastParsingTime;
+    private Instant lastParsingTime;
 }

@@ -5,7 +5,8 @@ import ifl.agentbreaker.knowledgemanager.domain.constants.ParsingStatus;
 import ifl.agentbreaker.knowledgemanager.domain.constants.SourceType;
 import lombok.Data;
 
-import java.util.Date;
+import java.time.Instant;
+import java.util.List;
 
 @Data
 public class DocumentDetailResponse
@@ -24,12 +25,17 @@ public class DocumentDetailResponse
     /**
      * 文档名称
      */
-    private String documentName;
+    private String name;
 
     /**
      * 文档类型
      */
     private DocumentType type;
+
+    /**
+     * 文档标签 - 对文档内容进行分类标记
+     */
+    private List<String> tags;
 
     /**
      * 来源类型
@@ -54,11 +60,11 @@ public class DocumentDetailResponse
     /**
      * 上传时间
      */
-    private Date creationTime;
+    private Instant creationTime;
 
     /**
      * 最后一次成功完成解析的时间
      */
-    private Date lastParsingTime;
+    private Instant lastParsingTime;
 
 }

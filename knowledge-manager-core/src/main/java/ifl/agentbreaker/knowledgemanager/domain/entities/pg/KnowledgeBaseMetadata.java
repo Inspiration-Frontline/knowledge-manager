@@ -1,5 +1,6 @@
 package ifl.agentbreaker.knowledgemanager.domain.entities.pg;
 
+import ifl.agentbreaker.knowledgemanager.domain.constants.ChunkType;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
@@ -18,6 +19,11 @@ public class KnowledgeBaseMetadata extends EntityBase
      * 知识库名称 - 知识库名称用于识别知识库
      */
     private String name;
+
+    /**
+     * 知识库chunk类型 - 文档 or 图片 or 视频
+     */
+    private ChunkType chunkType;
 
     /**
      * 描述 - 知识库介绍
@@ -40,14 +46,14 @@ public class KnowledgeBaseMetadata extends EntityBase
     private boolean enabled;
 
     /**
-     * Chunk大小 - 按字符数来切的（切完之后再embedding成token） 注意不会硬切，需要保证句子的完整性或者段落的完整性
+     * chunk大小 - 按字符数来切的（切完之后再embedding成token） 注意不会硬切，需要保证句子的完整性或者段落的完整性（图片、视频知识库为null）
      */
-    private int minChunkSize;
+    private Integer minChunkSize;
 
     /**
-     * Chunk重叠长度 - 例如100token重叠
+     * chunk重叠长度 - 例如100token重叠 （图片、视频知识库为null）
      */
-    private int chunkOverlap;
+    private Integer chunkOverlap;
 
     // TODO: 这两个不应该在创建知识库的时候写死，而是写在nacos配置中心
     /**

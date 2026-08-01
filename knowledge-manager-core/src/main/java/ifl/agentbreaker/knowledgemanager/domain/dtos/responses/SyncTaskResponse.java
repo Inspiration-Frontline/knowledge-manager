@@ -1,10 +1,9 @@
 package ifl.agentbreaker.knowledgemanager.domain.dtos.responses;
 
-import ifl.agentbreaker.knowledgemanager.domain.constants.ExecutionStatus;
 import ifl.agentbreaker.knowledgemanager.domain.constants.SyncProvider;
 import lombok.Data;
 
-import java.util.Date;
+import java.time.Instant;
 
 @Data
 public class SyncTaskResponse
@@ -42,5 +41,5 @@ public class SyncTaskResponse
     /**
      * 更新时间
      */
-    private Date modificationTime;
+    private Instant modificationTime;
 }

@@ -23,7 +23,7 @@ public class BizInfo extends EntityBase
     private String description;
 
     /**
-     * 业务状态 - 0停用 1启用
+     * 业务状态 - 是否启用
      */
-    private EnableStatus enableStatus;
+    private boolean enabled;
 }

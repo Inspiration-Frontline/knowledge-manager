@@ -1,7 +1,5 @@
 package ifl.agentbreaker.knowledgemanager.domain.dtos.requests;
 
-import ifl.agentbreaker.knowledgemanager.domain.constants.SyncProvider;
-import jakarta.validation.constraints.NotBlank;
 import lombok.Data;
 
 @Data

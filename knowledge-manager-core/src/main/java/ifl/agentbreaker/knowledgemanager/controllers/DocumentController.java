@@ -1,10 +1,9 @@
 package ifl.agentbreaker.knowledgemanager.controllers;
 
+import ifl.agentbreaker.knowledgemanager.domain.dtos.requests.PageDocumentChunksRequest;
 import ifl.agentbreaker.knowledgemanager.domain.dtos.requests.PageDocumentsRequest;
 import ifl.agentbreaker.knowledgemanager.domain.dtos.requests.UploadDocumentsRequest;
-import ifl.agentbreaker.knowledgemanager.domain.dtos.responses.DocumentDetailResponse;
-import ifl.agentbreaker.knowledgemanager.domain.dtos.responses.DocumentResponse;
-import ifl.agentbreaker.knowledgemanager.domain.dtos.responses.PageResponse;
+import ifl.agentbreaker.knowledgemanager.domain.dtos.responses.*;
 import ifl.agentbreaker.knowledgemanager.services.DocumentService;
 import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
@@ -26,9 +25,9 @@ public class DocumentController
      * @return
      */
     @PostMapping("/upload")
-    public ServiceResponse<Long> uploadDocuments(@ModelAttribute @Valid UploadDocumentsRequest request)
+    public ServiceResponse<Boolean> uploadDocuments(@ModelAttribute @Valid UploadDocumentsRequest request)
     {
-        return service.uploadDocuments(request);
+        return documentService.uploadDocuments(request);
     }
 
     /**
@@ -37,11 +36,9 @@ public class DocumentController
      * @return
      */
     @DeleteMapping("/{documentId}")
-    // knowledgeBaseId
-    // documentId
     public ServiceResponse<Boolean> deleteDocument(@PathVariable long documentId)
     {
-        return service.deleteDocument(documentId);
+        return documentService.deleteDocument(documentId);
     }
 
     /**
@@ -50,9 +47,9 @@ public class DocumentController
      * @return
      */
     @GetMapping("/page")
-    public ServiceResponse<PageResponse<DocumentResponse>> pageDocuments(@Valid PageDocumentsRequest request)
+    public ServiceResponse<PageResponse<DocumentResponse>> pageDocuments(@ModelAttribute @Valid PageDocumentsRequest request)
     {
-        return service.pageDocuments(request);
+        return documentService.pageDocuments(request);
     }
 
     /**
@@ -63,7 +60,7 @@ public class DocumentController
     @GetMapping("/detail/{documentId}")
     public ServiceResponse<DocumentDetailResponse> getDocumentDetail(@PathVariable long documentId)
     {
-        return service.getDocumentDetail(documentId);
+        return documentService.getDocumentDetail(documentId);
     }
 
     /**
@@ -72,8 +69,43 @@ public class DocumentController
      * @return
      */
     @GetMapping("/download/{documentId}")
-    public ServiceResponse<String> getDocumentDownloadUrl(@PathVariable long documentId)
+    public ServiceResponse<String> getDownloadUrl(@PathVariable long documentId)
     {
-        return service.getDocumentDownloadUrl(documentId);
+        return documentService.getDownloadUrl(documentId);
     }
+
+    /**
+     * 分页查询文档chunk
+     * @param request
+     * @return
+     */
+    @GetMapping("/chunks/page")
+    public ServiceResponse<PageResponse<DocumentChunkResponse>> pageDocumentChunks(@ModelAttribute @Valid PageDocumentChunksRequest request)
+    {
+        return documentService.pageDocumentChunks(request);
+    }
+
+    /**
+     * 查询文档chunk详情
+     * @param chunkId
+     * @return
+     */
+    @GetMapping("/chunk/detail/{chunkId}")
+    public ServiceResponse<DocumentChunkDetailResponse> getDocumentChunkDetail(@PathVariable long chunkId)
+    {
+        return documentService.getDocumentChunkDetail(chunkId);
+    }
+
+    /**
+     * 删除文档chunk及相关联的文档图片chunk
+     * @param chunkId
+     * @return
+     */
+    @DeleteMapping("/chunk/{chunkId}")
+    public ServiceResponse<Boolean> deleteDocumentChunk(@PathVariable long chunkId)
+    {
+        return documentService.deleteDocumentChunk(chunkId);
+    }
+
+    // TODO: Need to determine if we need to implement independent CRUD features for document image chunks.
 }

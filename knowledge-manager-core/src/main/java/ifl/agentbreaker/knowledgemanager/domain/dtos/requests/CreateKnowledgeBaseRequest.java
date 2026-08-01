@@ -1,5 +1,6 @@
 package ifl.agentbreaker.knowledgemanager.domain.dtos.requests;
 
+import ifl.agentbreaker.knowledgemanager.domain.constants.ChunkType;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.Data;
@@ -21,6 +22,12 @@ public class CreateKnowledgeBaseRequest
     private String name;
 
     /**
+     * 知识库chunk类型 - 文档 or 图片 or 视频
+     */
+    @NotNull
+    private ChunkType chunkType;
+
+    /**
      * 知识库描述
      */
     private String description;
@@ -39,22 +46,10 @@ public class CreateKnowledgeBaseRequest
     /**
      * Chunk大小
      */
-    private int chunkSize;
+    private int minChunkSize;
 
     /**
      * Chunk重叠长度
      */
     private int chunkOverlap;
-
-    // TODO: The following 2 variables should be configurations in nacos.
-    /**
-     * TopK召回数量
-     */
-//    private int topK;
-
-    /**
-     * 相似度阈值
-     */
-//    @NotNull
-//    private BigDecimal similarityThreshold;
 }

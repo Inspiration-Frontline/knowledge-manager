@@ -24,9 +24,9 @@ public class SyncTaskController
      * @return
      */
     @PostMapping("/create")
-    public ServiceResponse<Long> createSyncTask(@RequestBody @Valid CreateSyncTaskRequest request)
+    public ServiceResponse<Boolean> createSyncTask(@RequestBody @Valid CreateSyncTaskRequest request)
     {
-        return service.createSyncTask(request);
+        return syncTaskService.createSyncTask(request);
     }
 
     /**
@@ -37,7 +37,7 @@ public class SyncTaskController
     @PutMapping("/update")
     public ServiceResponse<Boolean> updateSyncTask(@RequestBody @Valid UpdateSyncTaskRequest request)
     {
-        return service.updateSyncTask(request);
+        return syncTaskService.updateSyncTask(request);
     }
 
     /**
@@ -45,10 +45,10 @@ public class SyncTaskController
      * @param syncTaskId
      * @return
      */
-    @DeleteMapping("/delete/{syncTaskId}")
+    @DeleteMapping("/{syncTaskId}")
     public ServiceResponse<Boolean> deleteSyncTask(@PathVariable long syncTaskId)
     {
-        return service.deleteSyncTask(syncTaskId);
+        return syncTaskService.deleteSyncTask(syncTaskId);
     }
 
     /**
@@ -59,7 +59,7 @@ public class SyncTaskController
     @PutMapping("/enable-status")
     public ServiceResponse<Boolean> updateSyncTaskEnableStatus(@RequestBody UpdateSyncTaskEnableStatusRequest request)
     {
-        return service.updateSyncTaskStatus(enableStatus, syncTaskId);
+        return syncTaskService.updateSyncTaskEnableStatus(request);
     }
 
     /**
@@ -70,7 +70,7 @@ public class SyncTaskController
     @GetMapping("/detail/{syncTaskId}")
     public ServiceResponse<SyncTaskDetailResponse> getSyncTaskDetail(@PathVariable long syncTaskId)
     {
-        return service.getSyncTaskDetail(syncTaskId);
+        return syncTaskService.getSyncTaskDetail(syncTaskId);
     }
 
     /**
@@ -78,10 +78,10 @@ public class SyncTaskController
      * @param request
      * @return
      */
-    @GetMapping("/detail/executions/")
-    public ServiceResponse<PageResponse<SyncTaskExecutionResponse>> pageSyncTaskExecutions(@RequestBody PageSyncTaskExecutionsRequest request)
+    @GetMapping("/executions")
+    public ServiceResponse<PageResponse<SyncTaskExecutionResponse>> pageSyncTaskExecutions(@ModelAttribute @Valid PageSyncTaskExecutionsRequest request)
     {
-        return crawlTaskService.pageCrawlTaskExecutions(request);
+        return syncTaskService.pageSyncTaskExecutions(request);
     }
 
     /**
@@ -90,9 +90,9 @@ public class SyncTaskController
      * @return
      */
     @GetMapping("/page")
-    public ServiceResponse<PageResponse<SyncTaskResponse>> pageSyncTasks(@Valid PageSyncTasksRequest request)
+    public ServiceResponse<PageResponse<SyncTaskResponse>> pageSyncTasks(@ModelAttribute @Valid PageSyncTasksRequest request)
     {
-        return service.pageSyncTasks(request);
+        return syncTaskService.pageSyncTasks(request);
     }
 
     // TODO: Add a button on the frontend.
@@ -104,6 +104,6 @@ public class SyncTaskController
     @PostMapping("/execute/{syncTaskId}")
     public ServiceResponse<Boolean> executeSyncTask(@PathVariable long syncTaskId)
     {
-        return service.executeSyncTask(syncTaskId);
+        return syncTaskService.executeSyncTask(syncTaskId);
     }
 }
