@@ -49,7 +49,8 @@ public class KnowledgeBaseServiceImpl extends ServiceImpl<KnowledgeBaseMapper, K
                     KnowledgeManagerBusinessError.ERROR_BAD_REQUEST.getCode(),
                     KnowledgeManagerBusinessError.ERROR_BAD_REQUEST.getMessage());
         }
-        if (!request.getChunkType().isUserCreatable())
+        if (!request.getChunkType()
+                    .isUserCreatable())
         {
             return ServiceResponse.buildErrorResponse(
                     KnowledgeManagerBusinessError.ERROR_BAD_REQUEST.getCode(),
@@ -246,7 +247,22 @@ public class KnowledgeBaseServiceImpl extends ServiceImpl<KnowledgeBaseMapper, K
     @Override
     public ServiceResponse<Boolean> updateKnowledgeBaseEnableStatus(UpdateKnowledgeBaseEnableStatusRequest request)
     {
-        return null;
+        // Validate whether it already exists.
+        KnowledgeBaseMetadata knowledgeBaseMetadata = knowledgeBaseMapper.selectById(request.getKnowledgeBaseId());
+        if (knowledgeBaseMetadata == null)
+        {
+            return ServiceResponse.buildErrorResponse(
+                    KnowledgeManagerBusinessError.KNOWLEDGE_BASE_NOT_EXISTS.getCode(),
+                    KnowledgeManagerBusinessError.KNOWLEDGE_BASE_NOT_EXISTS.getMessage()
+            );
+        }
+
+        // Update knowledge base metadata's 'enabled' field.
+        knowledgeBaseMetadata.setEnabled(request.isEnabled());
+        knowledgeBaseMetadata.setModifierId(UserContext.getCurrentUserId());
+        knowledgeBaseMapper.updateById(knowledgeBaseMetadata);
+
+        return ServiceResponse.buildSuccessResponse(true);
     }
 
     @Override

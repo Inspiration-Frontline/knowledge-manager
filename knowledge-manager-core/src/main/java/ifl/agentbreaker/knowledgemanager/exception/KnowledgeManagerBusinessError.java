@@ -10,6 +10,8 @@ public enum KnowledgeManagerBusinessError
     ERROR_BAD_REQUEST(20001, "Bad request."),
 
     KNOWLEDGE_BASE_ALREADY_EXISTS(30001, "Knowledge base already exists."),
+    KNOWLEDGE_BASE_NOT_EXISTS(30002, "Knowledge base doesn't exist."),
+
 
     ;
 
