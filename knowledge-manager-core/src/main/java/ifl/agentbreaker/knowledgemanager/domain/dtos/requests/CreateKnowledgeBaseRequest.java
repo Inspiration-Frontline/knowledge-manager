@@ -5,7 +5,6 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 
-import java.math.BigDecimal;
 
 @Data
 public class CreateKnowledgeBaseRequest
@@ -46,10 +45,10 @@ public class CreateKnowledgeBaseRequest
     /**
      * Chunk大小
      */
-    private int minChunkSize;
+    private Integer minChunkSize;
 
     /**
      * Chunk重叠长度
      */
-    private int chunkOverlap;
+    private Integer chunkOverlap;
 }

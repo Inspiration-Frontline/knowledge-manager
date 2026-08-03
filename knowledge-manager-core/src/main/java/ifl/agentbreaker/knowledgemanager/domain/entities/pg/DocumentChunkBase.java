@@ -15,6 +15,11 @@ public class DocumentChunkBase extends KnowledgeBaseChunkBase
     private long documentId;
 
     /**
+     * chunk序号 - 从0开始
+     */
+    private int chunkNumber;
+
+    /**
      * 所属章节编号 - 标识chunk主要对应的文档章节位置，用于保留原始文档结构信息
      */
     private String sectionNumber;

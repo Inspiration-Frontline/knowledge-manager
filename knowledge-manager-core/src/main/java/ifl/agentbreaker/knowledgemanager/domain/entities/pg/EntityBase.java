@@ -1,5 +1,7 @@
 package ifl.agentbreaker.knowledgemanager.domain.entities.pg;
 
+import com.baomidou.mybatisplus.annotation.IdType;
+import com.baomidou.mybatisplus.annotation.TableId;
 import lombok.Data;
 
 import java.time.Instant;
@@ -10,6 +12,7 @@ public class EntityBase
     /**
      * ID of the record.
      */
+    @TableId(type = IdType.AUTO)
     private long id;
 
     /**

@@ -16,7 +16,7 @@ public class KnowledgeBaseMetadata extends EntityBase
     private long bizId;
 
     /**
-     * 知识库名称 - 知识库名称用于识别知识库
+     * 知识库名称（小写英文） - 知识库名称用于识别知识库
      */
     private String name;
 

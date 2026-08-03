@@ -15,11 +15,6 @@ public class KnowledgeBaseChunkBase extends EntityBase
     private long knowledgeBaseId;
 
     /**
-     * chunk序号 - 从0开始
-     */
-    private int chunkNumber;
-
-    /**
      * 分块摘要，即分块内容的文字版简述。
      */
     private String chunkAbstract;
