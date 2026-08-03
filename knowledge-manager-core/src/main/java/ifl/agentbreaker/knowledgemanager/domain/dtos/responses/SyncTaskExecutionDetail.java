@@ -6,12 +6,12 @@ import lombok.Data;
 import java.time.Instant;
 
 @Data
-public class CrawlTaskExecutionResponse
+public class SyncTaskExecutionDetail
 {
     /**
-     * 爬取任务执行记录ID
+     * 同步任务执行记录ID
      */
-    private long crawlTaskExecutionId;
+    private long syncTaskExecutionId;
 
     /**
      * 开始时间

@@ -15,7 +15,7 @@ public class KnowledgeBaseChunkBase extends EntityBase
     private long knowledgeBaseId;
 
     /**
-     * 分块摘要，即分块内容的文字版简述。
+     * 分块摘要，即分块内容的文字版简述 - LLM生成
      */
     private String chunkAbstract;
 

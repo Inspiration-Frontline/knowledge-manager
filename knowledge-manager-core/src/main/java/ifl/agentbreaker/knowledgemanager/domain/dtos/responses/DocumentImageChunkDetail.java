@@ -3,20 +3,21 @@ package ifl.agentbreaker.knowledgemanager.domain.dtos.responses;
 import lombok.Data;
 
 import java.time.Instant;
-import java.util.List;
 
 @Data
-public class DocumentChunkDetailResponse
+public class DocumentImageChunkDetail
 {
     /**
      * Chunk ID
      */
     private long chunkId;
 
+
     /**
-     * 文档知识库ID
+     * 文档图片知识库ID
      */
     private long knowledgeBaseId;
+
 
     /**
      * 文档ID
@@ -29,39 +30,34 @@ public class DocumentChunkDetailResponse
     private String documentName;
 
     /**
-     * Chunk序号
-     */
-    private int chunkNumber;
-
-    /**
      * Token数量
      */
     private int tokenCount;
 
     /**
-     * Chunk内容
+     * 图片描述 - 文档中对该图片的文字描述
      */
-    private String chunkContent;
+    private String description;
 
     /**
-     * 所属章节
+     * 文档图片内容摘要 - LLM生成
      */
-    private String sectionNumber;
+    private String chunkAbstract;
 
     /**
-     * 前置Chunk摘要
+     * 图片宽度 - 图片像素宽度
      */
-    private String previousChunkAbstract;
+    private int width;
 
     /**
-     * 后置Chunk摘要
+     * 图片高度 - 图片像素高度
      */
-    private String nextChunkAbstract;
+    private int height;
 
     /**
-     * 引用图片Chunk ID
+     * 文档图片url - 把文档中的图片截出来后存入oss
      */
-    private List<Long> referencedImageChunkIds;
+    private String nameInOss;
 
     /**
      * 创建时间

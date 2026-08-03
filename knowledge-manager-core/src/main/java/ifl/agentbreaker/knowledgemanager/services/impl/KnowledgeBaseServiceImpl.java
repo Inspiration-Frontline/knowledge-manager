@@ -7,8 +7,8 @@ import ifl.agentbreaker.knowledgemanager.domain.dtos.requests.CreateKnowledgeBas
 import ifl.agentbreaker.knowledgemanager.domain.dtos.requests.PageKnowledgeBasesRequest;
 import ifl.agentbreaker.knowledgemanager.domain.dtos.requests.UpdateKnowledgeBaseEnableStatusRequest;
 import ifl.agentbreaker.knowledgemanager.domain.dtos.requests.UpdateKnowledgeBaseRequest;
-import ifl.agentbreaker.knowledgemanager.domain.dtos.responses.KnowledgeBaseDetailResponse;
-import ifl.agentbreaker.knowledgemanager.domain.dtos.responses.KnowledgeBaseResponse;
+import ifl.agentbreaker.knowledgemanager.domain.dtos.responses.KnowledgeBaseDetail;
+import ifl.agentbreaker.knowledgemanager.domain.dtos.responses.KnowledgeBaseAbstract;
 import ifl.agentbreaker.knowledgemanager.domain.dtos.responses.PageResponse;
 import ifl.agentbreaker.knowledgemanager.domain.entities.pg.KnowledgeBaseMetadata;
 import ifl.agentbreaker.knowledgemanager.exception.KnowledgeManagerBusinessError;
@@ -337,7 +337,7 @@ public class KnowledgeBaseServiceImpl extends ServiceImpl<KnowledgeBaseMapper, K
     }
 
     @Override
-    public ServiceResponse<KnowledgeBaseDetailResponse> getKnowledgeBaseDetail(long knowledgeBaseId)
+    public ServiceResponse<KnowledgeBaseDetail> getKnowledgeBaseDetail(long knowledgeBaseId)
     {
         // Validate whether it already exists.
         KnowledgeBaseMetadata knowledgeBaseMetadata = knowledgeBaseMapper.selectById(knowledgeBaseId);
@@ -350,7 +350,7 @@ public class KnowledgeBaseServiceImpl extends ServiceImpl<KnowledgeBaseMapper, K
         }
 
         // Construct response data.
-        KnowledgeBaseDetailResponse response = new KnowledgeBaseDetailResponse();
+        KnowledgeBaseDetail response = new KnowledgeBaseDetail();
         response.setKnowledgeBaseId(knowledgeBaseMetadata.getId());
         response.setBizId(knowledgeBaseMetadata.getBizId());
         response.setName(knowledgeBaseMetadata.getName());
@@ -379,8 +379,9 @@ public class KnowledgeBaseServiceImpl extends ServiceImpl<KnowledgeBaseMapper, K
     }
 
     @Override
-    public ServiceResponse<PageResponse<KnowledgeBaseResponse>> pageKnowledgeBases(PageKnowledgeBasesRequest request)
+    public ServiceResponse<PageResponse<KnowledgeBaseAbstract>> pageKnowledgeBases(PageKnowledgeBasesRequest request)
     {
+
         return null;
     }
 }

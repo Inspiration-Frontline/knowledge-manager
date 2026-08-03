@@ -1,6 +1,7 @@
 package ifl.agentbreaker.knowledgemanager.controllers;
 
 import ifl.agentbreaker.knowledgemanager.domain.dtos.requests.PageDocumentChunksRequest;
+import ifl.agentbreaker.knowledgemanager.domain.dtos.requests.PageDocumentImageChunksRequest;
 import ifl.agentbreaker.knowledgemanager.domain.dtos.requests.PageDocumentsRequest;
 import ifl.agentbreaker.knowledgemanager.domain.dtos.requests.UploadDocumentsRequest;
 import ifl.agentbreaker.knowledgemanager.domain.dtos.responses.*;
@@ -47,7 +48,7 @@ public class DocumentController
      * @return
      */
     @GetMapping("/page")
-    public ServiceResponse<PageResponse<DocumentResponse>> pageDocuments(@ModelAttribute @Valid PageDocumentsRequest request)
+    public ServiceResponse<PageResponse<DocumentAbstract>> pageDocuments(@ModelAttribute @Valid PageDocumentsRequest request)
     {
         return documentService.pageDocuments(request);
     }
@@ -58,7 +59,7 @@ public class DocumentController
      * @return
      */
     @GetMapping("/detail/{documentId}")
-    public ServiceResponse<DocumentDetailResponse> getDocumentDetail(@PathVariable long documentId)
+    public ServiceResponse<DocumentDetail> getDocumentDetail(@PathVariable long documentId)
     {
         return documentService.getDocumentDetail(documentId);
     }
@@ -80,7 +81,7 @@ public class DocumentController
      * @return
      */
     @GetMapping("/chunks/page")
-    public ServiceResponse<PageResponse<DocumentChunkResponse>> pageDocumentChunks(@ModelAttribute @Valid PageDocumentChunksRequest request)
+    public ServiceResponse<PageResponse<DocumentChunkAbstract>> pageDocumentChunks(@ModelAttribute @Valid PageDocumentChunksRequest request)
     {
         return documentService.pageDocumentChunks(request);
     }
@@ -91,9 +92,31 @@ public class DocumentController
      * @return
      */
     @GetMapping("/chunk/detail/{chunkId}")
-    public ServiceResponse<DocumentChunkDetailResponse> getDocumentChunkDetail(@PathVariable long chunkId)
+    public ServiceResponse<DocumentChunkDetail> getDocumentChunkDetail(@PathVariable long chunkId)
     {
         return documentService.getDocumentChunkDetail(chunkId);
+    }
+
+    /**
+     * 分页查询文档图片chunk
+     * @param request
+     * @return
+     */
+    @GetMapping("/image/chunks/page")
+    public ServiceResponse<PageResponse<DocumentImageChunkAbstract>> pageDocumentImageChunks(@ModelAttribute @Valid PageDocumentImageChunksRequest request)
+    {
+        return documentService.pageDocumentImageChunks(request);
+    }
+
+    /**
+     * 查询文档图片chunk详情
+     * @param chunkId
+     * @return
+     */
+    @GetMapping("/image/chunk/detail/{chunkId}")
+    public ServiceResponse<DocumentImageChunkDetail> getDocumentImageChunkDetail(@PathVariable long chunkId)
+    {
+        return documentService.getDocumentImageChunkDetail(chunkId);
     }
 
     /**

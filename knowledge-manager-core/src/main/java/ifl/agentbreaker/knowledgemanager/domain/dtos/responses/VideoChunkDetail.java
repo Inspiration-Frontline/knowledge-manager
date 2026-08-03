@@ -6,7 +6,7 @@ import java.time.Instant;
 import java.util.List;
 
 @Data
-public class VideoChunkDetailResponse
+public class VideoChunkDetail
 {
     /**
      * 视频Chunk ID

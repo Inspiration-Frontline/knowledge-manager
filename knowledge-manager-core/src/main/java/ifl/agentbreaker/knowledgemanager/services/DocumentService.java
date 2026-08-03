@@ -2,6 +2,7 @@ package ifl.agentbreaker.knowledgemanager.services;
 
 import com.baomidou.mybatisplus.extension.service.IService;
 import ifl.agentbreaker.knowledgemanager.domain.dtos.requests.PageDocumentChunksRequest;
+import ifl.agentbreaker.knowledgemanager.domain.dtos.requests.PageDocumentImageChunksRequest;
 import ifl.agentbreaker.knowledgemanager.domain.dtos.requests.PageDocumentsRequest;
 import ifl.agentbreaker.knowledgemanager.domain.dtos.requests.UploadDocumentsRequest;
 import ifl.agentbreaker.knowledgemanager.domain.dtos.responses.*;
@@ -15,15 +16,19 @@ public interface DocumentService extends IService<Document>
 
     ServiceResponse<Boolean> deleteDocument(long documentId);
 
-    ServiceResponse<PageResponse<DocumentResponse>> pageDocuments(@Valid PageDocumentsRequest request);
+    ServiceResponse<PageResponse<DocumentAbstract>> pageDocuments(@Valid PageDocumentsRequest request);
 
-    ServiceResponse<DocumentDetailResponse> getDocumentDetail(long documentId);
+    ServiceResponse<DocumentDetail> getDocumentDetail(long documentId);
 
     ServiceResponse<String> getDownloadUrl(long documentId);
 
-    ServiceResponse<PageResponse<DocumentChunkResponse>> pageDocumentChunks(@Valid PageDocumentChunksRequest request);
+    ServiceResponse<PageResponse<DocumentChunkAbstract>> pageDocumentChunks(@Valid PageDocumentChunksRequest request);
 
-    ServiceResponse<DocumentChunkDetailResponse> getDocumentChunkDetail(long chunkId);
+    ServiceResponse<DocumentChunkDetail> getDocumentChunkDetail(long chunkId);
+
+    ServiceResponse<PageResponse<DocumentImageChunkAbstract>> pageDocumentImageChunks(@Valid PageDocumentImageChunksRequest request);
+
+    ServiceResponse<DocumentImageChunkDetail> getDocumentImageChunkDetail(long chunkId);
 
     ServiceResponse<Boolean> deleteDocumentChunk(long chunkId);
 }

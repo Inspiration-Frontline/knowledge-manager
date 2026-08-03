@@ -3,8 +3,8 @@ package ifl.agentbreaker.knowledgemanager.services.impl;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import ifl.agentbreaker.knowledgemanager.domain.dtos.requests.ImportImageRequest;
 import ifl.agentbreaker.knowledgemanager.domain.dtos.requests.PageImageChunksRequest;
-import ifl.agentbreaker.knowledgemanager.domain.dtos.responses.ImageChunkDetailResponse;
-import ifl.agentbreaker.knowledgemanager.domain.dtos.responses.ImageChunkResponse;
+import ifl.agentbreaker.knowledgemanager.domain.dtos.responses.ImageChunkDetail;
+import ifl.agentbreaker.knowledgemanager.domain.dtos.responses.ImageChunkAbstract;
 import ifl.agentbreaker.knowledgemanager.domain.dtos.responses.PageResponse;
 import ifl.agentbreaker.knowledgemanager.domain.entities.pg.ImageChunkBase;
 import ifl.agentbreaker.knowledgemanager.mappers.ImageChunkMapper;
@@ -32,13 +32,13 @@ public class ImageChunkServiceImpl extends ServiceImpl<ImageChunkMapper, ImageCh
     }
 
     @Override
-    public ServiceResponse<PageResponse<ImageChunkResponse>> pageImageChunks(PageImageChunksRequest request)
+    public ServiceResponse<PageResponse<ImageChunkAbstract>> pageImageChunks(PageImageChunksRequest request)
     {
         return null;
     }
 
     @Override
-    public ServiceResponse<ImageChunkDetailResponse> getImageChunkDetail(long chunkId)
+    public ServiceResponse<ImageChunkDetail> getImageChunkDetail(long chunkId)
     {
         return null;
     }

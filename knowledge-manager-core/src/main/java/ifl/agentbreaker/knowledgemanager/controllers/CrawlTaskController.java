@@ -1,9 +1,9 @@
 package ifl.agentbreaker.knowledgemanager.controllers;
 
 import ifl.agentbreaker.knowledgemanager.domain.dtos.requests.*;
-import ifl.agentbreaker.knowledgemanager.domain.dtos.responses.CrawlTaskExecutionResponse;
-import ifl.agentbreaker.knowledgemanager.domain.dtos.responses.CrawlTaskDetailResponse;
-import ifl.agentbreaker.knowledgemanager.domain.dtos.responses.CrawlTaskResponse;
+import ifl.agentbreaker.knowledgemanager.domain.dtos.responses.CrawlTaskExecutionDetail;
+import ifl.agentbreaker.knowledgemanager.domain.dtos.responses.CrawlTaskDetail;
+import ifl.agentbreaker.knowledgemanager.domain.dtos.responses.CrawlTaskAbstract;
 import ifl.agentbreaker.knowledgemanager.domain.dtos.responses.PageResponse;
 import ifl.agentbreaker.knowledgemanager.services.CrawlTaskService;
 import jakarta.validation.Valid;
@@ -70,7 +70,7 @@ public class CrawlTaskController
      * @return
      */
     @GetMapping("/detail/{crawlTaskId}")
-    public ServiceResponse<CrawlTaskDetailResponse> getCrawlTaskDetail(@PathVariable long crawlTaskId)
+    public ServiceResponse<CrawlTaskDetail> getCrawlTaskDetail(@PathVariable long crawlTaskId)
     {
         return crawlTaskService.getCrawlTaskDetail(crawlTaskId);
     }
@@ -81,7 +81,7 @@ public class CrawlTaskController
      * @return
      */
     @GetMapping("/executions")
-    public ServiceResponse<PageResponse<CrawlTaskExecutionResponse>> pageCrawlTaskExecutions(@ModelAttribute @Valid PageCrawlTaskExecutionsRequest request)
+    public ServiceResponse<PageResponse<CrawlTaskExecutionDetail>> pageCrawlTaskExecutions(@ModelAttribute @Valid PageCrawlTaskExecutionsRequest request)
     {
         return crawlTaskService.pageCrawlTaskExecutions(request);
     }
@@ -92,7 +92,7 @@ public class CrawlTaskController
      * @return
      */
     @GetMapping("/page")
-    public ServiceResponse<PageResponse<CrawlTaskResponse>> pageCrawlTasks(@ModelAttribute @Valid PageCrawlTasksRequest request)
+    public ServiceResponse<PageResponse<CrawlTaskAbstract>> pageCrawlTasks(@ModelAttribute @Valid PageCrawlTasksRequest request)
     {
         return crawlTaskService.pageCrawlTasks(request);
     }

@@ -1,20 +1,20 @@
 package ifl.agentbreaker.knowledgemanager.domain.dtos.responses;
 
+import ifl.agentbreaker.knowledgemanager.domain.constants.SyncProvider;
 import lombok.Data;
 
 import java.time.Instant;
 
 @Data
-public class CrawlTaskResponse
+public class SyncTaskAbstract
 {
-
     /**
      * 任务ID
      */
-    private long crawlTaskId;
+    private long syncTaskId;
 
     /**
-     * 所属知识库
+     * 知识库ID
      */
     private long knowledgeBaseId;
 
@@ -22,6 +22,16 @@ public class CrawlTaskResponse
      * 任务名称
      */
     private String taskName;
+
+    /**
+     * 同步源
+     */
+    private SyncProvider provider;
+
+    /**
+     * 同步源知识库ID
+     */
+    private String workspaceId;
 
     /**
      * 任务状态 - 是否启用
@@ -32,5 +42,4 @@ public class CrawlTaskResponse
      * 更新时间
      */
     private Instant modificationTime;
-
 }

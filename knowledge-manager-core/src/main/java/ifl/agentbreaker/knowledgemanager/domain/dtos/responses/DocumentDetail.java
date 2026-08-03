@@ -9,13 +9,18 @@ import java.time.Instant;
 import java.util.List;
 
 @Data
-public class DocumentResponse
+public class DocumentDetail
 {
 
     /**
      * 文档ID
      */
     private long documentId;
+
+    /**
+     * 所属知识库
+     */
+    private long knowledgeBaseId;
 
     /**
      * 文档名称
@@ -48,7 +53,7 @@ public class DocumentResponse
     private ParsingStatus parsingStatus;
 
     /**
-     * chunk数量
+     * Chunk数量
      */
     private long chunkCount;
 
@@ -56,5 +61,10 @@ public class DocumentResponse
      * 上传时间
      */
     private Instant creationTime;
+
+    /**
+     * 最后一次成功完成解析的时间
+     */
+    private Instant lastParsingTime;
 
 }

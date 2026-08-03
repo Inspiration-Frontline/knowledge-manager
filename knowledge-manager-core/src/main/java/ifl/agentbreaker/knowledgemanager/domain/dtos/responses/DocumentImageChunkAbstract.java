@@ -5,43 +5,32 @@ import lombok.Data;
 import java.time.Instant;
 
 @Data
-public class ImageChunkDetailResponse
+public class DocumentImageChunkAbstract
 {
     /**
-     * 图片Chunk ID
+     * Chunk ID
      */
     private long chunkId;
 
     /**
-     * 图片知识库ID
+     * 文档ID
      */
-    private long knowledgeBaseId;
+    private long documentId;
 
     /**
-     * 图片内容摘要 - LLM生成
+     * 文档图片内容摘要 - LLM生成
      */
     private String chunkAbstract;
 
     /**
-     * 图片宽度
+     * 图片宽度 - 图片像素宽度
      */
     private int width;
 
     /**
-     * 图片高度
+     * 图片高度 - 图片像素高度
      */
     private int height;
-
-    /**
-     * 图片OSS地址
-     * 实际返回临时访问地址
-     */
-    private String imageUrl;
-
-    /**
-     * Token数量
-     */
-    private int tokenCount;
 
     /**
      * 创建时间

@@ -3,9 +3,9 @@ package ifl.agentbreaker.knowledgemanager.services.impl;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import ifl.agentbreaker.knowledgemanager.domain.dtos.requests.*;
 import ifl.agentbreaker.knowledgemanager.domain.dtos.responses.PageResponse;
-import ifl.agentbreaker.knowledgemanager.domain.dtos.responses.SyncTaskDetailResponse;
-import ifl.agentbreaker.knowledgemanager.domain.dtos.responses.SyncTaskExecutionResponse;
-import ifl.agentbreaker.knowledgemanager.domain.dtos.responses.SyncTaskResponse;
+import ifl.agentbreaker.knowledgemanager.domain.dtos.responses.SyncTaskDetail;
+import ifl.agentbreaker.knowledgemanager.domain.dtos.responses.SyncTaskExecutionDetail;
+import ifl.agentbreaker.knowledgemanager.domain.dtos.responses.SyncTaskAbstract;
 import ifl.agentbreaker.knowledgemanager.domain.entities.pg.SyncTask;
 import ifl.agentbreaker.knowledgemanager.mappers.SyncTaskMapper;
 import ifl.agentbreaker.knowledgemanager.services.SyncTaskService;
@@ -44,19 +44,19 @@ public class SyncTaskServiceImpl extends ServiceImpl<SyncTaskMapper, SyncTask> i
     }
 
     @Override
-    public ServiceResponse<SyncTaskDetailResponse> getSyncTaskDetail(long syncTaskId)
+    public ServiceResponse<SyncTaskDetail> getSyncTaskDetail(long syncTaskId)
     {
         return null;
     }
 
     @Override
-    public ServiceResponse<PageResponse<SyncTaskExecutionResponse>> pageSyncTaskExecutions(PageSyncTaskExecutionsRequest request)
+    public ServiceResponse<PageResponse<SyncTaskExecutionDetail>> pageSyncTaskExecutions(PageSyncTaskExecutionsRequest request)
     {
         return null;
     }
 
     @Override
-    public ServiceResponse<PageResponse<SyncTaskResponse>> pageSyncTasks(PageSyncTasksRequest request)
+    public ServiceResponse<PageResponse<SyncTaskAbstract>> pageSyncTasks(PageSyncTasksRequest request)
     {
         return null;
     }

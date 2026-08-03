@@ -68,7 +68,7 @@ public class SyncTaskController
      * @return
      */
     @GetMapping("/detail/{syncTaskId}")
-    public ServiceResponse<SyncTaskDetailResponse> getSyncTaskDetail(@PathVariable long syncTaskId)
+    public ServiceResponse<SyncTaskDetail> getSyncTaskDetail(@PathVariable long syncTaskId)
     {
         return syncTaskService.getSyncTaskDetail(syncTaskId);
     }
@@ -79,7 +79,7 @@ public class SyncTaskController
      * @return
      */
     @GetMapping("/executions")
-    public ServiceResponse<PageResponse<SyncTaskExecutionResponse>> pageSyncTaskExecutions(@ModelAttribute @Valid PageSyncTaskExecutionsRequest request)
+    public ServiceResponse<PageResponse<SyncTaskExecutionDetail>> pageSyncTaskExecutions(@ModelAttribute @Valid PageSyncTaskExecutionsRequest request)
     {
         return syncTaskService.pageSyncTaskExecutions(request);
     }
@@ -90,7 +90,7 @@ public class SyncTaskController
      * @return
      */
     @GetMapping("/page")
-    public ServiceResponse<PageResponse<SyncTaskResponse>> pageSyncTasks(@ModelAttribute @Valid PageSyncTasksRequest request)
+    public ServiceResponse<PageResponse<SyncTaskAbstract>> pageSyncTasks(@ModelAttribute @Valid PageSyncTasksRequest request)
     {
         return syncTaskService.pageSyncTasks(request);
     }

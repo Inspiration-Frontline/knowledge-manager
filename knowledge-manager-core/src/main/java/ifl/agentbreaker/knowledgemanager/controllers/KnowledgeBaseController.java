@@ -4,8 +4,8 @@ import ifl.agentbreaker.knowledgemanager.domain.dtos.requests.CreateKnowledgeBas
 import ifl.agentbreaker.knowledgemanager.domain.dtos.requests.UpdateKnowledgeBaseRequest;
 import ifl.agentbreaker.knowledgemanager.domain.dtos.requests.PageKnowledgeBasesRequest;
 import ifl.agentbreaker.knowledgemanager.domain.dtos.requests.UpdateKnowledgeBaseEnableStatusRequest;
-import ifl.agentbreaker.knowledgemanager.domain.dtos.responses.KnowledgeBaseDetailResponse;
-import ifl.agentbreaker.knowledgemanager.domain.dtos.responses.KnowledgeBaseResponse;
+import ifl.agentbreaker.knowledgemanager.domain.dtos.responses.KnowledgeBaseDetail;
+import ifl.agentbreaker.knowledgemanager.domain.dtos.responses.KnowledgeBaseAbstract;
 import ifl.agentbreaker.knowledgemanager.domain.dtos.responses.PageResponse;
 import ifl.agentbreaker.knowledgemanager.services.KnowledgeBaseService;
 import jakarta.validation.Valid;
@@ -72,7 +72,7 @@ public class KnowledgeBaseController
      * @return
      */
     @GetMapping("/detail/{knowledgeBaseId}")
-    public ServiceResponse<KnowledgeBaseDetailResponse> getKnowledgeBaseDetail(@PathVariable long knowledgeBaseId)
+    public ServiceResponse<KnowledgeBaseDetail> getKnowledgeBaseDetail(@PathVariable long knowledgeBaseId)
     {
         return knowledgeBaseService.getKnowledgeBaseDetail(knowledgeBaseId);
     }
@@ -83,7 +83,7 @@ public class KnowledgeBaseController
      * @return
      */
     @GetMapping("/page")
-    public ServiceResponse<PageResponse<KnowledgeBaseResponse>> pageKnowledgeBases(@ModelAttribute @Valid PageKnowledgeBasesRequest request)
+    public ServiceResponse<PageResponse<KnowledgeBaseAbstract>> pageKnowledgeBases(@ModelAttribute @Valid PageKnowledgeBasesRequest request)
     {
         return knowledgeBaseService.pageKnowledgeBases(request);
     }

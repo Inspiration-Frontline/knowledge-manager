@@ -6,7 +6,7 @@ import lombok.Data;
 import java.time.Instant;
 
 @Data
-public class KnowledgeBaseDetailResponse
+public class KnowledgeBaseAbstract
 {
     /**
      * 知识库ID
@@ -39,37 +39,12 @@ public class KnowledgeBaseDetailResponse
     private String embeddingModel;
 
     /**
-     * 向量维度
-     */
-    private int embeddingDimensionCount;
-
-    /**
      * 状态
      */
     private boolean enabled;
 
     /**
-     * Chunk大小
-     */
-    private Integer minChunkSize;
-
-    /**
-     * Chunk重叠
-     */
-    private Integer chunkOverlap;
-
-    /**
-     * 创建时间
-     */
-    private Instant creationTime;
-
-    /**
      * 更新时间
      */
     private Instant modificationTime;
-
-    /**
-     * chunk数量
-     */
-    private long chunkCount;
 }

@@ -6,7 +6,7 @@ import lombok.Data;
 import java.time.Instant;
 
 @Data
-public class SyncTaskDetailResponse
+public class SyncTaskDetail
 {
     /**
      * 任务ID

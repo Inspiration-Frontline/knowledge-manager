@@ -46,7 +46,7 @@ public class VideoChunkController
      * @return
      */
     @GetMapping("/page")
-    public ServiceResponse<PageResponse<VideoChunkResponse>> pageVideoChunks(@ModelAttribute @Valid PageVideoChunksRequest request)
+    public ServiceResponse<PageResponse<VideoChunkAbstract>> pageVideoChunks(@ModelAttribute @Valid PageVideoChunksRequest request)
     {
         return videoChunkService.pageVideoChunks(request);
     }
@@ -57,7 +57,7 @@ public class VideoChunkController
      * @return
      */
     @GetMapping("/detail/{chunkId}")
-    public ServiceResponse<VideoChunkDetailResponse> getVideoChunkDetail(@PathVariable long chunkId)
+    public ServiceResponse<VideoChunkDetail> getVideoChunkDetail(@PathVariable long chunkId)
     {
         return videoChunkService.getVideoChunkDetail(chunkId);
     }

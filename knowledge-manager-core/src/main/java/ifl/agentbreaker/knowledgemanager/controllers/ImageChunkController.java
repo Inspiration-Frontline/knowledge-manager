@@ -2,8 +2,8 @@ package ifl.agentbreaker.knowledgemanager.controllers;
 
 import ifl.agentbreaker.knowledgemanager.domain.dtos.requests.ImportImageRequest;
 import ifl.agentbreaker.knowledgemanager.domain.dtos.requests.PageImageChunksRequest;
-import ifl.agentbreaker.knowledgemanager.domain.dtos.responses.ImageChunkDetailResponse;
-import ifl.agentbreaker.knowledgemanager.domain.dtos.responses.ImageChunkResponse;
+import ifl.agentbreaker.knowledgemanager.domain.dtos.responses.ImageChunkDetail;
+import ifl.agentbreaker.knowledgemanager.domain.dtos.responses.ImageChunkAbstract;
 import ifl.agentbreaker.knowledgemanager.domain.dtos.responses.PageResponse;
 import ifl.agentbreaker.knowledgemanager.services.ImageChunkService;
 import jakarta.validation.Valid;
@@ -48,7 +48,7 @@ public class ImageChunkController
      * @return
      */
     @GetMapping("/page")
-    public ServiceResponse<PageResponse<ImageChunkResponse>> pageImageChunks(@ModelAttribute @Valid PageImageChunksRequest request)
+    public ServiceResponse<PageResponse<ImageChunkAbstract>> pageImageChunks(@ModelAttribute @Valid PageImageChunksRequest request)
     {
         return imageChunkService.pageImageChunks(request);
     }
@@ -59,7 +59,7 @@ public class ImageChunkController
      * @return
      */
     @GetMapping("/detail/{chunkId}")
-    public ServiceResponse<ImageChunkDetailResponse> getImageChunkDetail(@PathVariable long chunkId)
+    public ServiceResponse<ImageChunkDetail> getImageChunkDetail(@PathVariable long chunkId)
     {
         return imageChunkService.getImageChunkDetail(chunkId);
     }

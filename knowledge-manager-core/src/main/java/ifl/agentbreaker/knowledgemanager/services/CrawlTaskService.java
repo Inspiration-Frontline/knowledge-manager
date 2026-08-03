@@ -2,9 +2,9 @@ package ifl.agentbreaker.knowledgemanager.services;
 
 import com.baomidou.mybatisplus.extension.service.IService;
 import ifl.agentbreaker.knowledgemanager.domain.dtos.requests.*;
-import ifl.agentbreaker.knowledgemanager.domain.dtos.responses.CrawlTaskExecutionResponse;
-import ifl.agentbreaker.knowledgemanager.domain.dtos.responses.CrawlTaskDetailResponse;
-import ifl.agentbreaker.knowledgemanager.domain.dtos.responses.CrawlTaskResponse;
+import ifl.agentbreaker.knowledgemanager.domain.dtos.responses.CrawlTaskExecutionDetail;
+import ifl.agentbreaker.knowledgemanager.domain.dtos.responses.CrawlTaskDetail;
+import ifl.agentbreaker.knowledgemanager.domain.dtos.responses.CrawlTaskAbstract;
 import ifl.agentbreaker.knowledgemanager.domain.dtos.responses.PageResponse;
 import ifl.agentbreaker.knowledgemanager.domain.entities.pg.CrawlTask;
 import jakarta.validation.Valid;
@@ -20,11 +20,11 @@ public interface CrawlTaskService extends IService<CrawlTask>
 
     ServiceResponse<Boolean> updateCrawlTaskEnableStatus(UpdateCrawlTaskEnableStatusRequest request);
 
-    ServiceResponse<CrawlTaskDetailResponse> getCrawlTaskDetail(long crawlTaskId);
+    ServiceResponse<CrawlTaskDetail> getCrawlTaskDetail(long crawlTaskId);
 
-    ServiceResponse<PageResponse<CrawlTaskExecutionResponse>> pageCrawlTaskExecutions(@Valid PageCrawlTaskExecutionsRequest request);
+    ServiceResponse<PageResponse<CrawlTaskExecutionDetail>> pageCrawlTaskExecutions(@Valid PageCrawlTaskExecutionsRequest request);
 
-    ServiceResponse<PageResponse<CrawlTaskResponse>> pageCrawlTasks(@Valid PageCrawlTasksRequest request);
+    ServiceResponse<PageResponse<CrawlTaskAbstract>> pageCrawlTasks(@Valid PageCrawlTasksRequest request);
 
     ServiceResponse<Boolean> executeCrawlTask(long crawlTaskId);
 }

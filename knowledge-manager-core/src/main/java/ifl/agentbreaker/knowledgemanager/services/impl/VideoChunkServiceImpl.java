@@ -4,8 +4,8 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import ifl.agentbreaker.knowledgemanager.domain.dtos.requests.ImportVideoRequest;
 import ifl.agentbreaker.knowledgemanager.domain.dtos.requests.PageVideoChunksRequest;
 import ifl.agentbreaker.knowledgemanager.domain.dtos.responses.PageResponse;
-import ifl.agentbreaker.knowledgemanager.domain.dtos.responses.VideoChunkDetailResponse;
-import ifl.agentbreaker.knowledgemanager.domain.dtos.responses.VideoChunkResponse;
+import ifl.agentbreaker.knowledgemanager.domain.dtos.responses.VideoChunkDetail;
+import ifl.agentbreaker.knowledgemanager.domain.dtos.responses.VideoChunkAbstract;
 import ifl.agentbreaker.knowledgemanager.domain.entities.pg.VideoChunkBase;
 import ifl.agentbreaker.knowledgemanager.mappers.VideoChunkMapper;
 import ifl.agentbreaker.knowledgemanager.services.VideoChunkService;
@@ -32,13 +32,13 @@ public class VideoChunkServiceImpl extends ServiceImpl<VideoChunkMapper, VideoCh
     }
 
     @Override
-    public ServiceResponse<PageResponse<VideoChunkResponse>> pageVideoChunks(PageVideoChunksRequest request)
+    public ServiceResponse<PageResponse<VideoChunkAbstract>> pageVideoChunks(PageVideoChunksRequest request)
     {
         return null;
     }
 
     @Override
-    public ServiceResponse<VideoChunkDetailResponse> getVideoChunkDetail(long chunkId)
+    public ServiceResponse<VideoChunkDetail> getVideoChunkDetail(long chunkId)
     {
         return null;
     }

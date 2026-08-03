@@ -2,9 +2,9 @@ package ifl.agentbreaker.knowledgemanager.services.impl;
 
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import ifl.agentbreaker.knowledgemanager.domain.dtos.requests.*;
-import ifl.agentbreaker.knowledgemanager.domain.dtos.responses.CrawlTaskExecutionResponse;
-import ifl.agentbreaker.knowledgemanager.domain.dtos.responses.CrawlTaskDetailResponse;
-import ifl.agentbreaker.knowledgemanager.domain.dtos.responses.CrawlTaskResponse;
+import ifl.agentbreaker.knowledgemanager.domain.dtos.responses.CrawlTaskExecutionDetail;
+import ifl.agentbreaker.knowledgemanager.domain.dtos.responses.CrawlTaskDetail;
+import ifl.agentbreaker.knowledgemanager.domain.dtos.responses.CrawlTaskAbstract;
 import ifl.agentbreaker.knowledgemanager.domain.dtos.responses.PageResponse;
 import ifl.agentbreaker.knowledgemanager.domain.entities.pg.CrawlTask;
 import ifl.agentbreaker.knowledgemanager.mappers.CrawlTaskMapper;
@@ -44,19 +44,19 @@ public class CrawlTaskServiceImpl extends ServiceImpl<CrawlTaskMapper, CrawlTask
     }
 
     @Override
-    public ServiceResponse<CrawlTaskDetailResponse> getCrawlTaskDetail(long crawlTaskId)
+    public ServiceResponse<CrawlTaskDetail> getCrawlTaskDetail(long crawlTaskId)
     {
         return null;
     }
 
     @Override
-    public ServiceResponse<PageResponse<CrawlTaskExecutionResponse>> pageCrawlTaskExecutions(PageCrawlTaskExecutionsRequest request)
+    public ServiceResponse<PageResponse<CrawlTaskExecutionDetail>> pageCrawlTaskExecutions(PageCrawlTaskExecutionsRequest request)
     {
         return null;
     }
 
     @Override
-    public ServiceResponse<PageResponse<CrawlTaskResponse>> pageCrawlTasks(PageCrawlTasksRequest request)
+    public ServiceResponse<PageResponse<CrawlTaskAbstract>> pageCrawlTasks(PageCrawlTasksRequest request)
     {
         return null;
     }

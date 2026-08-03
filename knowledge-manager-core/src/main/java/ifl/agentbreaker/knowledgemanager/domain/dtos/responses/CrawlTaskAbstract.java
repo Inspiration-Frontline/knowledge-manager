@@ -3,10 +3,9 @@ package ifl.agentbreaker.knowledgemanager.domain.dtos.responses;
 import lombok.Data;
 
 import java.time.Instant;
-import java.util.List;
 
 @Data
-public class CrawlTaskDetailResponse
+public class CrawlTaskAbstract
 {
 
     /**
@@ -25,32 +24,12 @@ public class CrawlTaskDetailResponse
     private String taskName;
 
     /**
-     * 起始URL列表
-     */
-    private List<String> startUrls;
-
-    /**
-     * Cron表达式
-     */
-    private String cronExpression;
-
-    /**
-     * 最大爬取深度
-     */
-    private int maxDepth;
-
-    /**
-     * 任务状态（启用/停用）
+     * 任务状态 - 是否启用
      */
     private boolean enabled;
 
     /**
-     * 创建时间
-     */
-    private Instant creationTime;
-
-    /**
-     * 修改时间
+     * 更新时间
      */
     private Instant modificationTime;
 

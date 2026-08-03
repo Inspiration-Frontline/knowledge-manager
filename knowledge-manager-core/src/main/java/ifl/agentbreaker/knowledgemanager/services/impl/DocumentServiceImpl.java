@@ -2,6 +2,7 @@ package ifl.agentbreaker.knowledgemanager.services.impl;
 
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import ifl.agentbreaker.knowledgemanager.domain.dtos.requests.PageDocumentChunksRequest;
+import ifl.agentbreaker.knowledgemanager.domain.dtos.requests.PageDocumentImageChunksRequest;
 import ifl.agentbreaker.knowledgemanager.domain.dtos.requests.PageDocumentsRequest;
 import ifl.agentbreaker.knowledgemanager.domain.dtos.requests.UploadDocumentsRequest;
 import ifl.agentbreaker.knowledgemanager.domain.dtos.responses.*;
@@ -39,13 +40,13 @@ public class DocumentServiceImpl extends ServiceImpl<DocumentMapper, Document> i
     }
 
     @Override
-    public ServiceResponse<PageResponse<DocumentResponse>> pageDocuments(PageDocumentsRequest request)
+    public ServiceResponse<PageResponse<DocumentAbstract>> pageDocuments(PageDocumentsRequest request)
     {
         return null;
     }
 
     @Override
-    public ServiceResponse<DocumentDetailResponse> getDocumentDetail(long documentId)
+    public ServiceResponse<DocumentDetail> getDocumentDetail(long documentId)
     {
         return null;
     }
@@ -57,13 +58,25 @@ public class DocumentServiceImpl extends ServiceImpl<DocumentMapper, Document> i
     }
 
     @Override
-    public ServiceResponse<PageResponse<DocumentChunkResponse>> pageDocumentChunks(PageDocumentChunksRequest request)
+    public ServiceResponse<PageResponse<DocumentChunkAbstract>> pageDocumentChunks(PageDocumentChunksRequest request)
     {
         return null;
     }
 
     @Override
-    public ServiceResponse<DocumentChunkDetailResponse> getDocumentChunkDetail(long chunkId)
+    public ServiceResponse<DocumentChunkDetail> getDocumentChunkDetail(long chunkId)
+    {
+        return null;
+    }
+
+    @Override
+    public ServiceResponse<PageResponse<DocumentImageChunkAbstract>> pageDocumentImageChunks(PageDocumentImageChunksRequest request)
+    {
+        return null;
+    }
+
+    @Override
+    public ServiceResponse<DocumentImageChunkDetail> getDocumentImageChunkDetail(long chunkId)
     {
         return null;
     }
