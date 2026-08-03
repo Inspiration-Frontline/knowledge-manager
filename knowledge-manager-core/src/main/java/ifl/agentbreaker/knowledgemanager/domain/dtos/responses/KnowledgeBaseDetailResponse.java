@@ -51,12 +51,12 @@ public class KnowledgeBaseDetailResponse
     /**
      * Chunk大小
      */
-    private int minChunkSize;
+    private Integer minChunkSize;
 
     /**
      * Chunk重叠
      */
-    private int chunkOverlap;
+    private Integer chunkOverlap;
 
     /**
      * 创建时间

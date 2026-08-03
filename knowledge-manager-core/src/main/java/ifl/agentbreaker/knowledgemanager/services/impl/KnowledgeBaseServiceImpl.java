@@ -50,7 +50,7 @@ public class KnowledgeBaseServiceImpl extends ServiceImpl<KnowledgeBaseMapper, K
                     KnowledgeManagerBusinessError.ERROR_BAD_REQUEST.getMessage());
         }
         if (!request.getChunkType()
-                    .isUserCreatable())
+                    .isUserManaged())
         {
             return ServiceResponse.buildErrorResponse(
                     KnowledgeManagerBusinessError.ERROR_BAD_REQUEST.getCode(),
@@ -105,18 +105,18 @@ public class KnowledgeBaseServiceImpl extends ServiceImpl<KnowledgeBaseMapper, K
         // Insert document image knowledge base metadata into database.
         if (request.getChunkType() == ChunkType.DOCUMENT)
         {
-            KnowledgeBaseMetadata imageKnowledgeBaseMetaData = new KnowledgeBaseMetadata();
-            imageKnowledgeBaseMetaData.setCreatorId(userId);
-            imageKnowledgeBaseMetaData.setModifierId(userId);
-            imageKnowledgeBaseMetaData.setBizId(request.getBizId());
-            imageKnowledgeBaseMetaData.setName(request.getName()
-                                                      .toLowerCase());
-            imageKnowledgeBaseMetaData.setChunkType(ChunkType.DOCUMENT_IMAGE);
-            imageKnowledgeBaseMetaData.setDescription(request.getDescription());
-            imageKnowledgeBaseMetaData.setEmbeddingModel(request.getDocumentImageEmbeddingModel());
-            imageKnowledgeBaseMetaData.setEmbeddingDimensionCount(request.getDocumentImageEmbeddingDimensionCount());
-            imageKnowledgeBaseMetaData.setEnabled(true);
-            knowledgeBaseMapper.insert(imageKnowledgeBaseMetaData);
+            KnowledgeBaseMetadata documentImageKnowledgeBaseMetadata = new KnowledgeBaseMetadata();
+            documentImageKnowledgeBaseMetadata.setCreatorId(userId);
+            documentImageKnowledgeBaseMetadata.setModifierId(userId);
+            documentImageKnowledgeBaseMetadata.setBizId(request.getBizId());
+            documentImageKnowledgeBaseMetadata.setName(request.getName()
+                                                              .toLowerCase());
+            documentImageKnowledgeBaseMetadata.setChunkType(ChunkType.DOCUMENT_IMAGE);
+            documentImageKnowledgeBaseMetadata.setDescription(request.getDescription());
+            documentImageKnowledgeBaseMetadata.setEmbeddingModel(request.getDocumentImageEmbeddingModel());
+            documentImageKnowledgeBaseMetadata.setEmbeddingDimensionCount(request.getDocumentImageEmbeddingDimensionCount());
+            documentImageKnowledgeBaseMetadata.setEnabled(true);
+            knowledgeBaseMapper.insert(documentImageKnowledgeBaseMetadata);
 
             createChunkTable(ChunkType.DOCUMENT_IMAGE,
                     request.getName()
@@ -232,12 +232,14 @@ public class KnowledgeBaseServiceImpl extends ServiceImpl<KnowledgeBaseMapper, K
         jdbcTemplate.execute(sql);
     }
 
+    // 文档图片只允许单独更改model和dimensions，其他字段包括bizId和enabled都只能跟文档共进退
     @Override
     public ServiceResponse<Boolean> updateKnowledgeBase(UpdateKnowledgeBaseRequest request)
     {
         return null;
     }
 
+    // 文档图片不允许删
     @Override
     public ServiceResponse<Boolean> deleteKnowledgeBase(long knowledgeBaseId)
     {
@@ -245,6 +247,7 @@ public class KnowledgeBaseServiceImpl extends ServiceImpl<KnowledgeBaseMapper, K
     }
 
     @Override
+    @Transactional
     public ServiceResponse<Boolean> updateKnowledgeBaseEnableStatus(UpdateKnowledgeBaseEnableStatusRequest request)
     {
         // Validate whether it already exists.
@@ -257,10 +260,33 @@ public class KnowledgeBaseServiceImpl extends ServiceImpl<KnowledgeBaseMapper, K
             );
         }
 
+        // Validate request parameters.
+        if (!knowledgeBaseMetadata.getChunkType()
+                                  .isUserManaged())
+        {
+            return ServiceResponse.buildErrorResponse(
+                    KnowledgeManagerBusinessError.ERROR_BAD_REQUEST.getCode(),
+                    KnowledgeManagerBusinessError.ERROR_BAD_REQUEST.getMessage()
+            );
+        }
+
         // Update knowledge base metadata's 'enabled' field.
+        long userId = UserContext.getCurrentUserId();
         knowledgeBaseMetadata.setEnabled(request.isEnabled());
-        knowledgeBaseMetadata.setModifierId(UserContext.getCurrentUserId());
+        knowledgeBaseMetadata.setModifierId(userId);
         knowledgeBaseMapper.updateById(knowledgeBaseMetadata);
+
+        // Update document image knowledge base metadata's 'enabled' field.
+        if (knowledgeBaseMetadata.getChunkType() == ChunkType.DOCUMENT)
+        {
+            KnowledgeBaseMetadata documentImageKnowledgeBaseMetadata = knowledgeBaseMapper.selectOne(Wrappers.lambdaQuery(KnowledgeBaseMetadata.class)
+                                                                                                             .eq(KnowledgeBaseMetadata::getBizId, knowledgeBaseMetadata.getBizId())
+                                                                                                             .eq(KnowledgeBaseMetadata::getName, knowledgeBaseMetadata.getName())
+                                                                                                             .eq(KnowledgeBaseMetadata::getChunkType, ChunkType.DOCUMENT_IMAGE));
+            documentImageKnowledgeBaseMetadata.setEnabled(request.isEnabled());
+            documentImageKnowledgeBaseMetadata.setModifierId(userId);
+            knowledgeBaseMapper.updateById(documentImageKnowledgeBaseMetadata);
+        }
 
         return ServiceResponse.buildSuccessResponse(true);
     }
