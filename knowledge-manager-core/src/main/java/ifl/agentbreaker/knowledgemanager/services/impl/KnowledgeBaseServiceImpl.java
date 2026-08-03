@@ -339,7 +339,43 @@ public class KnowledgeBaseServiceImpl extends ServiceImpl<KnowledgeBaseMapper, K
     @Override
     public ServiceResponse<KnowledgeBaseDetailResponse> getKnowledgeBaseDetail(long knowledgeBaseId)
     {
-        return null;
+        // Validate whether it already exists.
+        KnowledgeBaseMetadata knowledgeBaseMetadata = knowledgeBaseMapper.selectById(knowledgeBaseId);
+        if (knowledgeBaseMetadata == null)
+        {
+            return ServiceResponse.buildErrorResponse(
+                    KnowledgeManagerBusinessError.KNOWLEDGE_BASE_NOT_EXISTS.getCode(),
+                    KnowledgeManagerBusinessError.KNOWLEDGE_BASE_NOT_EXISTS.getMessage()
+            );
+        }
+
+        // Construct response data.
+        KnowledgeBaseDetailResponse response = new KnowledgeBaseDetailResponse();
+        response.setKnowledgeBaseId(knowledgeBaseMetadata.getId());
+        response.setBizId(knowledgeBaseMetadata.getBizId());
+        response.setName(knowledgeBaseMetadata.getName());
+        response.setChunkType(knowledgeBaseMetadata.getChunkType());
+        response.setDescription(knowledgeBaseMetadata.getDescription());
+        response.setEmbeddingModel(knowledgeBaseMetadata.getEmbeddingModel());
+        response.setEmbeddingDimensionCount(knowledgeBaseMetadata.getEmbeddingDimensionCount());
+        response.setEnabled(knowledgeBaseMetadata.isEnabled());
+        if (knowledgeBaseMetadata.getChunkType() == ChunkType.DOCUMENT)
+        {
+            response.setMinChunkSize(knowledgeBaseMetadata.getMinChunkSize());
+            response.setChunkOverlap(knowledgeBaseMetadata.getChunkOverlap());
+        }
+        response.setCreationTime(knowledgeBaseMetadata.getCreationTime());
+        response.setModificationTime(knowledgeBaseMetadata.getModificationTime());
+        response.setChunkCount(selectChunkCount(knowledgeBaseMetadata.getChunkType(), knowledgeBaseMetadata.getName(), knowledgeBaseMetadata.getBizId()));
+        return ServiceResponse.buildSuccessResponse(response);
+    }
+
+    private long selectChunkCount(ChunkType chunkType, String name, long bizId)
+    {
+        String sql = "select count(*) from " + chunkType.toString().toLowerCase(Locale.ROOT) + "_" + name + "_" + bizId;
+
+        Long count = jdbcTemplate.queryForObject(sql, Long.class);
+        return count == null ? 0 : count;
     }
 
     @Override

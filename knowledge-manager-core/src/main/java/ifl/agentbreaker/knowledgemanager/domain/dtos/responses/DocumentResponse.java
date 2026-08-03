@@ -50,7 +50,7 @@ public class DocumentResponse
     /**
      * chunk数量
      */
-    private Integer chunkCount;
+    private long chunkCount;
 
     /**
      * 上传时间

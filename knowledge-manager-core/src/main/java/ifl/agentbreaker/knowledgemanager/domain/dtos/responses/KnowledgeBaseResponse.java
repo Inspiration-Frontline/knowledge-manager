@@ -51,5 +51,5 @@ public class KnowledgeBaseResponse
     /**
      * chunk数量
      */
-    private int chunkCount;
+    private long chunkCount;
 }

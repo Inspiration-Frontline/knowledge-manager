@@ -61,7 +61,7 @@ public class Document extends EntityBase
     /**
      * Chunk数量 - 解析后生成了多少chunk
      */
-    private Integer chunkCount;
+    private long chunkCount;
 
     /**
      * 最后一次成功完成解析的时间 - 方便排查解析问题
