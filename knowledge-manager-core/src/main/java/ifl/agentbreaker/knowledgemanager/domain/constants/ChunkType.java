@@ -2,24 +2,12 @@ package ifl.agentbreaker.knowledgemanager.domain.constants;
 
 public enum ChunkType
 {
-    DOCUMENT(true),
+    DOCUMENT,
 
-    DOCUMENT_IMAGE(false),
+    DOCUMENT_IMAGE,
 
-    IMAGE(true),
+    IMAGE,
 
-    VIDEO(true),
+    VIDEO,
     ;
-
-    private final boolean userManaged;
-
-    ChunkType(boolean userManaged)
-    {
-        this.userManaged = userManaged;
-    }
-
-    public boolean isUserManaged()
-    {
-        return userManaged;
-    }
 }

@@ -49,8 +49,7 @@ public class KnowledgeBaseServiceImpl extends ServiceImpl<KnowledgeBaseMapper, K
                     KnowledgeManagerBusinessError.ERROR_BAD_REQUEST.getCode(),
                     KnowledgeManagerBusinessError.ERROR_BAD_REQUEST.getMessage());
         }
-        if (!request.getChunkType()
-                    .isUserManaged())
+        if (request.getChunkType() == ChunkType.DOCUMENT_IMAGE)
         {
             return ServiceResponse.buildErrorResponse(
                     KnowledgeManagerBusinessError.ERROR_BAD_REQUEST.getCode(),
@@ -102,6 +101,13 @@ public class KnowledgeBaseServiceImpl extends ServiceImpl<KnowledgeBaseMapper, K
         knowledgeBaseMetadata.setChunkOverlap(request.getChunkOverlap());
         knowledgeBaseMapper.insert(knowledgeBaseMetadata);
 
+        // Dynamically create chunk table accordingly.
+        createChunkTable(request.getChunkType(),
+                request.getName()
+                       .toLowerCase(Locale.ROOT),
+                request.getBizId(),
+                request.getEmbeddingDimensionCount());
+
         // Insert document image knowledge base metadata into database.
         if (request.getChunkType() == ChunkType.DOCUMENT)
         {
@@ -118,19 +124,13 @@ public class KnowledgeBaseServiceImpl extends ServiceImpl<KnowledgeBaseMapper, K
             documentImageKnowledgeBaseMetadata.setEnabled(true);
             knowledgeBaseMapper.insert(documentImageKnowledgeBaseMetadata);
 
+            // Dynamically create document image chunk table if chunk type is document.
             createChunkTable(ChunkType.DOCUMENT_IMAGE,
                     request.getName()
                            .toLowerCase(Locale.ROOT),
                     request.getBizId(),
                     request.getDocumentImageEmbeddingDimensionCount());
         }
-
-        // Dynamically create two chunk tables according to 'chunkType'.
-        createChunkTable(request.getChunkType(),
-                request.getName()
-                       .toLowerCase(Locale.ROOT),
-                request.getBizId(),
-                request.getEmbeddingDimensionCount());
 
         return ServiceResponse.buildSuccessResponse(true);
     }
@@ -239,11 +239,57 @@ public class KnowledgeBaseServiceImpl extends ServiceImpl<KnowledgeBaseMapper, K
         return null;
     }
 
-    // 文档图片不允许删
     @Override
+    @Transactional
     public ServiceResponse<Boolean> deleteKnowledgeBase(long knowledgeBaseId)
     {
-        return null;
+        // Validate whether it already exists.
+        KnowledgeBaseMetadata knowledgeBaseMetadata = knowledgeBaseMapper.selectById(knowledgeBaseId);
+        if (knowledgeBaseMetadata == null)
+        {
+            return ServiceResponse.buildErrorResponse(
+                    KnowledgeManagerBusinessError.KNOWLEDGE_BASE_NOT_EXISTS.getCode(),
+                    KnowledgeManagerBusinessError.KNOWLEDGE_BASE_NOT_EXISTS.getMessage()
+            );
+        }
+
+        // Validate request parameters.
+        if (knowledgeBaseMetadata.getChunkType() == ChunkType.DOCUMENT_IMAGE)
+        {
+            return ServiceResponse.buildErrorResponse(
+                    KnowledgeManagerBusinessError.ERROR_BAD_REQUEST.getCode(),
+                    KnowledgeManagerBusinessError.ERROR_BAD_REQUEST.getMessage()
+            );
+        }
+
+        // Delete knowledge base metadata.
+        knowledgeBaseMapper.deleteById(knowledgeBaseId);
+
+        // Drop chunk table accordingly.
+        dropChunkTable(knowledgeBaseMetadata.getChunkType(), knowledgeBaseMetadata.getName(), knowledgeBaseMetadata.getBizId());
+
+        // Delete document image knowledge base metadata.
+        if (knowledgeBaseMetadata.getChunkType() == ChunkType.DOCUMENT)
+        {
+            KnowledgeBaseMetadata documentImageKnowledgeBaseMetadata = knowledgeBaseMapper.selectOne(Wrappers.lambdaQuery(KnowledgeBaseMetadata.class)
+                                                                                                             .eq(KnowledgeBaseMetadata::getBizId, knowledgeBaseMetadata.getBizId())
+                                                                                                             .eq(KnowledgeBaseMetadata::getName, knowledgeBaseMetadata.getName())
+                                                                                                             .eq(KnowledgeBaseMetadata::getChunkType, ChunkType.DOCUMENT_IMAGE));
+            knowledgeBaseMapper.deleteById(documentImageKnowledgeBaseMetadata);
+
+            // Drop document image chunk table if chunk type is document.
+            dropChunkTable(ChunkType.DOCUMENT_IMAGE, documentImageKnowledgeBaseMetadata.getName(), documentImageKnowledgeBaseMetadata.getBizId());
+        }
+
+
+        return ServiceResponse.buildSuccessResponse(true);
+    }
+
+    private void dropChunkTable(ChunkType chunkType, String name, long bizId)
+    {
+        String sql = "drop table if exists " + chunkType.toString().toLowerCase(Locale.ROOT) + "_" + name + "_" + bizId;
+
+        jdbcTemplate.execute(sql);
     }
 
     @Override
@@ -261,8 +307,7 @@ public class KnowledgeBaseServiceImpl extends ServiceImpl<KnowledgeBaseMapper, K
         }
 
         // Validate request parameters.
-        if (!knowledgeBaseMetadata.getChunkType()
-                                  .isUserManaged())
+        if (knowledgeBaseMetadata.getChunkType() == ChunkType.DOCUMENT_IMAGE)
         {
             return ServiceResponse.buildErrorResponse(
                     KnowledgeManagerBusinessError.ERROR_BAD_REQUEST.getCode(),
