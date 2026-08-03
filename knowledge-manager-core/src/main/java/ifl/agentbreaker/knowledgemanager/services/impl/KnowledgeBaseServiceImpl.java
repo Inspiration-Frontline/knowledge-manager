@@ -21,6 +21,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import stark.dataworks.boot.web.ServiceResponse;
 
+import java.util.Locale;
+
 @Service
 public class KnowledgeBaseServiceImpl extends ServiceImpl<KnowledgeBaseMapper, KnowledgeBaseMetadata> implements KnowledgeBaseService
 {
@@ -47,8 +49,21 @@ public class KnowledgeBaseServiceImpl extends ServiceImpl<KnowledgeBaseMapper, K
                     KnowledgeManagerBusinessError.ERROR_BAD_REQUEST.getCode(),
                     KnowledgeManagerBusinessError.ERROR_BAD_REQUEST.getMessage());
         }
+        if (!request.getChunkType().isUserCreatable())
+        {
+            return ServiceResponse.buildErrorResponse(
+                    KnowledgeManagerBusinessError.ERROR_BAD_REQUEST.getCode(),
+                    KnowledgeManagerBusinessError.ERROR_BAD_REQUEST.getMessage()
+            );
+        }
         if (request.getChunkType() == ChunkType.DOCUMENT &&
-                (request.getMinChunkSize() == null || request.getChunkOverlap() == null))
+                (request.getMinChunkSize() == null
+                        || request.getChunkOverlap() == null
+                        || request.getDocumentImageEmbeddingModel() == null
+                        || request.getDocumentImageEmbeddingModel()
+                                  .isBlank()
+                        || request.getDocumentImageEmbeddingDimensionCount() == null
+                        || request.getDocumentImageEmbeddingDimensionCount() <= 0))
         {
             return ServiceResponse.buildErrorResponse(
                     KnowledgeManagerBusinessError.ERROR_BAD_REQUEST.getCode(),
@@ -59,7 +74,8 @@ public class KnowledgeBaseServiceImpl extends ServiceImpl<KnowledgeBaseMapper, K
         // Validate whether it already exists.
         Long count = knowledgeBaseMapper.selectCount(Wrappers.lambdaQuery(KnowledgeBaseMetadata.class)
                                                              .eq(KnowledgeBaseMetadata::getBizId, request.getBizId())
-                                                             .eq(KnowledgeBaseMetadata::getName, request.getName().toLowerCase())
+                                                             .eq(KnowledgeBaseMetadata::getName, request.getName()
+                                                                                                        .toLowerCase(Locale.ROOT))
                                                              .eq(KnowledgeBaseMetadata::getChunkType, request.getChunkType()));
         if (count > 0)
         {
@@ -75,7 +91,7 @@ public class KnowledgeBaseServiceImpl extends ServiceImpl<KnowledgeBaseMapper, K
         knowledgeBaseMetadata.setModifierId(userId);
         knowledgeBaseMetadata.setBizId(request.getBizId());
         knowledgeBaseMetadata.setName(request.getName()
-                                             .toLowerCase());
+                                             .toLowerCase(Locale.ROOT));
         knowledgeBaseMetadata.setChunkType(request.getChunkType());
         knowledgeBaseMetadata.setDescription(request.getDescription());
         knowledgeBaseMetadata.setEmbeddingModel(request.getEmbeddingModel());
@@ -85,9 +101,35 @@ public class KnowledgeBaseServiceImpl extends ServiceImpl<KnowledgeBaseMapper, K
         knowledgeBaseMetadata.setChunkOverlap(request.getChunkOverlap());
         knowledgeBaseMapper.insert(knowledgeBaseMetadata);
 
+        // Insert document image knowledge base metadata into database.
+        if (request.getChunkType() == ChunkType.DOCUMENT)
+        {
+            KnowledgeBaseMetadata imageKnowledgeBaseMetaData = new KnowledgeBaseMetadata();
+            imageKnowledgeBaseMetaData.setCreatorId(userId);
+            imageKnowledgeBaseMetaData.setModifierId(userId);
+            imageKnowledgeBaseMetaData.setBizId(request.getBizId());
+            imageKnowledgeBaseMetaData.setName(request.getName()
+                                                      .toLowerCase());
+            imageKnowledgeBaseMetaData.setChunkType(ChunkType.DOCUMENT_IMAGE);
+            imageKnowledgeBaseMetaData.setDescription(request.getDescription());
+            imageKnowledgeBaseMetaData.setEmbeddingModel(request.getDocumentImageEmbeddingModel());
+            imageKnowledgeBaseMetaData.setEmbeddingDimensionCount(request.getDocumentImageEmbeddingDimensionCount());
+            imageKnowledgeBaseMetaData.setEnabled(true);
+            knowledgeBaseMapper.insert(imageKnowledgeBaseMetaData);
+
+            createChunkTable(ChunkType.DOCUMENT_IMAGE,
+                    request.getName()
+                           .toLowerCase(Locale.ROOT),
+                    request.getBizId(),
+                    request.getDocumentImageEmbeddingDimensionCount());
+        }
+
         // Dynamically create two chunk tables according to 'chunkType'.
-        createChunkTable(request.getChunkType(), request.getName()
-                                                        .toLowerCase(), request.getBizId(), request.getEmbeddingDimensionCount());
+        createChunkTable(request.getChunkType(),
+                request.getName()
+                       .toLowerCase(Locale.ROOT),
+                request.getBizId(),
+                request.getEmbeddingDimensionCount());
 
         return ServiceResponse.buildSuccessResponse(true);
     }
@@ -98,96 +140,92 @@ public class KnowledgeBaseServiceImpl extends ServiceImpl<KnowledgeBaseMapper, K
 
         switch (chunkType)
         {
-            case DOCUMENT ->
-            {
-                sql =
-                        """
-                                create table %s
-                                (
-                                    id bigserial primary key,
-                                    creator_id bigint,
-                                    creation_time timestamptz default current_timestamp,
-                                    modifier_id bigint,
-                                    modification_time timestamptz default current_timestamp,
-                                    knowledge_base_id bigint,
-                                    chunk_abstract text,
-                                    token_count int,
-                                    embedding vector(%d),
-                                    document_id bigint,
-                                    chunk_number int,
-                                    section_number varchar(255),
-                                    chunk_content text,
-                                    previous_chunk_abstract text,
-                                    next_chunk_abstract text,
-                                    referenced_image_chunk_ids jsonb
-                                );
-                                
-                                create table %s
-                                (
-                                    id bigserial primary key,
-                                    creator_id bigint,
-                                    creation_time timestamptz default current_timestamp,
-                                    modifier_id bigint,
-                                    modification_time timestamptz default current_timestamp,
-                                    knowledge_base_id bigint,
-                                    chunk_abstract text,
-                                    token_count int,
-                                    embedding vector(%d),
-                                    document_id bigint,
-                                    width int,
-                                    height int,
-                                    section_number varchar(255),
-                                    description text,
-                                    name_in_oss varchar(255)
-                                );           
-                                """.formatted("document_" + name + "_" + bizId, embeddingDimensionCount,
-                                "document_image_" + name + "_" + bizId, embeddingDimensionCount);
-            }
-            case IMAGE ->
-            {
-                sql =
-                        """
-                                create table %s
-                                (
-                                    id bigserial primary key,
-                                    creator_id bigint,
-                                    creation_time timestamptz default current_timestamp,
-                                    modifier_id bigint,
-                                    modification_time timestamptz default current_timestamp,
-                                    knowledge_base_id bigint,
-                                    chunk_abstract text,
-                                    token_count int,
-                                    embedding vector(%d),
-                                    width int,
-                                    height int,
-                                    image_url varchar(255)
-                                );                
-                                """.formatted("image_" + name + "_" + bizId, embeddingDimensionCount);
-            }
-            case VIDEO ->
-            {
-                sql =
-                        """
-                                create table %s
-                                (
-                                    id bigserial primary key,
-                                    creator_id bigint,
-                                    creation_time timestamptz default current_timestamp,
-                                    modifier_id bigint,
-                                    modification_time timestamptz default current_timestamp,
-                                    knowledge_base_id bigint,
-                                    chunk_abstract text,
-                                    token_count int,
-                                    embedding vector(%d),
-                                    video_url varchar(255),
-                                    width int,
-                                    height int,
-                                    title varchar(255),
-                                    introduction text,
-                                    tags jsonb
-                                );                
-                                """.formatted("video_" + name + "_" + bizId, embeddingDimensionCount);
-            }
+            case DOCUMENT -> sql =
+                    """
+                            create table %s
+                            (
+                                id bigserial primary key,
+                                creator_id bigint,
+                                creation_time timestamptz default current_timestamp,
+                                modifier_id bigint,
+                                modification_time timestamptz default current_timestamp,
+                                knowledge_base_id bigint,
+                                chunk_abstract text,
+                                token_count int,
+                                embedding vector(%d),
+                                document_id bigint,
+                                chunk_number int,
+                                section_number varchar(1024),
+                                chunk_content text,
+                                previous_chunk_abstract text,
+                                next_chunk_abstract text,
+                                referenced_image_chunk_ids jsonb
+                            );
+                            """.formatted(chunkType.toString()
+                                                   .toLowerCase(Locale.ROOT) + "_" + name + "_" + bizId, embeddingDimensionCount);
+            case DOCUMENT_IMAGE -> sql =
+                    """
+                            create table %s
+                            (
+                                id bigserial primary key,
+                                creator_id bigint,
+                                creation_time timestamptz default current_timestamp,
+                                modifier_id bigint,
+                                modification_time timestamptz default current_timestamp,
+                                knowledge_base_id bigint,
+                                chunk_abstract text,
+                                token_count int,
+                                embedding vector(%d),
+                                document_id bigint,
+                                width int,
+                                height int,
+                                section_number varchar(1024),
+                                description text,
+                                name_in_oss varchar(1024)
+                            );
+                            """.formatted(chunkType.toString()
+                                                   .toLowerCase(Locale.ROOT) + "_" + name + "_" + bizId, embeddingDimensionCount);
+            case IMAGE -> sql =
+                    """
+                            create table %s
+                            (
+                                id bigserial primary key,
+                                creator_id bigint,
+                                creation_time timestamptz default current_timestamp,
+                                modifier_id bigint,
+                                modification_time timestamptz default current_timestamp,
+                                knowledge_base_id bigint,
+                                chunk_abstract text,
+                                token_count int,
+                                embedding vector(%d),
+                                width int,
+                                height int,
+                                image_url varchar(1024)
+                            );                
+                            """.formatted(chunkType.toString()
+                                                   .toLowerCase(Locale.ROOT) + "_" + name + "_" + bizId, embeddingDimensionCount);
+            case VIDEO -> sql =
+                    """
+                            create table %s
+                            (
+                                id bigserial primary key,
+                                creator_id bigint,
+                                creation_time timestamptz default current_timestamp,
+                                modifier_id bigint,
+                                modification_time timestamptz default current_timestamp,
+                                knowledge_base_id bigint,
+                                chunk_abstract text,
+                                token_count int,
+                                embedding vector(%d),
+                                video_url varchar(1024),
+                                width int,
+                                height int,
+                                title varchar(1024),
+                                introduction text,
+                                tags jsonb
+                            );                
+                            """.formatted(chunkType.toString()
+                                                   .toLowerCase(Locale.ROOT) + "_" + name + "_" + bizId, embeddingDimensionCount);
         }
 
         jdbcTemplate.execute(sql);

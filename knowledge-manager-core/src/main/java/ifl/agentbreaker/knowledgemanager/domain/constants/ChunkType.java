@@ -10,4 +10,9 @@ public enum ChunkType
 
     VIDEO,
     ;
+
+    public boolean isUserCreatable()
+    {
+        return this == DOCUMENT || this == IMAGE || this == VIDEO;
+    }
 }

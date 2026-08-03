@@ -37,12 +37,22 @@ public class UpdateKnowledgeBaseRequest
     private int embeddingDimensionCount;
 
     /**
+     * 文档图片Embedding模型
+     */
+    private String documentImageEmbeddingModel;
+
+    /**
+     * 文档图片chunk的向量维度数量
+     */
+    private Integer documentImageEmbeddingDimensionCount;
+
+    /**
      * Chunk大小
      */
-    private int minChunkSize;
+    private Integer minChunkSize;
 
     /**
      * Chunk重叠长度
      */
-    private int chunkOverlap;
+    private Integer chunkOverlap;
 }

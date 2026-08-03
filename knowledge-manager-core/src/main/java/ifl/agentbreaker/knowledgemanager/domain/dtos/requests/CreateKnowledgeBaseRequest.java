@@ -43,6 +43,16 @@ public class CreateKnowledgeBaseRequest
     private int embeddingDimensionCount;
 
     /**
+     * 文档图片Embedding模型
+     */
+    private String documentImageEmbeddingModel;
+
+    /**
+     * 文档图片chunk的向量维度数量
+     */
+    private Integer documentImageEmbeddingDimensionCount;
+
+    /**
      * Chunk大小
      */
     private Integer minChunkSize;
