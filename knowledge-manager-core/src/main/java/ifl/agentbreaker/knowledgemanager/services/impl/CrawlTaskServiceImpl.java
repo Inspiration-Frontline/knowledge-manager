@@ -169,7 +169,29 @@ public class CrawlTaskServiceImpl extends ServiceImpl<CrawlTaskMapper, CrawlTask
     @Override
     public ServiceResponse<Boolean> deleteCrawlTask(long crawlTaskId)
     {
-        return null;
+        // Validate request parameters.
+        if (crawlTaskId <= 0)
+        {
+            return ServiceResponse.buildErrorResponse(
+                    KnowledgeManagerBusinessError.ERROR_BAD_REQUEST.getCode(),
+                    KnowledgeManagerBusinessError.ERROR_BAD_REQUEST.getMessage()
+            );
+        }
+
+        // Validate whether it already exists.
+        CrawlTask crawlTask = crawlTaskMapper.selectById(crawlTaskId);
+        if (crawlTask == null)
+        {
+            return ServiceResponse.buildErrorResponse(
+                    KnowledgeManagerBusinessError.CRAWL_TASK_NOT_EXISTS.getCode(),
+                    KnowledgeManagerBusinessError.CRAWL_TASK_NOT_EXISTS.getMessage()
+            );
+        }
+
+        // Delete crawl task.
+        crawlTaskMapper.deleteById(crawlTaskId);
+
+        return ServiceResponse.buildSuccessResponse(true);
     }
 
     @Override

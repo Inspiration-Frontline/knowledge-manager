@@ -491,6 +491,15 @@ public class KnowledgeBaseServiceImpl extends ServiceImpl<KnowledgeBaseMapper, K
     @Transactional
     public ServiceResponse<Boolean> deleteKnowledgeBase(long knowledgeBaseId)
     {
+        // Validate request parameters.
+        if (knowledgeBaseId <= 0)
+        {
+            return ServiceResponse.buildErrorResponse(
+                    KnowledgeManagerBusinessError.ERROR_BAD_REQUEST.getCode(),
+                    KnowledgeManagerBusinessError.ERROR_BAD_REQUEST.getMessage()
+            );
+        }
+
         // Validate whether it already exists.
         KnowledgeBaseMetadata knowledgeBaseMetadata = knowledgeBaseMapper.selectById(knowledgeBaseId);
         if (knowledgeBaseMetadata == null)
