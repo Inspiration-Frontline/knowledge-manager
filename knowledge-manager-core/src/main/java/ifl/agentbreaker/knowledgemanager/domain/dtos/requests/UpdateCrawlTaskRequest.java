@@ -35,6 +35,6 @@ public class UpdateCrawlTaskRequest
      */
     @Min(0)
     @Max(100)
-    private int maxDepth;
+    private Integer maxDepth;
 
 }

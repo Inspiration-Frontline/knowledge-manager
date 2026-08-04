@@ -50,24 +50,13 @@ public class KnowledgeBaseServiceImpl extends ServiceImpl<KnowledgeBaseMapper, K
     public ServiceResponse<Boolean> createKnowledgeBase(CreateKnowledgeBaseRequest request)
     {
         // Validate request parameters.
-        if (request.getBizId() <= 0)
+        if (request.getBizId() <= 0 ||
+                request.getEmbeddingDimensionCount() <= 0 ||
+                request.getChunkType() == ChunkType.DOCUMENT_IMAGE)
         {
             return ServiceResponse.buildErrorResponse(
                     KnowledgeManagerBusinessError.ERROR_BAD_REQUEST.getCode(),
                     KnowledgeManagerBusinessError.ERROR_BAD_REQUEST.getMessage());
-        }
-        if (request.getEmbeddingDimensionCount() <= 0)
-        {
-            return ServiceResponse.buildErrorResponse(
-                    KnowledgeManagerBusinessError.ERROR_BAD_REQUEST.getCode(),
-                    KnowledgeManagerBusinessError.ERROR_BAD_REQUEST.getMessage());
-        }
-        if (request.getChunkType() == ChunkType.DOCUMENT_IMAGE)
-        {
-            return ServiceResponse.buildErrorResponse(
-                    KnowledgeManagerBusinessError.ERROR_BAD_REQUEST.getCode(),
-                    KnowledgeManagerBusinessError.ERROR_BAD_REQUEST.getMessage()
-            );
         }
         if (request.getChunkType() == ChunkType.DOCUMENT &&
                 (request.getMinChunkSize() == null
@@ -217,14 +206,16 @@ public class KnowledgeBaseServiceImpl extends ServiceImpl<KnowledgeBaseMapper, K
                                                     .toLowerCase(Locale.ROOT));
         else
             newKnowledgeBaseMetadata.setName(knowledgeBaseMetadata.getName());
-        // Validate new chunk table name is not existing.
+
         if (newKnowledgeBaseMetadata.getBizId() != knowledgeBaseMetadata.getBizId() ||
                 !Objects.equals(newKnowledgeBaseMetadata.getName(), knowledgeBaseMetadata.getName()))
         {
+            // Validate new chunk table name is not existing.
             Long count = knowledgeBaseMapper.selectCount(Wrappers.lambdaQuery(KnowledgeBaseMetadata.class)
                                                                  .eq(KnowledgeBaseMetadata::getChunkType, knowledgeBaseMetadata.getChunkType())
                                                                  .eq(KnowledgeBaseMetadata::getName, newKnowledgeBaseMetadata.getName())
-                                                                 .eq(KnowledgeBaseMetadata::getBizId, newKnowledgeBaseMetadata.getBizId()));
+                                                                 .eq(KnowledgeBaseMetadata::getBizId, newKnowledgeBaseMetadata.getBizId())
+                                                                 .ne(KnowledgeBaseMetadata::getId, newKnowledgeBaseMetadata.getId()));
             if (count > 0)
             {
                 return ServiceResponse.buildErrorResponse(
@@ -394,7 +385,8 @@ public class KnowledgeBaseServiceImpl extends ServiceImpl<KnowledgeBaseMapper, K
                 Long count = knowledgeBaseMapper.selectCount(Wrappers.lambdaQuery(KnowledgeBaseMetadata.class)
                                                                      .eq(KnowledgeBaseMetadata::getChunkType, knowledgeBaseMetadata.getChunkType())
                                                                      .eq(KnowledgeBaseMetadata::getName, newKnowledgeBaseMetadata.getName())
-                                                                     .eq(KnowledgeBaseMetadata::getBizId, newKnowledgeBaseMetadata.getBizId()));
+                                                                     .eq(KnowledgeBaseMetadata::getBizId, newKnowledgeBaseMetadata.getBizId())
+                                                                     .ne(KnowledgeBaseMetadata::getId, newKnowledgeBaseMetadata.getId()));
                 if (count > 0)
                 {
                     return ServiceResponse.buildErrorResponse(
