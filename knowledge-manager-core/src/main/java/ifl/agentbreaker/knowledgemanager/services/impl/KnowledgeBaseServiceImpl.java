@@ -5,10 +5,7 @@ import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import ifl.agentbreaker.knowledgemanager.domain.constants.ChunkType;
-import ifl.agentbreaker.knowledgemanager.domain.dtos.requests.CreateKnowledgeBaseRequest;
-import ifl.agentbreaker.knowledgemanager.domain.dtos.requests.PageKnowledgeBasesRequest;
-import ifl.agentbreaker.knowledgemanager.domain.dtos.requests.UpdateKnowledgeBaseEnableStatusRequest;
-import ifl.agentbreaker.knowledgemanager.domain.dtos.requests.UpdateKnowledgeBaseRequest;
+import ifl.agentbreaker.knowledgemanager.domain.dtos.requests.*;
 import ifl.agentbreaker.knowledgemanager.domain.dtos.responses.KnowledgeBaseDetail;
 import ifl.agentbreaker.knowledgemanager.domain.dtos.responses.KnowledgeBaseAbstract;
 import ifl.agentbreaker.knowledgemanager.domain.dtos.responses.PageResponse;
@@ -78,6 +75,7 @@ public class KnowledgeBaseServiceImpl extends ServiceImpl<KnowledgeBaseMapper, K
         Long count = knowledgeBaseMapper.selectCount(Wrappers.lambdaQuery(KnowledgeBaseMetadata.class)
                                                              .eq(KnowledgeBaseMetadata::getBizId, request.getBizId())
                                                              .eq(KnowledgeBaseMetadata::getName, request.getName()
+                                                                                                        .strip()
                                                                                                         .toLowerCase(Locale.ROOT))
                                                              .eq(KnowledgeBaseMetadata::getChunkType, request.getChunkType()));
         if (count > 0)
@@ -94,6 +92,7 @@ public class KnowledgeBaseServiceImpl extends ServiceImpl<KnowledgeBaseMapper, K
         knowledgeBaseMetadata.setModifierId(userId);
         knowledgeBaseMetadata.setBizId(request.getBizId());
         knowledgeBaseMetadata.setName(request.getName()
+                                             .strip()
                                              .toLowerCase(Locale.ROOT));
         knowledgeBaseMetadata.setChunkType(request.getChunkType());
         knowledgeBaseMetadata.setDescription(request.getDescription());
@@ -106,9 +105,9 @@ public class KnowledgeBaseServiceImpl extends ServiceImpl<KnowledgeBaseMapper, K
 
         // Dynamically create chunk table accordingly.
         createChunkTable(request.getChunkType(),
-                request.getName()
-                       .toLowerCase(Locale.ROOT),
-                request.getBizId(),
+                buildChunkTableName(request.getChunkType(), request.getName()
+                                                                   .strip()
+                                                                   .toLowerCase(Locale.ROOT), request.getBizId()),
                 request.getEmbeddingDimensionCount());
 
         // Insert document image knowledge base metadata into database.
@@ -119,6 +118,7 @@ public class KnowledgeBaseServiceImpl extends ServiceImpl<KnowledgeBaseMapper, K
             documentImageKnowledgeBaseMetadata.setModifierId(userId);
             documentImageKnowledgeBaseMetadata.setBizId(request.getBizId());
             documentImageKnowledgeBaseMetadata.setName(request.getName()
+                                                              .strip()
                                                               .toLowerCase());
             documentImageKnowledgeBaseMetadata.setChunkType(ChunkType.DOCUMENT_IMAGE);
             documentImageKnowledgeBaseMetadata.setDescription(request.getDescription());
@@ -129,16 +129,16 @@ public class KnowledgeBaseServiceImpl extends ServiceImpl<KnowledgeBaseMapper, K
 
             // Dynamically create document image chunk table if chunk type is document.
             createChunkTable(ChunkType.DOCUMENT_IMAGE,
-                    request.getName()
-                           .toLowerCase(Locale.ROOT),
-                    request.getBizId(),
+                    buildChunkTableName(ChunkType.DOCUMENT_IMAGE, request.getName()
+                                                                         .strip()
+                                                                         .toLowerCase(Locale.ROOT), request.getBizId()),
                     request.getDocumentImageEmbeddingDimensionCount());
         }
 
         return ServiceResponse.buildSuccessResponse(true);
     }
 
-    private void createChunkTable(ChunkType chunkType, String name, long bizId, int embeddingDimensionCount)
+    private void createChunkTable(ChunkType chunkType, String chunkTableName, int embeddingDimensionCount)
     {
         String sql = "";
 
@@ -165,8 +165,7 @@ public class KnowledgeBaseServiceImpl extends ServiceImpl<KnowledgeBaseMapper, K
                                 next_chunk_abstract text,
                                 referenced_image_chunk_ids jsonb
                             );
-                            """.formatted(chunkType.toString()
-                                                   .toLowerCase(Locale.ROOT) + "_" + name + "_" + bizId, embeddingDimensionCount);
+                            """.formatted(chunkTableName, embeddingDimensionCount);
             case DOCUMENT_IMAGE -> sql =
                     """
                             create table %s
@@ -187,8 +186,7 @@ public class KnowledgeBaseServiceImpl extends ServiceImpl<KnowledgeBaseMapper, K
                                 description text,
                                 name_in_oss varchar(1024)
                             );
-                            """.formatted(chunkType.toString()
-                                                   .toLowerCase(Locale.ROOT) + "_" + name + "_" + bizId, embeddingDimensionCount);
+                            """.formatted(chunkTableName, embeddingDimensionCount);
             case IMAGE -> sql =
                     """
                             create table %s
@@ -206,8 +204,7 @@ public class KnowledgeBaseServiceImpl extends ServiceImpl<KnowledgeBaseMapper, K
                                 height int,
                                 image_url varchar(1024)
                             );                
-                            """.formatted(chunkType.toString()
-                                                   .toLowerCase(Locale.ROOT) + "_" + name + "_" + bizId, embeddingDimensionCount);
+                            """.formatted(chunkTableName, embeddingDimensionCount);
             case VIDEO -> sql =
                     """
                             create table %s
@@ -228,8 +225,7 @@ public class KnowledgeBaseServiceImpl extends ServiceImpl<KnowledgeBaseMapper, K
                                 introduction text,
                                 tags jsonb
                             );                
-                            """.formatted(chunkType.toString()
-                                                   .toLowerCase(Locale.ROOT) + "_" + name + "_" + bizId, embeddingDimensionCount);
+                            """.formatted(chunkTableName, embeddingDimensionCount);
         }
 
         jdbcTemplate.execute(sql);
@@ -237,7 +233,108 @@ public class KnowledgeBaseServiceImpl extends ServiceImpl<KnowledgeBaseMapper, K
 
     // 文档图片只允许单独更改model和dimensions，其他字段包括bizId和enabled都只能跟文档共进退
     @Override
+    @Transactional
     public ServiceResponse<Boolean> updateKnowledgeBase(UpdateKnowledgeBaseRequest request)
+    {
+        // Validate whether it already exists.
+        KnowledgeBaseMetadata knowledgeBaseMetadata = knowledgeBaseMapper.selectById(request.getKnowledgeBaseId());
+        if (knowledgeBaseMetadata == null)
+        {
+            return ServiceResponse.buildErrorResponse(
+                    KnowledgeManagerBusinessError.KNOWLEDGE_BASE_NOT_EXISTS.getCode(),
+                    KnowledgeManagerBusinessError.KNOWLEDGE_BASE_NOT_EXISTS.getMessage()
+            );
+        }
+
+        // Validate request parameters.
+        ChunkType chunkType = knowledgeBaseMetadata.getChunkType();
+        if (chunkType == ChunkType.DOCUMENT || chunkType == ChunkType.DOCUMENT_IMAGE)
+        {
+            return ServiceResponse.buildErrorResponse(
+                    KnowledgeManagerBusinessError.ERROR_BAD_REQUEST.getCode(),
+                    KnowledgeManagerBusinessError.ERROR_BAD_REQUEST.getMessage()
+            );
+        }
+        if ((request.getBizId() != null && request.getBizId() <= 0) ||
+                (request.getName() != null && request.getName()
+                                                     .isBlank()) ||
+                (request.getDescription() != null && request.getDescription()
+                                                            .isBlank()) ||
+                (request.getEmbeddingModel() != null && request.getEmbeddingModel()
+                                                               .isBlank()) ||
+                (request.getEmbeddingDimensionCount() != null && request.getEmbeddingDimensionCount() <= 0))
+        {
+            return ServiceResponse.buildErrorResponse(
+                    KnowledgeManagerBusinessError.ERROR_BAD_REQUEST.getCode(),
+                    KnowledgeManagerBusinessError.ERROR_BAD_REQUEST.getMessage()
+            );
+        }
+
+        // Update knowledge base metadata.
+        KnowledgeBaseMetadata newKnowledgeBaseMetadata = new KnowledgeBaseMetadata();
+        newKnowledgeBaseMetadata.setId(request.getKnowledgeBaseId());
+        if (request.getBizId() != null)
+            newKnowledgeBaseMetadata.setBizId(request.getBizId());
+        else
+            newKnowledgeBaseMetadata.setBizId(knowledgeBaseMetadata.getBizId());
+        if (request.getName() != null)
+            newKnowledgeBaseMetadata.setName(request.getName()
+                                                    .strip()
+                                                    .toLowerCase(Locale.ROOT));
+        else
+            newKnowledgeBaseMetadata.setName(knowledgeBaseMetadata.getName());
+        newKnowledgeBaseMetadata.setDescription(request.getDescription());
+        newKnowledgeBaseMetadata.setEmbeddingModel(request.getEmbeddingModel());
+        if (request.getEmbeddingDimensionCount() != null)
+            newKnowledgeBaseMetadata.setEmbeddingDimensionCount(request.getEmbeddingDimensionCount());
+        else
+            newKnowledgeBaseMetadata.setEmbeddingDimensionCount(knowledgeBaseMetadata.getEmbeddingDimensionCount());
+        newKnowledgeBaseMetadata.setModifierId(UserContext.getCurrentUserId());
+        knowledgeBaseMapper.updateById(newKnowledgeBaseMetadata);
+
+        // If 'bizId' or 'name' changes, rename related chunk tables accordingly.
+        if (newKnowledgeBaseMetadata.getBizId() != knowledgeBaseMetadata.getBizId() ||
+                !newKnowledgeBaseMetadata.getName()
+                                         .equals(knowledgeBaseMetadata.getName()))
+        {
+            renameChunkTable(buildChunkTableName(knowledgeBaseMetadata.getChunkType(), knowledgeBaseMetadata.getName(), knowledgeBaseMetadata.getBizId()),
+                    buildChunkTableName(knowledgeBaseMetadata.getChunkType(), newKnowledgeBaseMetadata.getName(), newKnowledgeBaseMetadata.getBizId()));
+        }
+        // TODO
+        // If 'embeddingModel' or 'embeddingDimensionCount' changes, regenerate each chunk's 'embedding'.
+        // (If document image knowledge base update itself individually, it can only change these two fields)
+
+
+        return ServiceResponse.buildSuccessResponse(true);
+    }
+
+    private void renameChunkTable(String oldChunkTableName, String newChunkTableName)
+    {
+        String sql = "alter table if exists " + oldChunkTableName + " rename to " + newChunkTableName;
+
+        jdbcTemplate.execute(sql);
+    }
+
+    @Override
+    @Transactional
+    public ServiceResponse<Boolean> updateDocumentKnowledgeBase(UpdateDocumentKnowledgeBaseRequest request)
+    {
+        // If 'bizId' or 'name' changes, rename related chunk tables accordingly.
+        // (Document image knowledge base follows document knowledge base)
+
+        // If 'minChunkSize' or 'chunkOverlap' changes,
+        // create new table to 'xx_new' →
+        // reparse documents and convert chunk data →
+        // rename old table to 'xx_old' →
+        // rename new table to 'xx' →
+        // drop old table.
+        // (Only document knowledge base can change these two fields)
+        return null;
+    }
+
+    @Override
+    @Transactional
+    public ServiceResponse<Boolean> updateDocumentImageKnowledgeBase(UpdateDocumentImageKnowledgeBaseRequest request)
     {
         return null;
     }
@@ -269,7 +366,7 @@ public class KnowledgeBaseServiceImpl extends ServiceImpl<KnowledgeBaseMapper, K
         knowledgeBaseMapper.deleteById(knowledgeBaseId);
 
         // Drop chunk table accordingly.
-        dropChunkTable(knowledgeBaseMetadata.getChunkType(), knowledgeBaseMetadata.getName(), knowledgeBaseMetadata.getBizId());
+        dropChunkTable(buildChunkTableName(knowledgeBaseMetadata.getChunkType(), knowledgeBaseMetadata.getName(), knowledgeBaseMetadata.getBizId()));
 
         // Delete document image knowledge base metadata.
         if (knowledgeBaseMetadata.getChunkType() == ChunkType.DOCUMENT)
@@ -281,17 +378,16 @@ public class KnowledgeBaseServiceImpl extends ServiceImpl<KnowledgeBaseMapper, K
             knowledgeBaseMapper.deleteById(documentImageKnowledgeBaseMetadata);
 
             // Drop document image chunk table if chunk type is document.
-            dropChunkTable(ChunkType.DOCUMENT_IMAGE, documentImageKnowledgeBaseMetadata.getName(), documentImageKnowledgeBaseMetadata.getBizId());
+            dropChunkTable(buildChunkTableName(ChunkType.DOCUMENT_IMAGE, documentImageKnowledgeBaseMetadata.getName(), documentImageKnowledgeBaseMetadata.getBizId()));
         }
 
 
         return ServiceResponse.buildSuccessResponse(true);
     }
 
-    private void dropChunkTable(ChunkType chunkType, String name, long bizId)
+    private void dropChunkTable(String chunkTableName)
     {
-        String sql = "drop table if exists " + chunkType.toString()
-                                                        .toLowerCase(Locale.ROOT) + "_" + name + "_" + bizId;
+        String sql = "drop table if exists " + chunkTableName;
 
         jdbcTemplate.execute(sql);
     }
@@ -370,14 +466,13 @@ public class KnowledgeBaseServiceImpl extends ServiceImpl<KnowledgeBaseMapper, K
         }
         response.setCreationTime(knowledgeBaseMetadata.getCreationTime());
         response.setModificationTime(knowledgeBaseMetadata.getModificationTime());
-        response.setChunkCount(selectChunkCount(knowledgeBaseMetadata.getChunkType(), knowledgeBaseMetadata.getName(), knowledgeBaseMetadata.getBizId()));
+        response.setChunkCount(selectChunkCount(buildChunkTableName(knowledgeBaseMetadata.getChunkType(), knowledgeBaseMetadata.getName(), knowledgeBaseMetadata.getBizId())));
         return ServiceResponse.buildSuccessResponse(response);
     }
 
-    private long selectChunkCount(ChunkType chunkType, String name, long bizId)
+    private long selectChunkCount(String chunkTableName)
     {
-        String sql = "select count(*) from " + chunkType.toString()
-                                                        .toLowerCase(Locale.ROOT) + "_" + name + "_" + bizId;
+        String sql = "select count(*) from " + chunkTableName;
 
         Long count = jdbcTemplate.queryForObject(sql, Long.class);
         return count == null ? 0 : count;
@@ -391,6 +486,7 @@ public class KnowledgeBaseServiceImpl extends ServiceImpl<KnowledgeBaseMapper, K
                                                                          .eq(request.getBizId() != null, KnowledgeBaseMetadata::getBizId, request.getBizId())
                                                                          .like(request.getKeyword() != null && !request.getKeyword()
                                                                                                                        .isBlank(), KnowledgeBaseMetadata::getName, request.getKeyword()
+                                                                                                                                                                          .strip()
                                                                                                                                                                           .toLowerCase(Locale.ROOT))
                                                                          .eq(request.getChunkType() != null, KnowledgeBaseMetadata::getChunkType, request.getChunkType())
                                                                          .eq(request.getEnabled() != null, KnowledgeBaseMetadata::isEnabled, request.getEnabled())
@@ -425,5 +521,11 @@ public class KnowledgeBaseServiceImpl extends ServiceImpl<KnowledgeBaseMapper, K
         response.setRecords(records);
 
         return ServiceResponse.buildSuccessResponse(response);
+    }
+
+    private String buildChunkTableName(ChunkType chunkType, String name, long bizId)
+    {
+        return chunkType.toString()
+                        .toLowerCase(Locale.ROOT) + "_" + name + "_" + bizId;
     }
 }

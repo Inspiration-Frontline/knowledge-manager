@@ -1,9 +1,6 @@
 package ifl.agentbreaker.knowledgemanager.controllers;
 
-import ifl.agentbreaker.knowledgemanager.domain.dtos.requests.CreateKnowledgeBaseRequest;
-import ifl.agentbreaker.knowledgemanager.domain.dtos.requests.UpdateKnowledgeBaseRequest;
-import ifl.agentbreaker.knowledgemanager.domain.dtos.requests.PageKnowledgeBasesRequest;
-import ifl.agentbreaker.knowledgemanager.domain.dtos.requests.UpdateKnowledgeBaseEnableStatusRequest;
+import ifl.agentbreaker.knowledgemanager.domain.dtos.requests.*;
 import ifl.agentbreaker.knowledgemanager.domain.dtos.responses.KnowledgeBaseDetail;
 import ifl.agentbreaker.knowledgemanager.domain.dtos.responses.KnowledgeBaseAbstract;
 import ifl.agentbreaker.knowledgemanager.domain.dtos.responses.PageResponse;
@@ -34,14 +31,36 @@ public class KnowledgeBaseController
     }
 
     /**
-     * 修改知识库
+     * 修改知识库元数据（Image和Video）
      * @param request
      * @return
      */
     @PutMapping("/update")
-    public ServiceResponse<Boolean> updateKnowledgeBase(@RequestBody @Valid UpdateKnowledgeBaseRequest request)
+    public ServiceResponse<Boolean> updateKnowledgeBase(@RequestBody UpdateKnowledgeBaseRequest request)
     {
         return knowledgeBaseService.updateKnowledgeBase(request);
+    }
+
+    /**
+     * 修改文档知识库元数据（Document）
+     * @param request
+     * @return
+     */
+    @PutMapping("/document/update")
+    public ServiceResponse<Boolean> updateDocumentKnowledgeBase(@RequestBody UpdateDocumentKnowledgeBaseRequest request)
+    {
+        return knowledgeBaseService.updateDocumentKnowledgeBase(request);
+    }
+
+    /**
+     * 修改文档图片知识库的embeddingModel或embeddingDimensionCount（DocumentImage）
+     * @param request
+     * @return
+     */
+    @PutMapping("/document-image/update")
+    public ServiceResponse<Boolean> updateDocumentImageKnowledgeBase(@RequestBody UpdateDocumentImageKnowledgeBaseRequest request)
+    {
+        return knowledgeBaseService.updateDocumentImageKnowledgeBase(request);
     }
 
     /**

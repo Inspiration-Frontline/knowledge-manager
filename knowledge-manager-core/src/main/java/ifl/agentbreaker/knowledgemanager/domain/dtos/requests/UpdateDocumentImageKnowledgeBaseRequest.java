@@ -2,29 +2,13 @@ package ifl.agentbreaker.knowledgemanager.domain.dtos.requests;
 
 import lombok.Data;
 
-
 @Data
-public class UpdateKnowledgeBaseRequest
+public class UpdateDocumentImageKnowledgeBaseRequest
 {
     /**
-     * 知识库ID
+     * 文档图片知识库ID
      */
     private long knowledgeBaseId;
-
-    /**
-     * 所属业务ID
-     */
-    private Long bizId;
-
-    /**
-     * 知识库名称
-     */
-    private String name;
-
-    /**
-     * 知识库描述
-     */
-    private String description;
 
     /**
      * Embedding模型

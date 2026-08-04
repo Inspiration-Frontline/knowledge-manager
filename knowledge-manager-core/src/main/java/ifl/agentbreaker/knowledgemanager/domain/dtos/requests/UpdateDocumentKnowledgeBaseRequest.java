@@ -2,12 +2,11 @@ package ifl.agentbreaker.knowledgemanager.domain.dtos.requests;
 
 import lombok.Data;
 
-
 @Data
-public class UpdateKnowledgeBaseRequest
+public class UpdateDocumentKnowledgeBaseRequest
 {
     /**
-     * 知识库ID
+     * 文档知识库ID
      */
     private long knowledgeBaseId;
 
@@ -35,4 +34,14 @@ public class UpdateKnowledgeBaseRequest
      * 向量维度
      */
     private Integer embeddingDimensionCount;
+
+    /**
+     * Chunk大小
+     */
+    private Integer minChunkSize;
+
+    /**
+     * Chunk重叠长度
+     */
+    private Integer chunkOverlap;
 }

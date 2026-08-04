@@ -1,10 +1,7 @@
 package ifl.agentbreaker.knowledgemanager.services;
 
 import com.baomidou.mybatisplus.extension.service.IService;
-import ifl.agentbreaker.knowledgemanager.domain.dtos.requests.CreateKnowledgeBaseRequest;
-import ifl.agentbreaker.knowledgemanager.domain.dtos.requests.PageKnowledgeBasesRequest;
-import ifl.agentbreaker.knowledgemanager.domain.dtos.requests.UpdateKnowledgeBaseEnableStatusRequest;
-import ifl.agentbreaker.knowledgemanager.domain.dtos.requests.UpdateKnowledgeBaseRequest;
+import ifl.agentbreaker.knowledgemanager.domain.dtos.requests.*;
 import ifl.agentbreaker.knowledgemanager.domain.dtos.responses.KnowledgeBaseDetail;
 import ifl.agentbreaker.knowledgemanager.domain.dtos.responses.KnowledgeBaseAbstract;
 import ifl.agentbreaker.knowledgemanager.domain.dtos.responses.PageResponse;
@@ -17,6 +14,10 @@ public interface KnowledgeBaseService extends IService<KnowledgeBaseMetadata>
     ServiceResponse<Boolean> createKnowledgeBase(@Valid CreateKnowledgeBaseRequest request);
 
     ServiceResponse<Boolean> updateKnowledgeBase(@Valid UpdateKnowledgeBaseRequest request);
+
+    ServiceResponse<Boolean> updateDocumentKnowledgeBase(UpdateDocumentKnowledgeBaseRequest request);
+
+    ServiceResponse<Boolean> updateDocumentImageKnowledgeBase(UpdateDocumentImageKnowledgeBaseRequest request);
 
     ServiceResponse<Boolean> deleteKnowledgeBase(long knowledgeBaseId);
 
