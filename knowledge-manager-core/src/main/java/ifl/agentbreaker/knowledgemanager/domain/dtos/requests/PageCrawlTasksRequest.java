@@ -21,5 +21,5 @@ public class PageCrawlTasksRequest extends PageRequest
     /**
      * 爬虫任务状态 - 是否启用
      */
-    private boolean enabled;
+    private Boolean enabled;
 }

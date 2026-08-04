@@ -7,6 +7,7 @@ import ifl.agentbreaker.knowledgemanager.domain.dtos.responses.SyncTaskDetail;
 import ifl.agentbreaker.knowledgemanager.domain.dtos.responses.SyncTaskExecutionDetail;
 import ifl.agentbreaker.knowledgemanager.domain.dtos.responses.SyncTaskAbstract;
 import ifl.agentbreaker.knowledgemanager.domain.entities.pg.SyncTask;
+import ifl.agentbreaker.knowledgemanager.mappers.SyncTaskExecutionMapper;
 import ifl.agentbreaker.knowledgemanager.mappers.SyncTaskMapper;
 import ifl.agentbreaker.knowledgemanager.services.SyncTaskService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,6 +19,9 @@ public class SyncTaskServiceImpl extends ServiceImpl<SyncTaskMapper, SyncTask> i
 {
     @Autowired
     private SyncTaskMapper syncTaskMapper;
+
+    @Autowired
+    private SyncTaskExecutionMapper syncTaskExecutionMapper;
 
     @Override
     public ServiceResponse<Boolean> createSyncTask(CreateSyncTaskRequest request)

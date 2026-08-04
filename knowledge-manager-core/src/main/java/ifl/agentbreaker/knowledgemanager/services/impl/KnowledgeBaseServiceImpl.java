@@ -589,6 +589,15 @@ public class KnowledgeBaseServiceImpl extends ServiceImpl<KnowledgeBaseMapper, K
     @Override
     public ServiceResponse<KnowledgeBaseDetail> getKnowledgeBaseDetail(long knowledgeBaseId)
     {
+        // Validate request parameters.
+        if (knowledgeBaseId <= 0)
+        {
+            return ServiceResponse.buildErrorResponse(
+                    KnowledgeManagerBusinessError.ERROR_BAD_REQUEST.getCode(),
+                    KnowledgeManagerBusinessError.ERROR_BAD_REQUEST.getMessage()
+            );
+        }
+
         // Validate whether it already exists.
         KnowledgeBaseMetadata knowledgeBaseMetadata = knowledgeBaseMapper.selectById(knowledgeBaseId);
         if (knowledgeBaseMetadata == null)
@@ -617,6 +626,7 @@ public class KnowledgeBaseServiceImpl extends ServiceImpl<KnowledgeBaseMapper, K
         response.setCreationTime(knowledgeBaseMetadata.getCreationTime());
         response.setModificationTime(knowledgeBaseMetadata.getModificationTime());
         response.setChunkCount(selectChunkCount(buildChunkTableName(knowledgeBaseMetadata.getChunkType(), knowledgeBaseMetadata.getName(), knowledgeBaseMetadata.getBizId())));
+
         return ServiceResponse.buildSuccessResponse(response);
     }
 
@@ -624,19 +634,15 @@ public class KnowledgeBaseServiceImpl extends ServiceImpl<KnowledgeBaseMapper, K
     public ServiceResponse<PageResponse<KnowledgeBaseAbstract>> pageKnowledgeBases(PageKnowledgeBasesRequest request)
     {
         // Construct query conditions accordingly.
-        LambdaQueryWrapper<KnowledgeBaseMetadata> queryWrapper = null;
-        if (request.getKeyword() != null)
-        {
-            queryWrapper = Wrappers.lambdaQuery(KnowledgeBaseMetadata.class)
-                                   .eq(request.getBizId() != null, KnowledgeBaseMetadata::getBizId, request.getBizId())
-                                   .like(request.getKeyword() != null && !request.getKeyword()
-                                                                                 .isBlank(), KnowledgeBaseMetadata::getName, request.getKeyword()
-                                                                                                                                    .strip()
-                                                                                                                                    .toLowerCase(Locale.ROOT))
-                                   .eq(request.getChunkType() != null, KnowledgeBaseMetadata::getChunkType, request.getChunkType())
-                                   .eq(request.getEnabled() != null, KnowledgeBaseMetadata::isEnabled, request.getEnabled())
-                                   .orderByDesc(KnowledgeBaseMetadata::getModificationTime);
-        }
+        LambdaQueryWrapper<KnowledgeBaseMetadata> queryWrapper = Wrappers.lambdaQuery(KnowledgeBaseMetadata.class)
+                                                                         .eq(request.getBizId() != null, KnowledgeBaseMetadata::getBizId, request.getBizId())
+                                                                         .like(request.getKeyword() != null && !request.getKeyword()
+                                                                                                                       .isBlank(), KnowledgeBaseMetadata::getName, request.getKeyword()
+                                                                                                                                                                          .strip()
+                                                                                                                                                                          .toLowerCase(Locale.ROOT))
+                                                                         .eq(request.getChunkType() != null, KnowledgeBaseMetadata::getChunkType, request.getChunkType())
+                                                                         .eq(request.getEnabled() != null, KnowledgeBaseMetadata::isEnabled, request.getEnabled())
+                                                                         .orderByDesc(KnowledgeBaseMetadata::getModificationTime);
         Page<KnowledgeBaseMetadata> page = new Page<>(request.getPageNumber(), request.getPageSize());
 
         // Select by page.
