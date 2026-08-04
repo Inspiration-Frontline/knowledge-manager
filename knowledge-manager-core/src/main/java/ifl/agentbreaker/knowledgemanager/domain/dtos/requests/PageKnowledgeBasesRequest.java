@@ -19,12 +19,12 @@ public class PageKnowledgeBasesRequest extends PageRequest
     private String keyword;
 
     /**
-     * 知识库chunk类型 - 文档 or 图片 or 视频
+     * 知识库chunk类型 - 文档 or 文档图片 or 图片 or 视频
      */
     private ChunkType chunkType;
 
     /**
      * 状态
      */
-    private boolean enabled;
+    private Boolean enabled;
 }

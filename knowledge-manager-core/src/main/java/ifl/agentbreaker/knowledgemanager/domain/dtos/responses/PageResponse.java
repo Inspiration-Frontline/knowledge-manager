@@ -15,7 +15,7 @@ public class PageResponse<T>
     /**
      * 当前页
      */
-    private int pageNum;
+    private int pageNumber;
 
     /**
      * 每页数量

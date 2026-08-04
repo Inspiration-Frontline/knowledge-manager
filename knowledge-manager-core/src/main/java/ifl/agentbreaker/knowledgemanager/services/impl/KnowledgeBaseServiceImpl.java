@@ -1,6 +1,8 @@
 package ifl.agentbreaker.knowledgemanager.services.impl;
 
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import ifl.agentbreaker.knowledgemanager.domain.constants.ChunkType;
 import ifl.agentbreaker.knowledgemanager.domain.dtos.requests.CreateKnowledgeBaseRequest;
@@ -21,6 +23,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import stark.dataworks.boot.web.ServiceResponse;
 
+import java.util.List;
 import java.util.Locale;
 
 @Service
@@ -287,7 +290,8 @@ public class KnowledgeBaseServiceImpl extends ServiceImpl<KnowledgeBaseMapper, K
 
     private void dropChunkTable(ChunkType chunkType, String name, long bizId)
     {
-        String sql = "drop table if exists " + chunkType.toString().toLowerCase(Locale.ROOT) + "_" + name + "_" + bizId;
+        String sql = "drop table if exists " + chunkType.toString()
+                                                        .toLowerCase(Locale.ROOT) + "_" + name + "_" + bizId;
 
         jdbcTemplate.execute(sql);
     }
@@ -372,7 +376,8 @@ public class KnowledgeBaseServiceImpl extends ServiceImpl<KnowledgeBaseMapper, K
 
     private long selectChunkCount(ChunkType chunkType, String name, long bizId)
     {
-        String sql = "select count(*) from " + chunkType.toString().toLowerCase(Locale.ROOT) + "_" + name + "_" + bizId;
+        String sql = "select count(*) from " + chunkType.toString()
+                                                        .toLowerCase(Locale.ROOT) + "_" + name + "_" + bizId;
 
         Long count = jdbcTemplate.queryForObject(sql, Long.class);
         return count == null ? 0 : count;
@@ -381,7 +386,44 @@ public class KnowledgeBaseServiceImpl extends ServiceImpl<KnowledgeBaseMapper, K
     @Override
     public ServiceResponse<PageResponse<KnowledgeBaseAbstract>> pageKnowledgeBases(PageKnowledgeBasesRequest request)
     {
+        // Construct query conditions accordingly.
+        LambdaQueryWrapper<KnowledgeBaseMetadata> queryWrapper = Wrappers.lambdaQuery(KnowledgeBaseMetadata.class)
+                                                                         .eq(request.getBizId() != null, KnowledgeBaseMetadata::getBizId, request.getBizId())
+                                                                         .like(request.getKeyword() != null && !request.getKeyword()
+                                                                                                                       .isBlank(), KnowledgeBaseMetadata::getName, request.getKeyword()
+                                                                                                                                                                          .toLowerCase(Locale.ROOT))
+                                                                         .eq(request.getChunkType() != null, KnowledgeBaseMetadata::getChunkType, request.getChunkType())
+                                                                         .eq(request.getEnabled() != null, KnowledgeBaseMetadata::isEnabled, request.getEnabled())
+                                                                         .orderByDesc(KnowledgeBaseMetadata::getModificationTime);
+        Page<KnowledgeBaseMetadata> page = new Page<>(request.getPageNumber(), request.getPageSize());
 
-        return null;
+        // Select by page.
+        Page<KnowledgeBaseMetadata> result = knowledgeBaseMapper.selectPage(page, queryWrapper);
+
+        // Convert 'KnowledgeBaseMetadata' to 'KnowledgeBaseAbstract'.
+        List<KnowledgeBaseAbstract> records = result.getRecords()
+                                                    .stream()
+                                                    .map(metadata ->
+                                                    {
+                                                        KnowledgeBaseAbstract anAbstract = new KnowledgeBaseAbstract();
+                                                        anAbstract.setKnowledgeBaseId(metadata.getId());
+                                                        anAbstract.setBizId(metadata.getBizId());
+                                                        anAbstract.setName(metadata.getName());
+                                                        anAbstract.setChunkType(metadata.getChunkType());
+                                                        anAbstract.setEmbeddingModel(metadata.getEmbeddingModel());
+                                                        anAbstract.setEnabled(metadata.isEnabled());
+                                                        anAbstract.setModificationTime(metadata.getModificationTime());
+                                                        return anAbstract;
+                                                    })
+                                                    .toList();
+
+        // Build page response.
+        PageResponse<KnowledgeBaseAbstract> response = new PageResponse<>();
+        response.setTotal(result.getTotal());
+        response.setPageNumber((int) result.getCurrent());
+        response.setPageSize((int) result.getSize());
+        response.setRecords(records);
+
+        return ServiceResponse.buildSuccessResponse(response);
     }
 }

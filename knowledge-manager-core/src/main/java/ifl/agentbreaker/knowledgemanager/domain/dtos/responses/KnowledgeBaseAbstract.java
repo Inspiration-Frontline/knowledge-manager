@@ -29,11 +29,6 @@ public class KnowledgeBaseAbstract
     private ChunkType chunkType;
 
     /**
-     * 描述
-     */
-    private String description;
-
-    /**
      * Embedding模型
      */
     private String embeddingModel;
