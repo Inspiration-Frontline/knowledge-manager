@@ -157,19 +157,12 @@ public class KnowledgeBaseServiceImpl extends ServiceImpl<KnowledgeBaseMapper, K
     @Transactional
     public ServiceResponse<Boolean> updateKnowledgeBase(UpdateKnowledgeBaseRequest request)
     {
-        // Validate whether it already exists.
-        KnowledgeBaseMetadata knowledgeBaseMetadata = knowledgeBaseMapper.selectById(request.getKnowledgeBaseId());
-        if (knowledgeBaseMetadata == null)
-        {
-            return ServiceResponse.buildErrorResponse(
-                    KnowledgeManagerBusinessError.KNOWLEDGE_BASE_NOT_EXISTS.getCode(),
-                    KnowledgeManagerBusinessError.KNOWLEDGE_BASE_NOT_EXISTS.getMessage()
-            );
-        }
-
         // Validate request parameters.
-        ChunkType chunkType = knowledgeBaseMetadata.getChunkType();
-        if (chunkType == ChunkType.DOCUMENT || chunkType == ChunkType.DOCUMENT_IMAGE)
+        if (request.getBizId() == null &&
+                request.getName() == null &&
+                request.getDescription() == null &&
+                request.getEmbeddingModel() == null &&
+                request.getEmbeddingDimensionCount() == null)
         {
             return ServiceResponse.buildErrorResponse(
                     KnowledgeManagerBusinessError.ERROR_BAD_REQUEST.getCode(),
@@ -184,6 +177,26 @@ public class KnowledgeBaseServiceImpl extends ServiceImpl<KnowledgeBaseMapper, K
                 (request.getEmbeddingModel() != null && request.getEmbeddingModel()
                                                                .isBlank()) ||
                 (request.getEmbeddingDimensionCount() != null && request.getEmbeddingDimensionCount() <= 0))
+        {
+            return ServiceResponse.buildErrorResponse(
+                    KnowledgeManagerBusinessError.ERROR_BAD_REQUEST.getCode(),
+                    KnowledgeManagerBusinessError.ERROR_BAD_REQUEST.getMessage()
+            );
+        }
+
+        // Validate whether it already exists.
+        KnowledgeBaseMetadata knowledgeBaseMetadata = knowledgeBaseMapper.selectById(request.getKnowledgeBaseId());
+        if (knowledgeBaseMetadata == null)
+        {
+            return ServiceResponse.buildErrorResponse(
+                    KnowledgeManagerBusinessError.KNOWLEDGE_BASE_NOT_EXISTS.getCode(),
+                    KnowledgeManagerBusinessError.KNOWLEDGE_BASE_NOT_EXISTS.getMessage()
+            );
+        }
+
+        // Validate request parameters.
+        ChunkType chunkType = knowledgeBaseMetadata.getChunkType();
+        if (chunkType == ChunkType.DOCUMENT || chunkType == ChunkType.DOCUMENT_IMAGE)
         {
             return ServiceResponse.buildErrorResponse(
                     KnowledgeManagerBusinessError.ERROR_BAD_REQUEST.getCode(),
@@ -227,8 +240,9 @@ public class KnowledgeBaseServiceImpl extends ServiceImpl<KnowledgeBaseMapper, K
         }
 
         newKnowledgeBaseMetadata.setDescription(request.getDescription());
-        newKnowledgeBaseMetadata.setEmbeddingModel(request.getEmbeddingModel()
-                                                          .strip());
+        if (request.getEmbeddingModel() != null)
+            newKnowledgeBaseMetadata.setEmbeddingModel(request.getEmbeddingModel()
+                                                              .strip());
         if (request.getEmbeddingDimensionCount() != null)
             newKnowledgeBaseMetadata.setEmbeddingDimensionCount(request.getEmbeddingDimensionCount());
         else
@@ -244,8 +258,8 @@ public class KnowledgeBaseServiceImpl extends ServiceImpl<KnowledgeBaseMapper, K
             switch (knowledgeBaseMetadata.getChunkType())
             {
                 // TODO
-                case IMAGE -> imageChunkService.regenerateEmbedding(knowledgeBaseMetadata.getId());
-                case VIDEO -> videoChunkService.regenerateEmbedding(knowledgeBaseMetadata.getId());
+                case IMAGE -> imageChunkService.regenerateEmbedding(request.getKnowledgeBaseId());
+                case VIDEO -> videoChunkService.regenerateEmbedding(request.getKnowledgeBaseId());
             }
         }
 
@@ -273,10 +287,62 @@ public class KnowledgeBaseServiceImpl extends ServiceImpl<KnowledgeBaseMapper, K
     @Transactional
     public ServiceResponse<Boolean> updateDocumentImageKnowledgeBase(UpdateDocumentImageKnowledgeBaseRequest request)
     {
-        // If 'embeddingModel' or 'embeddingDimensionCount' changes, regenerate each chunk's 'embedding'.
-        // (If document image knowledge base update itself individually, it can only change these two fields)
+        // Validate request parameters.
+        if (request.getEmbeddingModel() == null && request.getEmbeddingDimensionCount() == null)
+        {
+            return ServiceResponse.buildErrorResponse(
+                    KnowledgeManagerBusinessError.ERROR_BAD_REQUEST.getCode(),
+                    KnowledgeManagerBusinessError.ERROR_BAD_REQUEST.getMessage()
+            );
+        }
+        if ((request.getEmbeddingModel() != null && request.getEmbeddingModel()
+                                                           .isBlank())
+                || (request.getEmbeddingDimensionCount() != null && request.getEmbeddingDimensionCount() <= 0))
+        {
+            return ServiceResponse.buildErrorResponse(
+                    KnowledgeManagerBusinessError.ERROR_BAD_REQUEST.getCode(),
+                    KnowledgeManagerBusinessError.ERROR_BAD_REQUEST.getMessage()
+            );
+        }
 
-        return null;
+        // Validate whether it already exists.
+        KnowledgeBaseMetadata knowledgeBaseMetadata = knowledgeBaseMapper.selectById(request.getKnowledgeBaseId());
+        if (knowledgeBaseMetadata == null)
+        {
+            return ServiceResponse.buildErrorResponse(
+                    KnowledgeManagerBusinessError.KNOWLEDGE_BASE_NOT_EXISTS.getCode(),
+                    KnowledgeManagerBusinessError.KNOWLEDGE_BASE_NOT_EXISTS.getMessage()
+            );
+        }
+
+        // Validate request parameters.
+        ChunkType chunkType = knowledgeBaseMetadata.getChunkType();
+        if (chunkType != ChunkType.DOCUMENT_IMAGE)
+        {
+            return ServiceResponse.buildErrorResponse(
+                    KnowledgeManagerBusinessError.ERROR_BAD_REQUEST.getCode(),
+                    KnowledgeManagerBusinessError.ERROR_BAD_REQUEST.getMessage()
+            );
+        }
+
+        // Update knowledge base metadata.
+        KnowledgeBaseMetadata newKnowledgeBaseMetadata = new KnowledgeBaseMetadata();
+        newKnowledgeBaseMetadata.setId(request.getKnowledgeBaseId());
+        if (request.getEmbeddingModel() != null)
+            newKnowledgeBaseMetadata.setEmbeddingModel(request.getEmbeddingModel()
+                                                              .strip());
+        if (request.getEmbeddingDimensionCount() != null)
+            newKnowledgeBaseMetadata.setEmbeddingDimensionCount(request.getEmbeddingDimensionCount());
+        else
+            newKnowledgeBaseMetadata.setEmbeddingDimensionCount(knowledgeBaseMetadata.getEmbeddingDimensionCount());
+        newKnowledgeBaseMetadata.setModifierId(UserContext.getCurrentUserId());
+        knowledgeBaseMapper.updateById(newKnowledgeBaseMetadata);
+
+        // If 'embeddingModel' or 'embeddingDimensionCount' changes, regenerate each chunk's 'embedding'.
+        // TODO
+        documentService.regenerateDocumentImageEmbedding(request.getKnowledgeBaseId());
+
+        return ServiceResponse.buildSuccessResponse(true);
     }
 
     @Override
