@@ -15,7 +15,7 @@ public class CrawlTask extends EntityBase
     private long knowledgeBaseId;
 
     /**
-     * 爬取任务名称 - 便于管理
+     * 爬取任务名称 - 便于管理，同一知识库不能有同名任务
      */
     private String taskName;
 

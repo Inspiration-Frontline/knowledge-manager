@@ -1,5 +1,6 @@
 package ifl.agentbreaker.knowledgemanager.domain.dtos.requests;
 
+import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
 import lombok.Data;
 
@@ -33,6 +34,7 @@ public class UpdateCrawlTaskRequest
      * 最大深度
      */
     @Min(0)
+    @Max(100)
     private int maxDepth;
 
 }

@@ -1,5 +1,6 @@
 package ifl.agentbreaker.knowledgemanager.domain.dtos.requests;
 
+import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotEmpty;
@@ -38,6 +39,7 @@ public class CreateCrawlTaskRequest
      * 最大爬取深度
      */
     @Min(0)
+    @Max(100)
     private int maxDepth;
 
 }
