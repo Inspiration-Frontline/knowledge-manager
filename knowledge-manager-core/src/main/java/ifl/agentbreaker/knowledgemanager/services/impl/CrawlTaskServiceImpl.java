@@ -10,6 +10,7 @@ import ifl.agentbreaker.knowledgemanager.domain.dtos.responses.CrawlTaskDetail;
 import ifl.agentbreaker.knowledgemanager.domain.dtos.responses.CrawlTaskAbstract;
 import ifl.agentbreaker.knowledgemanager.domain.dtos.responses.PageResponse;
 import ifl.agentbreaker.knowledgemanager.domain.entities.pg.CrawlTask;
+import ifl.agentbreaker.knowledgemanager.domain.entities.pg.CrawlTaskExecution;
 import ifl.agentbreaker.knowledgemanager.domain.entities.pg.KnowledgeBaseMetadata;
 import ifl.agentbreaker.knowledgemanager.exception.KnowledgeManagerBusinessError;
 import ifl.agentbreaker.knowledgemanager.mappers.CrawlTaskExecutionMapper;
@@ -21,6 +22,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import stark.dataworks.boot.web.ServiceResponse;
 
+import java.time.Duration;
 import java.util.List;
 import java.util.Locale;
 
@@ -271,7 +273,62 @@ public class CrawlTaskServiceImpl extends ServiceImpl<CrawlTaskMapper, CrawlTask
     @Override
     public ServiceResponse<PageResponse<CrawlTaskExecutionDetail>> pageCrawlTaskExecutions(PageCrawlTaskExecutionsRequest request)
     {
-        return null;
+        // Validate request parameters.
+        if (request.getCrawlTaskId() <= 0)
+        {
+            return ServiceResponse.buildErrorResponse(
+                    KnowledgeManagerBusinessError.ERROR_BAD_REQUEST.getCode(),
+                    KnowledgeManagerBusinessError.ERROR_BAD_REQUEST.getMessage()
+            );
+        }
+
+        // Validate whether it already exists.
+        boolean exists = crawlTaskMapper.exists(Wrappers.lambdaQuery(CrawlTask.class)
+                                                        .eq(CrawlTask::getId, request.getCrawlTaskId()));
+        if (!exists)
+        {
+            return ServiceResponse.buildErrorResponse(
+                    KnowledgeManagerBusinessError.CRAWL_TASK_NOT_EXISTS.getCode(),
+                    KnowledgeManagerBusinessError.CRAWL_TASK_NOT_EXISTS.getMessage()
+            );
+        }
+
+        // Construct query conditions accordingly.
+        LambdaQueryWrapper<CrawlTaskExecution> queryWrapper = Wrappers.lambdaQuery(CrawlTaskExecution.class)
+                                                                      .eq(CrawlTaskExecution::getCrawlTaskId, request.getCrawlTaskId())
+                                                                      .eq(request.getExecutionStatus() != null, CrawlTaskExecution::getExecutionStatus, request.getExecutionStatus())
+                                                                      .orderByDesc(CrawlTaskExecution::getModificationTime);
+        Page<CrawlTaskExecution> page = new Page<>(request.getPageNumber(), request.getPageSize());
+
+        // Select by page.
+        Page<CrawlTaskExecution> result = crawlTaskExecutionMapper.selectPage(page, queryWrapper);
+
+        // Convert 'CrawlTaskExecution' to 'CrawlTaskExecutionDetail'.
+        List<CrawlTaskExecutionDetail> records = result.getRecords()
+                                                       .stream()
+                                                       .map(crawlTaskExecution ->
+                                                       {
+                                                           CrawlTaskExecutionDetail executionDetail = new CrawlTaskExecutionDetail();
+                                                           executionDetail.setCrawlTaskExecutionId(crawlTaskExecution.getId());
+                                                           executionDetail.setStartTime(crawlTaskExecution.getStartTime());
+                                                           executionDetail.setFinishTime(crawlTaskExecution.getFinishTime());
+                                                           if (crawlTaskExecution.getStartTime() != null && crawlTaskExecution.getFinishTime() != null)
+                                                               executionDetail.setDurationMs(Duration.between(crawlTaskExecution.getStartTime(), crawlTaskExecution.getFinishTime())
+                                                                                                     .toMillis());
+                                                           executionDetail.setExecutionStatus(crawlTaskExecution.getExecutionStatus());
+                                                           executionDetail.setExecutionMessage(crawlTaskExecution.getExecutionMessage());
+                                                           return executionDetail;
+                                                       })
+                                                       .toList();
+
+        // Build page response.
+        PageResponse<CrawlTaskExecutionDetail> response = new PageResponse<>();
+        response.setTotal(result.getTotal());
+        response.setPageNumber((int) result.getCurrent());
+        response.setPageSize((int) result.getSize());
+        response.setRecords(records);
+
+        return ServiceResponse.buildSuccessResponse(response);
     }
 
     @Override
@@ -299,18 +356,18 @@ public class CrawlTaskServiceImpl extends ServiceImpl<CrawlTaskMapper, CrawlTask
 
         // Convert 'CrawlTask' to 'CrawlTaskAbstract'.
         List<CrawlTaskAbstract> records = result.getRecords()
-                                             .stream()
-                                             .map(crawlTask ->
-                                             {
-                                                 CrawlTaskAbstract anAbstract = new CrawlTaskAbstract();
-                                                 anAbstract.setCrawlTaskId(crawlTask.getId());
-                                                 anAbstract.setKnowledgeBaseId(crawlTask.getKnowledgeBaseId());
-                                                 anAbstract.setTaskName(crawlTask.getTaskName());
-                                                 anAbstract.setEnabled(crawlTask.isEnabled());
-                                                 anAbstract.setModificationTime(crawlTask.getModificationTime());
-                                                 return anAbstract;
-                                             })
-                                             .toList();
+                                                .stream()
+                                                .map(crawlTask ->
+                                                {
+                                                    CrawlTaskAbstract anAbstract = new CrawlTaskAbstract();
+                                                    anAbstract.setCrawlTaskId(crawlTask.getId());
+                                                    anAbstract.setKnowledgeBaseId(crawlTask.getKnowledgeBaseId());
+                                                    anAbstract.setTaskName(crawlTask.getTaskName());
+                                                    anAbstract.setEnabled(crawlTask.isEnabled());
+                                                    anAbstract.setModificationTime(crawlTask.getModificationTime());
+                                                    return anAbstract;
+                                                })
+                                                .toList();
 
         // Build page response.
         PageResponse<CrawlTaskAbstract> response = new PageResponse<>();
