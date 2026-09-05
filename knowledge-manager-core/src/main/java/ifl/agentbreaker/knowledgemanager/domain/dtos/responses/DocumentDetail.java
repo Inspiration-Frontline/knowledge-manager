@@ -33,11 +33,6 @@ public class DocumentDetail
     private DocumentType type;
 
     /**
-     * 文档标签 - 对文档内容进行分类标记
-     */
-    private List<String> tags;
-
-    /**
      * 来源类型
      */
     private SourceType sourceType;

@@ -51,7 +51,7 @@ public class KnowledgeBaseDetail
     /**
      * Chunk大小
      */
-    private Integer minChunkSize;
+    private Integer maxChunkSize;
 
     /**
      * Chunk重叠

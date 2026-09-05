@@ -59,7 +59,7 @@ public class KnowledgeBaseServiceImpl extends ServiceImpl<KnowledgeBaseMapper, K
                     KnowledgeManagerBusinessError.ERROR_BAD_REQUEST.getMessage());
         }
         if (request.getChunkType() == ChunkType.DOCUMENT &&
-                (request.getMinChunkSize() == null
+                (request.getMaxChunkSize() == null
                         || request.getChunkOverlap() == null
                         || request.getDocumentImageEmbeddingModel() == null
                         || request.getDocumentImageEmbeddingModel()
@@ -102,7 +102,7 @@ public class KnowledgeBaseServiceImpl extends ServiceImpl<KnowledgeBaseMapper, K
                                                        .strip());
         knowledgeBaseMetadata.setEmbeddingDimensionCount(request.getEmbeddingDimensionCount());
         knowledgeBaseMetadata.setEnabled(true);
-        knowledgeBaseMetadata.setMinChunkSize(request.getMinChunkSize());
+        knowledgeBaseMetadata.setMaxChunkSize(request.getMaxChunkSize());
         knowledgeBaseMetadata.setChunkOverlap(request.getChunkOverlap());
         knowledgeBaseMapper.insert(knowledgeBaseMetadata);
 
@@ -247,8 +247,8 @@ public class KnowledgeBaseServiceImpl extends ServiceImpl<KnowledgeBaseMapper, K
             switch (knowledgeBaseMetadata.getChunkType())
             {
                 // TODO
-                case IMAGE -> imageChunkService.regenerateEmbedding(request.getKnowledgeBaseId());
-                case VIDEO -> videoChunkService.regenerateEmbedding(request.getKnowledgeBaseId());
+//                case IMAGE -> imageChunkService.regenerateEmbedding(request.getKnowledgeBaseId());
+//                case VIDEO -> videoChunkService.regenerateEmbedding(request.getKnowledgeBaseId());
             }
         }
 
@@ -268,7 +268,7 @@ public class KnowledgeBaseServiceImpl extends ServiceImpl<KnowledgeBaseMapper, K
                 request.getDescription() == null &&
                 request.getEmbeddingModel() == null &&
                 request.getEmbeddingDimensionCount() == null &&
-                request.getMinChunkSize() == null &&
+                request.getMaxChunkSize() == null &&
                 request.getChunkOverlap() == null)
         {
             return ServiceResponse.buildErrorResponse(
@@ -284,7 +284,7 @@ public class KnowledgeBaseServiceImpl extends ServiceImpl<KnowledgeBaseMapper, K
                 (request.getEmbeddingModel() != null && request.getEmbeddingModel()
                                                                .isBlank()) ||
                 (request.getEmbeddingDimensionCount() != null && request.getEmbeddingDimensionCount() <= 0) ||
-                (request.getMinChunkSize() != null && request.getMinChunkSize() <= 0) ||
+                (request.getMaxChunkSize() != null && request.getMaxChunkSize() <= 0) ||
                 (request.getChunkOverlap() != null && request.getChunkOverlap() <= 0))
         {
             return ServiceResponse.buildErrorResponse(
@@ -356,24 +356,24 @@ public class KnowledgeBaseServiceImpl extends ServiceImpl<KnowledgeBaseMapper, K
             newKnowledgeBaseMetadata.setEmbeddingDimensionCount(request.getEmbeddingDimensionCount());
         else
             newKnowledgeBaseMetadata.setEmbeddingDimensionCount(knowledgeBaseMetadata.getEmbeddingDimensionCount());
-        newKnowledgeBaseMetadata.setMinChunkSize(request.getMinChunkSize());
+        newKnowledgeBaseMetadata.setMaxChunkSize(request.getMaxChunkSize());
         newKnowledgeBaseMetadata.setChunkOverlap(request.getChunkOverlap());
         newKnowledgeBaseMetadata.setModifierId(UserContext.getCurrentUserId());
         newDocumentImageKnowledgeBaseMetadata.setModifierId(UserContext.getCurrentUserId());
 
-        // Firstly consider rebuilding chunk table if 'minChunkSize' or 'chunkOverlap' changes.
-        // If 'minChunkSize' or 'chunkOverlap' changes,
+        // Firstly consider rebuilding chunk table if 'maxChunkSize' or 'chunkOverlap' changes.
+        // If 'maxChunkSize' or 'chunkOverlap' changes,
         // create new table to 'xx_new' →
         // reparse documents and convert chunk data →
         // rename old table to 'xx_old' →
         // rename new table to 'xx' →
         // drop old table.
         // (Only document knowledge base can change these two fields)
-        if ((request.getMinChunkSize() != null && !Objects.equals(request.getMinChunkSize(), knowledgeBaseMetadata.getMinChunkSize())) ||
+        if ((request.getMaxChunkSize() != null && !Objects.equals(request.getMaxChunkSize(), knowledgeBaseMetadata.getMaxChunkSize())) ||
                 (request.getChunkOverlap() != null && !Objects.equals(request.getChunkOverlap(), knowledgeBaseMetadata.getChunkOverlap())))
         {
             // TODO
-            documentService.rebuildChunkTable(request.getKnowledgeBaseId(), newKnowledgeBaseMetadata);
+//            documentService.rebuildChunkTable(request.getKnowledgeBaseId(), newKnowledgeBaseMetadata);
         }
         // Rename chunk table or regenerate embedding.
         else
@@ -409,10 +409,10 @@ public class KnowledgeBaseServiceImpl extends ServiceImpl<KnowledgeBaseMapper, K
                     || !Objects.equals(newKnowledgeBaseMetadata.getEmbeddingDimensionCount(), knowledgeBaseMetadata.getEmbeddingDimensionCount()))
             {
                 // TODO
-                documentService.regenerateDocumentEmbedding(request.getKnowledgeBaseId());
+//                documentService.regenerateDocumentEmbedding(request.getKnowledgeBaseId());
                 // (Document image knowledge base follows document knowledge base)
                 // TODO
-                documentService.regenerateDocumentImageEmbedding(documentImageKnowledgeBaseMetadata.getId());
+//                documentService.regenerateDocumentImageEmbedding(documentImageKnowledgeBaseMetadata.getId());
             }
         }
 
@@ -479,7 +479,7 @@ public class KnowledgeBaseServiceImpl extends ServiceImpl<KnowledgeBaseMapper, K
 
         // If 'embeddingModel' or 'embeddingDimensionCount' changes, regenerate each chunk's 'embedding'.
         // TODO
-        documentService.regenerateDocumentImageEmbedding(request.getKnowledgeBaseId());
+//        documentService.regenerateDocumentImageEmbedding(request.getKnowledgeBaseId());
 
         // Update knowledge base metadata.
         knowledgeBaseMapper.updateById(newKnowledgeBaseMetadata);
@@ -620,7 +620,7 @@ public class KnowledgeBaseServiceImpl extends ServiceImpl<KnowledgeBaseMapper, K
         response.setEnabled(knowledgeBaseMetadata.isEnabled());
         if (knowledgeBaseMetadata.getChunkType() == ChunkType.DOCUMENT)
         {
-            response.setMinChunkSize(knowledgeBaseMetadata.getMinChunkSize());
+            response.setMaxChunkSize(knowledgeBaseMetadata.getMaxChunkSize());
             response.setChunkOverlap(knowledgeBaseMetadata.getChunkOverlap());
         }
         response.setCreationTime(knowledgeBaseMetadata.getCreationTime());

@@ -23,11 +23,6 @@ public class DocumentImageChunkBase extends KnowledgeBaseChunkBase
     private int height;
 
     /**
-     * 所属章节编号 - 标识图片所在文档章节位置
-     */
-    private String sectionNumber;
-
-    /**
      * 图片描述 - 文档中对该图片的文字描述
      */
     private String description;

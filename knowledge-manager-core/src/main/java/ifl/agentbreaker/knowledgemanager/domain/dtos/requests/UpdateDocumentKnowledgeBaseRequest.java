@@ -38,7 +38,7 @@ public class UpdateDocumentKnowledgeBaseRequest
     /**
      * Chunk大小
      */
-    private Integer minChunkSize;
+    private Integer maxChunkSize;
 
     /**
      * Chunk重叠长度

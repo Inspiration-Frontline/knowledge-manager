@@ -6,3 +6,16 @@ spring:
         driver-class-name: org.postgresql.Driver
         hikari:
             connection-init-sql: SET TIME ZONE 'UTC'
+
+aliyun:
+  oss:
+    endpoint: oss-cn-hangzhou.aliyuncs.com
+
+    buckets:
+      document: knowledge-manager-documents
+
+
+document:
+  upload:
+    max-count: 10
+    url-expiration-seconds: 3600

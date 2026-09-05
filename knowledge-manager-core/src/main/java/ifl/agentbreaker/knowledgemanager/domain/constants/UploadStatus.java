@@ -1,10 +1,8 @@
 package ifl.agentbreaker.knowledgemanager.domain.constants;
 
-public enum ParsingStatus
+public enum UploadStatus
 {
-    UNPARSED,
-
-    PARSING,
+    UPLOADING,
 
     SUCCESS,
 

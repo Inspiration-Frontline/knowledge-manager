@@ -1,8 +1,7 @@
 package ifl.agentbreaker.knowledgemanager.domain.dtos.requests;
 
-import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.NotEmpty;
 import lombok.Data;
-import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
@@ -12,11 +11,16 @@ public class UploadDocumentsRequest
     /**
      * 文档知识库ID
      */
-    private long knowledgeBaseId;
+    private long documentKnowledgeBaseId;
+
+    /**
+     * 文档图片知识库ID
+     */
+    private long documentImageKnowledgeBaseId;
 
     /**
      * 文件
      */
-    @NotNull
-    private List<MultipartFile> files;
+    @NotEmpty
+    private List<DocumentMetadata> documents;
 }

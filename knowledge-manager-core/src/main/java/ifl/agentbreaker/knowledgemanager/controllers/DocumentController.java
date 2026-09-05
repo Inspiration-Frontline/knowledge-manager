@@ -1,9 +1,6 @@
 package ifl.agentbreaker.knowledgemanager.controllers;
 
-import ifl.agentbreaker.knowledgemanager.domain.dtos.requests.PageDocumentChunksRequest;
-import ifl.agentbreaker.knowledgemanager.domain.dtos.requests.PageDocumentImageChunksRequest;
-import ifl.agentbreaker.knowledgemanager.domain.dtos.requests.PageDocumentsRequest;
-import ifl.agentbreaker.knowledgemanager.domain.dtos.requests.UploadDocumentsRequest;
+import ifl.agentbreaker.knowledgemanager.domain.dtos.requests.*;
 import ifl.agentbreaker.knowledgemanager.domain.dtos.responses.*;
 import ifl.agentbreaker.knowledgemanager.services.DocumentService;
 import jakarta.validation.Valid;
@@ -11,6 +8,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import stark.dataworks.boot.web.ServiceResponse;
+
+import java.util.List;
 
 @Slf4j
 @RestController
@@ -25,10 +24,21 @@ public class DocumentController
      * @param request
      * @return
      */
-    @PostMapping("/upload")
-    public ServiceResponse<Boolean> uploadDocuments(@ModelAttribute @Valid UploadDocumentsRequest request)
+    @PostMapping("/upload-url")
+    public ServiceResponse<List<UploadDocumentUrl>> uploadDocuments(@RequestBody @Valid UploadDocumentsRequest request)
     {
         return documentService.uploadDocuments(request);
+    }
+
+    /**
+     * OSS上传完成回调
+     * @param request
+     * @return
+     */
+    @PostMapping("/callback-oss")
+    public ServiceResponse<Boolean> handleOssCallback(@RequestBody OssCallbackRequest request)
+    {
+        return documentService.handleOssCallback(request);
     }
 
     /**

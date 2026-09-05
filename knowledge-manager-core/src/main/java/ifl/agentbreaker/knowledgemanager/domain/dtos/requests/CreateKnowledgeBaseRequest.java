@@ -55,7 +55,7 @@ public class CreateKnowledgeBaseRequest
     /**
      * Chunk大小
      */
-    private Integer minChunkSize;
+    private Integer maxChunkSize;
 
     /**
      * Chunk重叠长度

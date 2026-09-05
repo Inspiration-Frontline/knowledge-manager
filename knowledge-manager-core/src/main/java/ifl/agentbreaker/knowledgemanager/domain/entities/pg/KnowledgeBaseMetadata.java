@@ -46,9 +46,9 @@ public class KnowledgeBaseMetadata extends EntityBase
     private boolean enabled;
 
     /**
-     * chunk大小 - 按字符数来切的（切完之后再embedding成token） 注意不会硬切，需要保证句子的完整性或者段落的完整性（图片、视频知识库为null）
+     * chunk大小 - 按token数来切的（切完之后再embedding成token） 注意不会硬切，需要保证句子的完整性或者段落的完整性（图片、视频知识库为null）
      */
-    private Integer minChunkSize;
+    private Integer maxChunkSize;
 
     /**
      * chunk重叠长度 - 例如100token重叠 （图片、视频知识库为null）
